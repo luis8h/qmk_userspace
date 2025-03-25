@@ -13,13 +13,56 @@
 //   // OS_A,
 // };
 
+#define D_L1_1(key) key
+#define D_L1_2(key) key
+#define D_L1_3(key) key
+#define D_L1_4(key) key
+#define D_L1_5(key) key
+#define D_R1_1(key) key
+#define D_R1_2(key) LT(6, key)
+#define D_R1_3(key) key
+#define D_R1_4(key) LT(5, key)
+#define D_R1_5(key) LGUI_T(key)
+
+#define D_L2_1(key) LGUI_T(key)
+#define D_L2_2(key) LALT_T(key)
+#define D_L2_3(key) LSFT_T(key)
+#define D_L2_4(key) LCTL_T(key)
+#define D_L2_5(key) key
+#define D_R2_1(key) key
+#define D_R2_2(key) LCTL_T(key)
+#define D_R2_3(key) LSFT_T(key)
+#define D_R2_4(key) LALT_T(key)
+#define D_R2_5() KC_BSPC
+
+#define D_L3_1(key) LT(8, key)
+#define D_L3_2(key) LT(3, key)
+#define D_L3_3(key) key
+#define D_L3_4(key) RGUI_T(key)
+#define D_L3_5(key) key
+#define D_R3_1(key) key
+#define D_R3_2(key) RGUI_T(key)
+#define D_R3_3(key) key
+#define D_R3_4(key) LT(3, key)
+#define D_R3_5() KC_COMM // oneshot layer with hold behavior
+
+#define D_TL_1(key) MT(MOD_LCTL, key)
+#define D_TL_2(key) MT(MOD_LCTL, key)
+#define D_TR_1(key) MT(MOD_LCTL, key)
+#define D_TR_2(key) MT(MOD_LCTL, key)
+
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_split_3x5_2(
-        KC_Q, KC_W, KC_E, KC_R, KC_T,                                   KC_Y, KC_U, KC_I, KC_O, KC_P,
-        LSFT_T(KC_A), LT(5,KC_S), LT(1,KC_D), LT(3,KC_F), KC_G,         KC_H, LT(4,KC_J), LT(2,KC_K), LT(6,KC_L),LSFT_T(KC_SCLN),
-        KC_Z, LCTL_T(KC_X), LALT_T(KC_C), KC_V, KC_B,                   KC_N, KC_M, LALT_T(KC_COMM), LCTL_T(KC_DOT), KC_SLSH,
-        KC_P0, KC_BSPC,                                                 LT(7,KC_SPC), KC_P1
+        D_L1_1(KC_Q), D_L1_2(KC_W), D_L1_3(KC_E), D_L1_4(KC_R), D_L1_5(KC_T),               D_R1_1(KC_Y), D_R1_2(KC_U), D_R1_3(KC_I), D_R1_4(KC_O), D_R1_5(KC_P),
+        D_L2_1(KC_A), D_L2_2(KC_S), D_L2_3(KC_D), D_L2_4(KC_F), D_L2_5(KC_G),               D_R2_1(KC_H), D_R2_2(KC_J), D_R2_3(KC_K), D_R2_4(KC_L), D_R2_5(),
+        D_L3_1(KC_Z), D_L3_2(KC_X), D_L3_3(KC_C), D_L3_4(KC_V), D_L3_5(KC_B),               D_R3_1(KC_N), D_R3_2(KC_M), D_R3_3(KC_COMM), D_R3_4(KC_DOT), D_R3_5(),
+        D_TL_1(KC_A), D_TL_2(KC_A),                                                         D_TR_1(KC_A), D_TR_2(KC_A)
     ),
+
+
+
     [1] = LAYOUT_split_3x5_2(KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_BTN1, KC_WH_U, KC_BTN2, KC_TRNS, KC_TRNS, KC_BTN2, KC_NO, KC_BTN1, KC_TRNS, KC_TRNS, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_WH_L, KC_WH_D, KC_WH_R, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
     [2] = LAYOUT_split_3x5_2(KC_TRNS, KC_TRNS, KC_PGUP, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LEFT, KC_UP, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS, KC_LGUI, KC_NO, LCTL(KC_LALT), LCA(KC_LSFT), KC_TRNS, KC_HOME, KC_PGDN, KC_END, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
     [3] = LAYOUT_split_3x5_2(KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_UNDS, KC_PIPE, KC_QUOT, KC_TRNS, KC_CIRC, KC_ASTR, KC_AMPR, KC_NO, KC_TRNS, KC_HASH, KC_TILD, KC_SLSH, KC_DQUO, KC_DLR, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MINS, KC_BSLS, KC_GRV, KC_TRNS, RM_PREV, KC_TRNS, KC_TRNS, RM_NEXT),
