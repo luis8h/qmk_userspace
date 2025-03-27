@@ -180,75 +180,113 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 
 
-// const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
-//
-// // This globally defines all key overrides to be used
-// const key_override_t *key_overrides[] = {
-// 	&delete_key_override
-// };
+// general overrides
+const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
 
 
-// os specific configuration
+// macos overrides
+static bool macos_overrides_enabled = false;
+
+const key_override_t macos_backspace_ctl_override = {
+    .trigger_mods = MOD_MASK_CTRL,
+    .trigger = KC_BSPC,
+    .replacement = LALT(KC_BSPC),
+    .enabled = &macos_overrides_enabled
+};
+const key_override_t macos_left_ctl_override = {
+    .trigger_mods = MOD_MASK_CTRL,
+    .trigger = KC_LEFT,
+    .replacement = LALT(KC_LEFT),
+    .enabled = &macos_overrides_enabled
+};
+
+
+// global override array
+const key_override_t *key_overrides[] = {
+    &delete_key_override,
+    &macos_backspace_ctl_override,
+    &macos_left_ctl_override,
+    NULL
+};
+
+
+// os specific config
 bool process_detected_host_os_kb(os_variant_t detected_os) {
     if (!process_detected_host_os_user(detected_os)) {
         return false;
     }
 
-    // Shift + Backspace → Delete (applies to all OS)
-    static const key_override_t shift_backspace_override =
-        ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
-
-    // Ctrl + Backspace → Option + Backspace (only for macOS)
-    static const key_override_t macos_backspace_ctl_override =
-        ko_make_basic(MOD_MASK_CTRL, KC_BSPC, LALT(KC_BSPC));
-    static const key_override_t macos_left_ctl_override =
-        ko_make_basic(MOD_MASK_CTRL, KC_LEFT, LALT(KC_LEFT));
-    static const key_override_t macos_right_ctl_override =
-        ko_make_basic(MOD_MASK_CTRL, KC_RIGHT, LALT(KC_RIGHT));
-
-    static const key_override_t macos_backspace_alt_override =
-        ko_make_basic(MOD_MASK_ALT, KC_BSPC, LCTL(KC_BSPC));
-    static const key_override_t macos_left_alt_override =
-        ko_make_basic(MOD_MASK_ALT, KC_LEFT, LCTL(KC_LEFT));
-    static const key_override_t macos_right_alt_override =
-        ko_make_basic(MOD_MASK_ALT, KC_RIGHT, LCTL(KC_RIGHT));
-
-    static const key_override_t macos_ctl_tab =
-        ko_make_basic(MOD_MASK_CTRL, KC_TAB, LGUI(KC_TAB));
-    static const key_override_t macos_gui_tab =
-        ko_make_basic(MOD_MASK_GUI, KC_TAB, LCTL(KC_TAB));
-
-    // Default key overrides (applies to all OS)
-    static const key_override_t *default_key_overrides[] = {
-        &shift_backspace_override,
-        NULL
-    };
-
-    // macOS-specific key overrides (Shift + Backspace + Ctrl behavior)
-    static const key_override_t *mac_key_overrides[] = {
-        &shift_backspace_override,
-        &macos_backspace_ctl_override,
-        &macos_left_ctl_override,
-        &macos_right_ctl_override,
-        &macos_backspace_alt_override,
-        &macos_left_alt_override,
-        &macos_right_alt_override,
-        &macos_ctl_tab,
-        &macos_gui_tab,
-        NULL
-    };
-
-    // Apply overrides based on OS
-    switch (detected_os) {
-        case OS_MACOS:
-        case OS_IOS:
-            key_overrides = mac_key_overrides;
-            break;
-        default:
-            key_overrides = default_key_overrides;
-            break;
+    if (detected_os == OS_MACOS || detected_os == OS_IOS) {
+        macos_overrides_enabled = true;
+    } else {
+        macos_overrides_enabled = false;
     }
-
     return true;
 }
+
+
+// os specific configuration
+// bool process_detected_host_os_kb(os_variant_t detected_os) {
+//     if (!process_detected_host_os_user(detected_os)) {
+//         return false;
+//     }
+//
+//     // Shift + Backspace → Delete (applies to all OS)
+//     static const key_override_t shift_backspace_override =
+//         ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+//
+//     // Ctrl + Backspace → Option + Backspace (only for macOS)
+//     static const key_override_t macos_backspace_ctl_override =
+//         ko_make_basic(MOD_MASK_CTRL, KC_BSPC, LALT(KC_BSPC));
+//     static const key_override_t macos_left_ctl_override =
+//         ko_make_basic(MOD_MASK_CTRL, KC_LEFT, LALT(KC_LEFT));
+//     static const key_override_t macos_right_ctl_override =
+//         ko_make_basic(MOD_MASK_CTRL, KC_RIGHT, LALT(KC_RIGHT));
+//
+//     static const key_override_t macos_backspace_alt_override =
+//         ko_make_basic(MOD_MASK_ALT, KC_BSPC, LCTL(KC_BSPC));
+//     static const key_override_t macos_left_alt_override =
+//         ko_make_basic(MOD_MASK_ALT, KC_LEFT, LCTL(KC_LEFT));
+//     static const key_override_t macos_right_alt_override =
+//         ko_make_basic(MOD_MASK_ALT, KC_RIGHT, LCTL(KC_RIGHT));
+//
+//     static const key_override_t macos_ctl_tab =
+//         ko_make_basic(MOD_MASK_CTRL, KC_TAB, LGUI(KC_TAB));
+//     static const key_override_t macos_gui_tab =
+//         ko_make_basic(MOD_MASK_GUI, KC_TAB, LCTL(KC_TAB));
+//
+//     // Default key overrides (applies to all OS)
+//     static const key_override_t *default_key_overrides[] = {
+//         &shift_backspace_override,
+//         NULL
+//     };
+//
+//     // macOS-specific key overrides (Shift + Backspace + Ctrl behavior)
+//     static const key_override_t *mac_key_overrides[] = {
+//         &shift_backspace_override,
+//         &macos_backspace_ctl_override,
+//         &macos_left_ctl_override,
+//         &macos_right_ctl_override,
+//         &macos_backspace_alt_override,
+//         &macos_left_alt_override,
+//         &macos_right_alt_override,
+//         &macos_ctl_tab,
+//         &macos_gui_tab,
+//         NULL
+//     };
+//
+//     // Apply overrides based on OS
+//     switch (detected_os) {
+//         case OS_MACOS:
+//         case OS_IOS:
+//             key_overrides = mac_key_overrides;
+//             break;
+//         default:
+//             key_overrides = default_key_overrides;
+//             break;
+//     }
+//
+//     return true;
+// }
+
 
