@@ -39,12 +39,12 @@
 // first row
 #define D_L1_1(key) key
 #define D_L1_2(key) key
-#define D_L1_3(key) key
+#define D_L1_3(key) HYPR_T(key)
 #define D_L1_4(key) key
 #define D_L1_5(key) key
 #define D_R1_1(key) key
 #define D_R1_2(key) LT(L_WORKAC, key)
-#define D_R1_3(key) key
+#define D_R1_3(key) HYPR_T(key)
 #define D_R1_4(key) LT(L_WORKA, key)
 #define D_R1_5(key) LGUI_T(key)
 
@@ -134,15 +134,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
     [L_ESC] = LAYOUT_split_3x5_2(
-        KC_COPY, KC_PASTE, LCTL(KC_SPC), KC_F8, KC_TRNS,                                        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_COPY, KC_PASTE, LCTL(KC_SPC), KC_F8, KC_TRNS,                                        KC_TRNS, CW_TOGG, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TAB, KC_DEL, KC_LSFT, KC_TRNS, KC_BSPC,                                              KC_TRNS, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
-        KC_ENT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                             KC_RCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_ENT, KC_WBAK, KC_PGUP, KC_PGDN, KC_WFWD,                                             KC_RCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                                       KC_ENT, KC_TRNS
     ),
     [L_MOVE] = LAYOUT_split_3x5_2(
-        D_L1_1(KC_Q), D_L1_2(KC_W), D_L1_3(KC_UP), D_L1_4(KC_R), D_L1_5(KC_T),                  D_R1_1(KC_Y), D_R1_2(KC_U), D_R1_3(KC_UP), D_R1_4(KC_O), D_R1_5(KC_UP),
-        D_L2_1(KC_A), D_L2_2(KC_LEFT), D_L2_3(KC_DOWN), D_L2_4(KC_RGHT), D_L2_5(KC_G),          D_R2_1(KC_LEFT), D_R2_2(KC_DOWN), D_R2_3(KC_RGHT), D_R2_4(KC_L), D_R2_5(),
-        D_L3_1(KC_Z), D_L3_2(KC_X), D_L3_3(KC_C), D_L3_4(KC_V), D_L3_5(KC_B),                   D_R3_1(KC_DOWN), D_R3_2(KC_M), D_R3_3(KC_COMM), D_R3_4(KC_DOT), D_R3_5(),
+        D_L1_1(KC_Q), D_L1_2(KC_W), D_L1_3(KC_UP), D_L1_4(KC_R), D_L1_5(KC_T),                  D_R1_1(KC_HOME), D_R1_2(KC_U), D_R1_3(KC_I), D_R1_4(KC_END), D_R1_5(KC_UP),
+        D_L2_1(KC_A), D_L2_2(KC_LEFT), D_L2_3(KC_DOWN), D_L2_4(KC_RGHT), D_L2_5(KC_G),          D_R2_1(KC_LEFT), D_R2_2(KC_DOWN), D_R2_3(KC_UP), D_R2_4(KC_RGHT), KC_TRNS,
+        D_L3_1(KC_Z), D_L3_2(KC_WBAK), D_L3_3(KC_PGUP), D_L3_4(KC_PGDN), D_L3_5(KC_WFWD),       D_R3_1(KC_DOWN), D_R3_2(KC_M), D_R3_3(KC_COMM), D_R3_4(KC_DOT), KC_TRNS,
         D_TL_1(), D_TL_2(),                                                                     D_TR_1(), D_TR_2()
     ),
     [L_SYS] = LAYOUT_split_3x5_2(KC_TRNS, KC_TRNS, KC_COLN, KC_ESC, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_DEL, KC_TRNS, KC_PERC, KC_SLSH, KC_ENT, KC_TRNS, DF(1), KC_LGUI, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_EXLM, KC_TRNS, DF(0), KC_TRNS, RALT_T(KC_COMM), RCTL_T(KC_DOT), QK_BOOT, KC_TRNS, KC_TAB, KC_NO, KC_TRNS)
@@ -180,73 +180,75 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 
 
-
-// #ifdef OTHER_KEYMAP_C
-// #    include OTHER_KEYMAP_C
-// #endif // OTHER_KEYMAP_C
+// const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+//
+// // This globally defines all key overrides to be used
+// const key_override_t *key_overrides[] = {
+// 	&delete_key_override
+// };
 
 
 // os specific configuration
-// bool process_detected_host_os_kb(os_variant_t detected_os) {
-//     if (!process_detected_host_os_user(detected_os)) {
-//         return false;
-//     }
-//
-//     // Shift + Backspace → Delete (applies to all OS)
-//     static const key_override_t shift_backspace_override =
-//         ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
-//
-//     // Ctrl + Backspace → Option + Backspace (only for macOS)
-//     static const key_override_t macos_backspace_ctl_override =
-//         ko_make_basic(MOD_MASK_CTRL, KC_BSPC, LALT(KC_BSPC));
-//     static const key_override_t macos_left_ctl_override =
-//         ko_make_basic(MOD_MASK_CTRL, KC_LEFT, LALT(KC_LEFT));
-//     static const key_override_t macos_right_ctl_override =
-//         ko_make_basic(MOD_MASK_CTRL, KC_RIGHT, LALT(KC_RIGHT));
-//
-//     static const key_override_t macos_backspace_alt_override =
-//         ko_make_basic(MOD_MASK_ALT, KC_BSPC, LCTL(KC_BSPC));
-//     static const key_override_t macos_left_alt_override =
-//         ko_make_basic(MOD_MASK_ALT, KC_LEFT, LCTL(KC_LEFT));
-//     static const key_override_t macos_right_alt_override =
-//         ko_make_basic(MOD_MASK_ALT, KC_RIGHT, LCTL(KC_RIGHT));
-//
-//     static const key_override_t macos_ctl_tab =
-//         ko_make_basic(MOD_MASK_CTRL, KC_TAB, LGUI(KC_TAB));
-//     static const key_override_t macos_gui_tab =
-//         ko_make_basic(MOD_MASK_GUI, KC_TAB, LCTL(KC_TAB));
-//
-//     // Default key overrides (applies to all OS)
-//     static const key_override_t *default_key_overrides[] = {
-//         &shift_backspace_override,
-//         NULL
-//     };
-//
-//     // macOS-specific key overrides (Shift + Backspace + Ctrl behavior)
-//     static const key_override_t *mac_key_overrides[] = {
-//         &shift_backspace_override,
-//         &macos_backspace_ctl_override,
-//         &macos_left_ctl_override,
-//         &macos_right_ctl_override,
-//         &macos_backspace_alt_override,
-//         &macos_left_alt_override,
-//         &macos_right_alt_override,
-//         &macos_ctl_tab,
-//         &macos_gui_tab,
-//         NULL
-//     };
-//
-//     // Apply overrides based on OS
-//     switch (detected_os) {
-//         case OS_MACOS:
-//         case OS_IOS:
-//             key_overrides = mac_key_overrides;
-//             break;
-//         default:
-//             key_overrides = default_key_overrides;
-//             break;
-//     }
-//
-//     return true;
-// }
-//
+bool process_detected_host_os_kb(os_variant_t detected_os) {
+    if (!process_detected_host_os_user(detected_os)) {
+        return false;
+    }
+
+    // Shift + Backspace → Delete (applies to all OS)
+    static const key_override_t shift_backspace_override =
+        ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+
+    // Ctrl + Backspace → Option + Backspace (only for macOS)
+    static const key_override_t macos_backspace_ctl_override =
+        ko_make_basic(MOD_MASK_CTRL, KC_BSPC, LALT(KC_BSPC));
+    static const key_override_t macos_left_ctl_override =
+        ko_make_basic(MOD_MASK_CTRL, KC_LEFT, LALT(KC_LEFT));
+    static const key_override_t macos_right_ctl_override =
+        ko_make_basic(MOD_MASK_CTRL, KC_RIGHT, LALT(KC_RIGHT));
+
+    static const key_override_t macos_backspace_alt_override =
+        ko_make_basic(MOD_MASK_ALT, KC_BSPC, LCTL(KC_BSPC));
+    static const key_override_t macos_left_alt_override =
+        ko_make_basic(MOD_MASK_ALT, KC_LEFT, LCTL(KC_LEFT));
+    static const key_override_t macos_right_alt_override =
+        ko_make_basic(MOD_MASK_ALT, KC_RIGHT, LCTL(KC_RIGHT));
+
+    static const key_override_t macos_ctl_tab =
+        ko_make_basic(MOD_MASK_CTRL, KC_TAB, LGUI(KC_TAB));
+    static const key_override_t macos_gui_tab =
+        ko_make_basic(MOD_MASK_GUI, KC_TAB, LCTL(KC_TAB));
+
+    // Default key overrides (applies to all OS)
+    static const key_override_t *default_key_overrides[] = {
+        &shift_backspace_override,
+        NULL
+    };
+
+    // macOS-specific key overrides (Shift + Backspace + Ctrl behavior)
+    static const key_override_t *mac_key_overrides[] = {
+        &shift_backspace_override,
+        &macos_backspace_ctl_override,
+        &macos_left_ctl_override,
+        &macos_right_ctl_override,
+        &macos_backspace_alt_override,
+        &macos_left_alt_override,
+        &macos_right_alt_override,
+        &macos_ctl_tab,
+        &macos_gui_tab,
+        NULL
+    };
+
+    // Apply overrides based on OS
+    switch (detected_os) {
+        case OS_MACOS:
+        case OS_IOS:
+            key_overrides = mac_key_overrides;
+            break;
+        default:
+            key_overrides = default_key_overrides;
+            break;
+    }
+
+    return true;
+}
+
