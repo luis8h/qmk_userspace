@@ -199,13 +199,61 @@ const key_override_t macos_left_ctl_override = {
     .replacement = LALT(KC_LEFT),
     .enabled = &macos_overrides_enabled
 };
+const key_override_t macos_right_ctl_override = {
+    .trigger_mods = MOD_MASK_CTRL,
+    .trigger = KC_RGHT,
+    .replacement = LALT(KC_RGHT),
+    .enabled = &macos_overrides_enabled
+};
+
+const key_override_t macos_backspace_alt_override = {
+    .trigger_mods = MOD_MASK_ALT,
+    .trigger = KC_BSPC,
+    .replacement = LCTL(KC_BSPC),
+    .enabled = &macos_overrides_enabled
+};
+const key_override_t macos_left_alt_override = {
+    .trigger_mods = MOD_MASK_ALT,
+    .trigger = KC_LEFT,
+    .replacement = LCTL(KC_LEFT),
+    .enabled = &macos_overrides_enabled
+};
+const key_override_t macos_right_alt_override = {
+    .trigger_mods = MOD_MASK_ALT,
+    .trigger = KC_RGHT,
+    .replacement = LCTL(KC_RGHT),
+    .enabled = &macos_overrides_enabled
+};
+
+const key_override_t macos_ctl_tab_override = {
+    .trigger_mods = MOD_MASK_CTRL,
+    .trigger = KC_TAB,
+    .replacement = LGUI(KC_TAB),
+    .enabled = &macos_overrides_enabled
+};
+const key_override_t macos_gui_tab_override = {
+    .trigger_mods = MOD_MASK_GUI,
+    .trigger = KC_TAB,
+    .replacement = LCTL(KC_TAB),
+    .enabled = &macos_overrides_enabled
+};
 
 
 // global override array
 const key_override_t *key_overrides[] = {
     &delete_key_override,
+
     &macos_backspace_ctl_override,
     &macos_left_ctl_override,
+    &macos_right_ctl_override,
+
+    &macos_backspace_alt_override,
+    &macos_left_alt_override,
+    &macos_right_alt_override,
+
+    &macos_ctl_tab_override,
+    &macos_gui_tab_override,
+
     NULL
 };
 
