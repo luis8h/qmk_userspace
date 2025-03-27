@@ -99,18 +99,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [L_SYM] = LAYOUT_split_3x5_2(
         D_L1_1(KC_EXLM), D_L1_2(KC_AT), D_L1_3(KC_HASH), D_L1_4(KC_DLR), D_L1_5(KC_PERC),       D_R1_1(KC_CIRC), D_R1_2(KC_AMPR), D_R1_3(KC_LPRN), D_R1_4(KC_RPRN), D_R1_5(KC_ASTR),
-        D_L2_1(KC_MINS), D_L2_2(KC_QUOT), D_L2_3(KC_LCBR), D_L2_4(KC_RCBR), D_L2_5(KC_GRV),     D_R2_1(KC_PLUS), D_R2_2(KC_SLSH), D_R2_3(KC_DQUO), D_R2_4(KC_COLN), D_R2_5(),
-        D_L3_1(KC_UNDS), D_L3_2(KC_SCLN), D_L3_3(KC_LBRC), D_L3_4(KC_RBRC), D_L3_5(KC_EQL),     D_R3_1(KC_TILD), D_R3_2(KC_BSLS), D_R3_3(KC_COMM), D_R3_4(KC_DOT), D_R3_5(),
-        DANCE_1, D_TL_2(),                                                                      D_TR_1(), D_TR_2()
+        D_L2_1(KC_MINS), D_L2_2(KC_QUOT), D_L2_3(KC_LCBR), D_L2_4(KC_RCBR), D_L2_5(KC_GRV),     D_R2_1(KC_PLUS), D_R2_2(KC_SLSH), D_R2_3(KC_DQUO), D_R2_4(KC_COLN), KC_TRNS,
+        D_L3_1(KC_UNDS), D_L3_2(KC_SCLN), D_L3_3(KC_LBRC), D_L3_4(KC_RBRC), D_L3_5(KC_EQL),     D_R3_1(KC_TILD), D_R3_2(KC_BSLS), D_R3_3(KC_COMM), D_R3_4(KC_DOT), KC_TRNS,
+        DANCE_1, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
     [L_NUMT] = LAYOUT_split_3x5_2(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_DOWN, KC_RGHT, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
-    [L_SYMSPEC] = LAYOUT_split_3x5_2(KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_UNDS, KC_PIPE, KC_QUOT, KC_TRNS, KC_CIRC, KC_ASTR, KC_AMPR, KC_NO, KC_TRNS, KC_HASH, KC_TILD, KC_SLSH, KC_DQUO, KC_DLR, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MINS, KC_BSLS, KC_GRV, KC_TRNS, RM_PREV, KC_TRNS, KC_TRNS, RM_NEXT),
-    [L_NUMH] = LAYOUT_split_3x5_2(KC_TRNS, KC_COLN, KC_LT, KC_GT, KC_SCLN, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LCBR, KC_RCBR, KC_LPRN, KC_RPRN, KC_AT, KC_TRNS, KC_NO, KC_EQL, KC_PLUS, KC_PERC, KC_TRNS, KC_EXLM, KC_LBRC, KC_RBRC, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_VOLD, KC_TRNS, KC_TRNS, KC_VOLU),
+    [L_SYMSPEC] = LAYOUT_split_3x5_2(
+        KC_F1, KC_F2, KC_F3, KC_F4, KC_F5,                                                      KC_F8, KC_F9, KC_F10, KC_F11, KC_F12,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_F6,                                              KC_F7, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        DANCE_1, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
+    ),
+    [L_NUMH] = LAYOUT_split_3x5_2(
+        D_L1_1(KC_DOT), D_L1_2(KC_1), D_L1_3(KC_2), D_L1_4(KC_3), D_L1_5(KC_COMM),                  D_R1_1(KC_QUES), D_R1_2(KC_PIPE), D_R1_3(KC_LPRN), D_R1_4(KC_RPRN), D_R1_5(KC_ASTR),
+        LALT_T(KC_MINS), LGUI_T(KC_4), D_L2_3(KC_5), D_L2_4(KC_6), D_L2_5(KC_PLUS),                 D_R2_1(KC_PLUS), D_R2_2(KC_LT), D_R2_3(KC_GT), D_R2_4(KC_COLN), KC_TRNS,
+        MT(MOD_LALT | MOD_LCTL, QK_LLCK), D_L3_2(KC_7), D_L3_3(KC_8), D_L3_4(KC_9), D_L3_5(KC_EQL), D_R3_1(KC_TILD), D_R3_2(KC_BSLS), D_R3_3(KC_COMM), D_R3_4(KC_DOT), KC_TRNS,
+        DANCE_1, KC_TRNS,                                                                           KC_TRNS, KC_TRNS
+    ),
     [L_WORKA] = LAYOUT_split_3x5_2(KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_F7, KC_F8, KC_F9, KC_F10, KC_TRNS, KC_NO, LCTL(KC_LALT), KC_TRNS, KC_TRNS, KC_TRNS, KC_F4, KC_F5, KC_F6, KC_F11, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_F1, KC_F2, KC_F3, KC_F12, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
     [L_WORKAC] = LAYOUT_split_3x5_2(KC_PSLS, KC_7, KC_8, KC_9, KC_PPLS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_0, KC_1, KC_2, KC_3, KC_PMNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO, KC_TRNS, KC_PAST, KC_4, KC_5, KC_6, KC_PEQL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
     [L_ESC] = LAYOUT_split_3x5_2(KC_TRNS, KC_TRNS, KC_COLN, KC_ESC, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_DEL, KC_TRNS, KC_PERC, KC_SLSH, KC_ENT, KC_TRNS, DF(1), KC_LGUI, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_EXLM, KC_TRNS, DF(0), KC_TRNS, RALT_T(KC_COMM), RCTL_T(KC_DOT), QK_BOOT, KC_TRNS, KC_TAB, KC_NO, KC_TRNS),
