@@ -349,7 +349,7 @@ const key_override_t *key_overrides[] = {
 
 
 // os specific config
-bool process_detected_host_os_user(os_variant_t detected_os) {
+bool process_detected_host_os_kb(os_variant_t detected_os) {
     if (!process_detected_host_os_user(detected_os)) {
         return false;
     }
