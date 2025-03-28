@@ -73,6 +73,7 @@
 // define tap dance keys
 enum {
     DANCE_1,
+    DANCE_2,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -91,7 +92,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_SYM] = LAYOUT_split_3x5_2(
         D_L1_1(KC_EXLM), D_L1_2(KC_AT), D_L1_3(KC_HASH), D_L1_4(KC_DLR), D_L1_5(KC_PERC),       D_R1_1(KC_CIRC), D_R1_2(KC_AMPR), D_R1_3(KC_LPRN), D_R1_4(KC_RPRN), D_R1_5(KC_ASTR),
         D_L2_1(KC_MINS), D_L2_2(KC_QUOT), D_L2_3(KC_LCBR), D_L2_4(KC_RCBR), D_L2_5(KC_GRV),     D_R2_1(KC_PLUS), D_R2_2(KC_SLSH), D_R2_3(KC_DQUO), D_R2_4(KC_COLN), KC_TRNS,
-        D_L3_1(KC_UNDS), D_L3_2(KC_SCLN), D_L3_3(KC_LBRC), D_L3_4(KC_RBRC), D_L3_5(KC_EQL),     D_R3_1(KC_TILD), D_R3_2(KC_BSLS), D_R3_3(KC_COMM), D_R3_4(KC_DOT), KC_TRNS,
+        DANCE_2, D_L3_2(KC_SCLN), D_L3_3(KC_LBRC), D_L3_4(KC_RBRC), D_L3_5(KC_EQL),     D_R3_1(KC_TILD), D_R3_2(KC_BSLS), D_R3_3(KC_COMM), D_R3_4(KC_DOT), KC_TRNS,
         DANCE_1, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
     [L_NUMT] = LAYOUT_split_3x5_2(
@@ -113,15 +114,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         DANCE_1, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
     [L_WORKA] = LAYOUT_split_3x5_2(
-        KC_TRNS, LALT(1), LALT(2), LALT(3), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_LSFT, LALT(4), LALT(5), LALT(6), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, LALT(7), LALT(8), LALT(9), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, LALT(KC_1), LALT(KC_2), LALT(KC_3), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_LSFT, LALT(KC_4), LALT(KC_5), LALT(KC_6), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, LALT(KC_7), LALT(KC_8), LALT(KC_9), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
     [L_WORKAC] = LAYOUT_split_3x5_2(
-        KC_TRNS, LCA(1), LCA(2), LCA(3), KC_TRNS,                                               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_LSFT, LCA(4), LCA(5), LCA(6), KC_TRNS,                                               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, LCA(7), LCA(8), LCA(9), KC_TRNS,                                               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, LCA(KC_1), LCA(KC_2), LCA(KC_3), KC_TRNS,                                               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_LSFT, LCA(KC_4), LCA(KC_5), LCA(KC_6), KC_TRNS,                                               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, LCA(KC_7), LCA(KC_8), LCA(KC_9), KC_TRNS,                                               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
     [L_ESC] = LAYOUT_split_3x5_2(
@@ -170,9 +171,43 @@ void dance_1_reset(tap_dance_state_t *state, void *user_data) {
     dance_state[0].step = 0;
 }
 
+// tap dance 2 functions
+void dance_2_finished(tap_dance_state_t *state, void *user_data) {
+    dance_state[1].step = dance_step(state);
+    switch (dance_state[1].step) {
+        case SINGLE_TAP:
+            register_code16(KC_UNDS); break;
+            break;
+        case SINGLE_HOLD:
+            layer_on(L_MOVE);
+            break;
+        case DOUBLE_TAP:
+            register_code16(KC_UNDS);
+            register_code16(KC_UNDS);
+            break;
+        case DOUBLE_SINGLE_TAP:
+            register_code16(KC_UNDS);
+            register_code16(KC_UNDS);
+            break;
+    }
+}
+void dance_2_reset(tap_dance_state_t *state, void *user_data) {
+    wait_ms(10);
+    switch (dance_state[1].step) {
+        case SINGLE_TAP: unregister_code16(KC_UNDS); break;
+        case SINGLE_HOLD:
+          layer_off(L_MOVE);
+        break;
+        case DOUBLE_TAP: unregister_code16(KC_UNDS); break;
+        case DOUBLE_SINGLE_TAP: unregister_code16(KC_UNDS); break;
+    }
+    dance_state[1].step = 0;
+}
+
 // register tap dance keys
 tap_dance_action_t tap_dance_actions[] = {
-    [DANCE_1] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_1_finished, dance_1_reset)
+    [DANCE_1] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_1_finished, dance_1_reset),
+    [DANCE_2] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_2_finished, dance_2_reset)
 };
 
 
