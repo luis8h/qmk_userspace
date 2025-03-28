@@ -173,33 +173,10 @@ void dance_1_reset(tap_dance_state_t *state, void *user_data) {
 
 // tap dance 2 functions
 void on_dance_2(tap_dance_state_t *state, void *user_data) {
-    if(state->count == 3) {
-        tap_code16(KC_UNDS);
-        tap_code16(KC_UNDS);
-        tap_code16(KC_UNDS);
-    }
-    if(state->count > 3) {
-        tap_code16(KC_UNDS);
-    }
+    hold_tap_on_dance(state, KC_UNDS);
 }
 void dance_2_finished(tap_dance_state_t *state, void *user_data) {
-    dance_state[1].step = dance_step(state);
-    switch (dance_state[1].step) {
-        case SINGLE_TAP:
-            register_code16(KC_UNDS); break;
-            break;
-        case SINGLE_HOLD:
-            layer_on(L_MOVE);
-            break;
-        case DOUBLE_TAP:
-            register_code16(KC_UNDS);
-            register_code16(KC_UNDS);
-            break;
-        case DOUBLE_SINGLE_TAP:
-            register_code16(KC_UNDS);
-            register_code16(KC_UNDS);
-            break;
-    }
+    hold_tap_dance_finished(state, KC_UNDS, L_MOVE, 1);
 }
 void dance_2_reset(tap_dance_state_t *state, void *user_data) {
     wait_ms(10);
@@ -213,6 +190,7 @@ void dance_2_reset(tap_dance_state_t *state, void *user_data) {
     }
     dance_state[1].step = 0;
 }
+
 
 // register tap dance keys
 tap_dance_action_t tap_dance_actions[] = {
