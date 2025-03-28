@@ -179,16 +179,7 @@ void dance_2_finished(tap_dance_state_t *state, void *user_data) {
     hold_tap_dance_finished(state, KC_UNDS, L_MOVE, 1);
 }
 void dance_2_reset(tap_dance_state_t *state, void *user_data) {
-    wait_ms(10);
-    switch (dance_state[1].step) {
-        case SINGLE_TAP: unregister_code16(KC_UNDS); break;
-        case SINGLE_HOLD:
-          layer_off(L_MOVE);
-        break;
-        case DOUBLE_TAP: unregister_code16(KC_UNDS); break;
-        case DOUBLE_SINGLE_TAP: unregister_code16(KC_UNDS); break;
-    }
-    dance_state[1].step = 0;
+    hold_tap_dance_reset(state, KC_UNDS, L_MOVE, 1);
 }
 
 

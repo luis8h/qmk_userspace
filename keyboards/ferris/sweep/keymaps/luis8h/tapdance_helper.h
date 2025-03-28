@@ -53,4 +53,16 @@ void hold_tap_dance_finished(tap_dance_state_t *state, uint16_t keycode, int lay
             break;
     }
 }
+void hold_tap_dance_reset(tap_dance_state_t *state, uint16_t keycode, int layer, int state_index) {
+    wait_ms(10);
+    switch (dance_state[state_index].step) {
+        case SINGLE_TAP: unregister_code16(keycode); break;
+        case SINGLE_HOLD:
+          layer_off(layer);
+        break;
+        case DOUBLE_TAP: unregister_code16(keycode); break;
+        case DOUBLE_SINGLE_TAP: unregister_code16(keycode); break;
+    }
+    dance_state[state_index].step = 0;
+}
 
