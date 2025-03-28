@@ -30,7 +30,7 @@
 // first row
 #define D_L1_1(key) key
 #define D_L1_2(key) key
-#define D_L1_3(key) HYPR_T(key)
+#define D_L1_3(key) MT(MOD_LCTL | MOD_LSFT | MOD_LALT | MOD_LGUI, key)
 #define D_L1_4(key) key
 #define D_L1_5(key) key
 #define D_R1_1(key) key
