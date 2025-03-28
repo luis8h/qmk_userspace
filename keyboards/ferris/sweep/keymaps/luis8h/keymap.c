@@ -5,15 +5,6 @@
     #include "keymap.h"
 #endif
 
-// enum {
-//     TD_EXAMPLE
-// };
-//
-// tap_dance_action_t tap_dance_actions[] = {
-//     [TD_EXAMPLE] = ACTION_TAP_DANCE_DOUBLE(KC_A, KC_B),
-// };
-
-
 // enum custom_keycodes {
 //   // ST_MACRO_0,
 //   // ST_MACRO_1,
@@ -106,12 +97,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_NUMT] = LAYOUT_split_3x5_2(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, TO(L_SYMSPEC), KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
     [L_SYMSPEC] = LAYOUT_split_3x5_2(
         KC_F1, KC_F2, KC_F3, KC_F4, KC_F5,                                                      KC_F8, KC_F9, KC_F10, KC_F11, KC_F12,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_F6,                                              KC_F7, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_F6,                                              LT(L_SYS, KC_F7), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         DANCE_1, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
@@ -145,7 +136,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         D_L3_1(KC_Z), D_L3_2(KC_WBAK), D_L3_3(KC_PGUP), D_L3_4(KC_PGDN), D_L3_5(KC_WFWD),       D_R3_1(KC_DOWN), D_R3_2(KC_M), D_R3_3(KC_COMM), D_R3_4(KC_DOT), KC_TRNS,
         D_TL_1(), D_TL_2(),                                                                     D_TR_1(), D_TR_2()
     ),
-    [L_SYS] = LAYOUT_split_3x5_2(KC_TRNS, KC_TRNS, KC_COLN, KC_ESC, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_DEL, KC_TRNS, KC_PERC, KC_SLSH, KC_ENT, KC_TRNS, DF(1), KC_LGUI, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_EXLM, KC_TRNS, DF(0), KC_TRNS, RALT_T(KC_COMM), RCTL_T(KC_DOT), QK_BOOT, KC_TRNS, KC_TAB, KC_NO, KC_TRNS)
+    [L_SYS] = LAYOUT_split_3x5_2(
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        QK_BOOTLOADER, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        DANCE_1, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
+    ),
 };
 
 // tap dance 1 functions
@@ -271,70 +267,3 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
     }
     return true;
 }
-
-
-// os specific configuration
-// bool process_detected_host_os_kb(os_variant_t detected_os) {
-//     if (!process_detected_host_os_user(detected_os)) {
-//         return false;
-//     }
-//
-//     // Shift + Backspace → Delete (applies to all OS)
-//     static const key_override_t shift_backspace_override =
-//         ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
-//
-//     // Ctrl + Backspace → Option + Backspace (only for macOS)
-//     static const key_override_t macos_backspace_ctl_override =
-//         ko_make_basic(MOD_MASK_CTRL, KC_BSPC, LALT(KC_BSPC));
-//     static const key_override_t macos_left_ctl_override =
-//         ko_make_basic(MOD_MASK_CTRL, KC_LEFT, LALT(KC_LEFT));
-//     static const key_override_t macos_right_ctl_override =
-//         ko_make_basic(MOD_MASK_CTRL, KC_RIGHT, LALT(KC_RIGHT));
-//
-//     static const key_override_t macos_backspace_alt_override =
-//         ko_make_basic(MOD_MASK_ALT, KC_BSPC, LCTL(KC_BSPC));
-//     static const key_override_t macos_left_alt_override =
-//         ko_make_basic(MOD_MASK_ALT, KC_LEFT, LCTL(KC_LEFT));
-//     static const key_override_t macos_right_alt_override =
-//         ko_make_basic(MOD_MASK_ALT, KC_RIGHT, LCTL(KC_RIGHT));
-//
-//     static const key_override_t macos_ctl_tab =
-//         ko_make_basic(MOD_MASK_CTRL, KC_TAB, LGUI(KC_TAB));
-//     static const key_override_t macos_gui_tab =
-//         ko_make_basic(MOD_MASK_GUI, KC_TAB, LCTL(KC_TAB));
-//
-//     // Default key overrides (applies to all OS)
-//     static const key_override_t *default_key_overrides[] = {
-//         &shift_backspace_override,
-//         NULL
-//     };
-//
-//     // macOS-specific key overrides (Shift + Backspace + Ctrl behavior)
-//     static const key_override_t *mac_key_overrides[] = {
-//         &shift_backspace_override,
-//         &macos_backspace_ctl_override,
-//         &macos_left_ctl_override,
-//         &macos_right_ctl_override,
-//         &macos_backspace_alt_override,
-//         &macos_left_alt_override,
-//         &macos_right_alt_override,
-//         &macos_ctl_tab,
-//         &macos_gui_tab,
-//         NULL
-//     };
-//
-//     // Apply overrides based on OS
-//     switch (detected_os) {
-//         case OS_MACOS:
-//         case OS_IOS:
-//             key_overrides = mac_key_overrides;
-//             break;
-//         default:
-//             key_overrides = default_key_overrides;
-//             break;
-//     }
-//
-//     return true;
-// }
-
-
