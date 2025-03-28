@@ -172,6 +172,16 @@ void dance_1_reset(tap_dance_state_t *state, void *user_data) {
 }
 
 // tap dance 2 functions
+void on_dance_2(tap_dance_state_t *state, void *user_data) {
+    if(state->count == 3) {
+        tap_code16(KC_UNDS);
+        tap_code16(KC_UNDS);
+        tap_code16(KC_UNDS);
+    }
+    if(state->count > 3) {
+        tap_code16(KC_UNDS);
+    }
+}
 void dance_2_finished(tap_dance_state_t *state, void *user_data) {
     dance_state[1].step = dance_step(state);
     switch (dance_state[1].step) {
@@ -207,7 +217,7 @@ void dance_2_reset(tap_dance_state_t *state, void *user_data) {
 // register tap dance keys
 tap_dance_action_t tap_dance_actions[] = {
     [DANCE_1] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_1_finished, dance_1_reset),
-    [DANCE_2] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_2_finished, dance_2_reset)
+    [DANCE_2] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_2, dance_2_finished, dance_2_reset)
 };
 
 
