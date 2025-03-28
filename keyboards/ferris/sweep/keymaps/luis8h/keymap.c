@@ -101,7 +101,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_SYMSPEC] = LAYOUT_split_3x5_2(
         KC_F1, KC_F2, KC_F3, KC_F4, KC_F5,                                                      KC_F8, KC_F9, KC_F10, KC_F11, KC_F12,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_F6,                                              LT(L_SYS, KC_F7), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, UC(0x00E6), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, UC(0x00E4), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         TD(DANCE_1), KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
     [L_NUMH] = LAYOUT_split_3x5_2(
