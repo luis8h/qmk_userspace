@@ -1,6 +1,5 @@
 #include QMK_KEYBOARD_H
 #include "tapdance_helper.h"
-#include "i18n.h"
 #if __has_include("keymap.h")
     #include "keymap.h"
 #endif
@@ -102,24 +101,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_SYMSPEC] = LAYOUT_split_3x5_2(
         KC_F1, KC_F2, KC_F3, KC_F4, KC_F5,                                                      KC_F8, KC_F9, KC_F10, KC_F11, KC_F12,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_F6,                                              LT(L_SYS, KC_F7), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, UC(0x00E6), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         TD(DANCE_1), KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
     [L_NUMH] = LAYOUT_split_3x5_2(
         D_L1_1(KC_DOT), D_L1_2(KC_1), D_L1_3(KC_2), D_L1_4(KC_3), D_L1_5(KC_COMM),              D_R1_1(KC_QUES), D_R1_2(KC_PIPE), D_R1_3(KC_LPRN), D_R1_4(KC_RPRN), D_R1_5(KC_ASTR),
-        LALT_T(KC_MINS), LGUI_T(KC_4), D_L2_3(KC_5), D_L2_4(KC_6), D_L2_5(KC_PLUS),             D_R2_1(KC_PLUS), D_R2_2(KC_LT), D_R2_3(KC_GT), D_R2_4(KC_COLN), KC_TRNS,
+        LALT_T(KC_MINS), LGUI_T(KC_4), D_L2_3(KC_5), D_L2_4(KC_6), D_L2_5(KC_0),             D_R2_1(KC_PLUS), D_R2_2(KC_LT), D_R2_3(KC_GT), D_R2_4(KC_COLN), KC_TRNS,
         LCA_T(QK_LLCK), D_L3_2(KC_7), D_L3_3(KC_8), D_L3_4(KC_9), D_L3_5(KC_EQL),               D_R3_1(KC_TILD), D_R3_2(KC_BSLS), D_R3_3(KC_COMM), D_R3_4(KC_DOT), KC_TRNS,
         TD(DANCE_1), KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
     [L_WORKA] = LAYOUT_split_3x5_2(
         KC_TRNS, LALT(KC_1), LALT(KC_2), LALT(KC_3), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_LSFT, LALT(KC_4), LALT(KC_5), LALT(KC_6), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_LSFT, LALT(KC_4), LALT(KC_5), LALT(KC_6), LALT(KC_0),                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, LALT(KC_7), LALT(KC_8), LALT(KC_9), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
     [L_WORKAC] = LAYOUT_split_3x5_2(
         KC_TRNS, LCA(KC_1), LCA(KC_2), LCA(KC_3), KC_TRNS,                                               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_LSFT, LCA(KC_4), LCA(KC_5), LCA(KC_6), KC_TRNS,                                               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_LSFT, LCA(KC_4), LCA(KC_5), LCA(KC_6), LCA(KC_0),                                               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, LCA(KC_7), LCA(KC_8), LCA(KC_9), KC_TRNS,                                               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
@@ -357,8 +356,10 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 
     if (detected_os == OS_MACOS || detected_os == OS_IOS) {
         macos_overrides_enabled = true;
+        set_unicode_input_mode(UNICODE_MODE_MACOS);
     } else {
         macos_overrides_enabled = false;
+        set_unicode_input_mode(UNICODE_MODE_LINUX);
     }
     return true;
 }
