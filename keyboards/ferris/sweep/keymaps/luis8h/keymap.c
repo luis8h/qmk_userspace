@@ -43,7 +43,7 @@
 #define D_L2_1(key) LGUI_T(key)
 #define D_L2_2(key) LALT_T(key)
 #define D_L2_3(key) LSFT_T(key)
-#define D_L2_4(key) LCTL_T(key)
+#define D_L2_4(key) MT(MOD_LCTL, key)
 #define D_L2_5(key) key
 #define D_R2_1(key) key
 #define D_R2_2(key) LCTL_T(key)
