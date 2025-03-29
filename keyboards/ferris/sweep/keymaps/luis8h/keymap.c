@@ -9,9 +9,8 @@
 enum custom_keycodes {
     C_RIGHT = SAFE_RANGE,
     C_LEFT,
-    C_UP,
-    C_DOWN,
     C_TAB,
+    C_BSPC,
 };
 
 // Layers
@@ -49,7 +48,7 @@ enum custom_keycodes {
 #define D_R2_2(key) LCTL_T(key)
 #define D_R2_3(key) LSFT_T(key)
 #define D_R2_4(key) LALT_T(key)
-#define D_R2_5() KC_BSPC
+#define D_R2_5() C_BSPC
 
 // third row
 #define D_L3_1(key) LT(L_MOVE, key)
@@ -134,13 +133,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [L_ESC] = LAYOUT_split_3x5_2(
         KC_COPY, KC_PASTE, LCTL(KC_SPC), KC_F8, KC_TRNS,                                        KC_TRNS, CW_TOGG, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TAB, KC_DEL, KC_LSFT, KC_TRNS, KC_BSPC,                                              KC_TRNS, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
+        C_TAB, KC_DEL, KC_LSFT, KC_TRNS, KC_BSPC,                                              KC_TRNS, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
         KC_ENT, KC_WBAK, KC_UNDO, KC_AGIN, KC_WFWD,                                             KC_RCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                                       KC_ENT, KC_TRNS
     ),
     [L_MOVE] = LAYOUT_split_3x5_2(
         D_L1_1(KC_Q), D_L1_2(KC_W), D_L1_3(KC_UP), D_L1_4(KC_R), D_L1_5(KC_T),                  D_R1_1(KC_HOME), D_R1_2(KC_U), D_R1_3(KC_I), D_R1_4(KC_END), D_R1_5(KC_UP),
-        D_L2_1(KC_A), D_L2_2(KC_LEFT), D_L2_3(KC_DOWN), D_L2_4(KC_RGHT), D_L2_5(KC_G),          D_R2_1(KC_LEFT), D_R2_2(KC_DOWN), D_R2_3(KC_UP), C_RIGHT, KC_TRNS,
+        D_L2_1(KC_A), D_L2_2(C_LEFT), D_L2_3(KC_DOWN), D_L2_4(C_RIGHT), D_L2_5(KC_G),          D_R2_1(C_LEFT), D_R2_2(KC_DOWN), D_R2_3(KC_UP), D_R2_4(C_RIGHT), KC_TRNS,
         D_L3_1(KC_Z), D_L3_2(KC_WBAK), D_L3_3(KC_PGUP), D_L3_4(KC_PGDN), D_L3_5(KC_WFWD),       D_R3_1(KC_DOWN), D_R3_2(KC_M), D_R3_3(KC_COMM), D_R3_4(KC_DOT), KC_TRNS,
         D_TL_1(), D_TL_2(),                                                                     D_TR_1(), D_TR_2()
     ),
@@ -311,7 +310,7 @@ void mod_swap(uint16_t key, uint16_t mod1, uint16_t mod2) {
     else if (get_mods() & MOD_BIT(mod2) && (current_os == OS_MACOS || current_os == OS_IOS)) {
         del_mods(MOD_BIT(mod2));
 
-        register_code(mod1)
+        register_code(mod1);
         tap_code(key);
         unregister_code(mod1);
 
@@ -325,22 +324,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case C_RIGHT:
             if (record->event.pressed) {
-                mod_replace_macro(KC_RIGHT, KC_LCTL, KC_LALT);
+                mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
             }
             break;
         case C_LEFT:
             if (record->event.pressed) {
-                mod_replace_macro(KC_LEFT, KC_LCTL, KC_LALT);
+                mod_swap(KC_LEFT, KC_LCTL, KC_LALT);
             }
             break;
-        case C_UP:
+        case C_TAB:
             if (record->event.pressed) {
-                mod_replace_macro(KC_UP, KC_LCTL, KC_LALT);
+                mod_swap(KC_TAB, KC_LCTL, KC_LGUI);
             }
             break;
-        case C_DOWN:
+        case C_BSPC:
             if (record->event.pressed) {
-                mod_replace_macro(KC_DOWN, KC_LCTL, KC_LALT);
+                mod_swap(KC_BSPC, KC_LCTL, KC_LALT);
             }
             break;
     }
