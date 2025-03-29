@@ -295,9 +295,9 @@ bool os_specific_override(bool key_down, void *context) {
     uint16_t replacement = *(uint16_t *)context;
     if (current_os == OS_MACOS || current_os == OS_IOS) {
         if (key_down) {
-            register_code(replacement);
+            register_code16(replacement);
         } else {
-            unregister_code(replacement);
+            unregister_code16(replacement);
         }
         // Return false to indicate we've handled it.
         return false;
