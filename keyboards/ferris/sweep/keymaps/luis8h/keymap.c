@@ -357,19 +357,18 @@ const key_override_t macos_left_ctl_override = {
 // Right Arrow (Ctrl → Alt)
 static const os_override_ctx_t macos_right_ctl_override_ctx = {
     .replacement = A(KC_RGHT),
-    .original    = G(KC_RGHT)
+    .original    = C(KC_RGHT)
 };
 const key_override_t macos_right_ctl_override = {
-    .trigger_mods      = MOD_MASK_GUI,
+    .trigger_mods      = MOD_MASK_CTRL,
     .trigger           = KC_RGHT,
-    .layers            = ~0,
-    .negative_mod_mask = 0,
-    .suppressed_mods   = 0,
+    // .layers            = 1 << L_MOVE,
+    // .negative_mod_mask = 0,
+    .suppressed_mods   = MOD_MASK_CTRL,
     .custom_action     = os_specific_override,
     .context           = (void *)&macos_right_ctl_override_ctx,
     .replacement       = KC_NO,
     .enabled           = NULL,
-    .options           = ko_options_default,
 };
 
 // Backspace (Alt → Ctrl)
