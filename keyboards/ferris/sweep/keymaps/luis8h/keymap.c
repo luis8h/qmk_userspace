@@ -298,17 +298,55 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 }
 
 // overrides
+
+// Custom callback for key override.
+typedef struct {
+    uint16_t replacement;
+    uint16_t original;
+} os_override_ctx_t;
+
+bool os_specific_override(bool key_down, void *ctx) {
+    os_override_ctx_t *override_ctx = (os_override_ctx_t *)ctx;
+    if (current_os == OS_MACOS || current_os == OS_IOS) {
+        // For macOS/iOS, send the replacement key.
+        if (key_down) {
+            register_code(override_ctx->replacement);
+        } else {
+            unregister_code(override_ctx->replacement);
+        }
+    } else {
+        // For other OSes (e.g., Linux), re-send the original key.
+        if (key_down) {
+            register_code(override_ctx->original);
+        } else {
+            unregister_code(override_ctx->original);
+        }
+    }
+    // We’ve handled the key event, so return false.
+    return false;
+}
+
+
 const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
-const key_override_t macos_ctl_bspc_override = {
+
+static const os_override_ctx_t macos_backspace_ctl_override_ctx = {
+    .replacement = A(KC_BSPC), // Replacement for macOS: Alt+Backspace.
+    .original    = C(KC_BSPC)  // Original key.
+};
+const key_override_t macos_backspace_ctl_override = {
     .trigger_mods      = MOD_MASK_CTRL,
     .trigger           = KC_BSPC,
-    .suppressed_mods   = MOD_MASK_CTRL,
-    .replacement       = A(KC_BSPC),
-    .enabled           = (current_os == OS_MACOS || current_os == OS_IOS),
+    // .suppressed_mods   = MOD_MASK_CTRL,                     // Do not suppress modifiers.
+    .custom_action     = os_specific_override,  // Our custom callback.
+    .context           = (void *)&macos_backspace_ctl_override_ctx,
+    .enabled           = NULL,
 };
+
+
+
 const key_override_t *key_overrides[] = {
 	&delete_key_override,
-    &macos_ctl_bspc_override,
+    &macos_backspace_ctl_override,
 };
 
 // macros
@@ -336,6 +374,8 @@ void mod_swap(uint16_t key, uint16_t mod1, uint16_t mod2) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    static bool is_held = false;
+
     switch (keycode) {
         // otherwiese the tap hold behavior would not work in move layer
         case D_R2_4(C_RIGHT):
