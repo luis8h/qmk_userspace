@@ -41,10 +41,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 // Check if Left Control is held
                 if (get_mods() & MOD_BIT(KC_LCTL)) {
+                    del_mods(MOD_BIT(KC_LCTL));
                     // Left Control is active; send Alt + Right Arrow
                     register_code(KC_LALT);
                     tap_code(KC_RIGHT);
                     unregister_code(KC_LALT);
+
+                    set_mods(get_mods() | MOD_BIT(KC_LCTL));
                 } else {
                     // Left Control is not active; send Right Arrow
                     tap_code(KC_RIGHT);
