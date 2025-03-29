@@ -376,9 +376,8 @@ const key_override_t macos_right_ctl_override = {
     .trigger = KC_RIGHT,             // The key to override
     .trigger_mods = MOD_MASK_CTRL,   // The modifier that triggers the override
     .layers = ~0,                    // Active on all layers
-    .replacement = LALT(KC_RGHT),    // The replacement keycode
+    .replacement = KC_A,    // The replacement keycode
     .suppressed_mods = MOD_MASK_CTRL,// Suppress the Control modifier
-    .options = ko_option_no_unregister_on_other_key_down,
 };
 
 
