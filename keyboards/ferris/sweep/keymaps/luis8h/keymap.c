@@ -6,57 +6,13 @@
     #include "keymap.h"
 #endif
 
-void keyboard_post_init_user(void) {
-  // Customise these values to desired behaviour
-  debug_enable=true;
-  debug_matrix=true;
-  //debug_keyboard=true;
-  //debug_mouse=true;
-}
-
 enum custom_keycodes {
     C_RIGHT = SAFE_RANGE,
+    C_LEFT,
+    C_UP,
+    C_DOWN,
+    C_TAB,
 };
-
-// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-//     switch (keycode) {
-//         case C_RIGHT:
-//         if (record->event.pressed) {
-//             // without mod
-//             SEND_STRING(SS_TAP(X_RIGHT));
-//
-//             // with lctl
-//             SEND_STRING(SS_LALT(SS_TAP(X_RIGHT)));
-//         } else {
-//             // when keycode QMKBEST is released
-//         }
-//         break;
-//     }
-//     return true;
-// };
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case C_RIGHT:
-            if (record->event.pressed) {
-                // Check if Left Control is held
-                if (get_mods() & MOD_BIT(KC_LCTL)) {
-                    del_mods(MOD_BIT(KC_LCTL));
-                    // Left Control is active; send Alt + Right Arrow
-                    register_code(KC_LALT);
-                    tap_code(KC_RIGHT);
-                    unregister_code(KC_LALT);
-
-                    set_mods(get_mods() | MOD_BIT(KC_LCTL));
-                } else {
-                    // Left Control is not active; send Right Arrow
-                    tap_code(KC_RIGHT);
-                }
-            }
-            break;
-    }
-    return true;
-}
 
 // Layers
 #define L_BASE 0
@@ -341,313 +297,28 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
     return true;
 }
 
+// macros
+void mod_replace_macro(uint16_t key, uint16_t oldmod, uint16_t newmod) {
+    if (get_mods() & MOD_BIT(oldmod) && (current_os == OS_MACOS || current_os == OS_IOS)) {
+        del_mods(MOD_BIT(oldmod));
 
-// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-//     // Only process these substitutions if the host is macOS or iOS.
-//     if (current_os == OS_MACOS || current_os == OS_IOS) {
-//         // -------------------------
-//         // General override:
-//         // Shift + Backspace -> Delete
-//         // -------------------------
-//         if (keycode == KC_BSPC && (get_mods() & MOD_MASK_SHIFT)) {
-//             if (record->event.pressed) {
-//                 register_code16(KC_DEL);
-//             } else {
-//                 unregister_code16(KC_DEL);
-//             }
-//             return false;
-//         }
-//
-//         // -------------------------
-//         // macOS Ctrl overrides:
-//         // Ctrl + Backspace -> LALT + Backspace
-//         // Ctrl + Left    -> LALT + Left Arrow
-//         // Ctrl + Right   -> LALT + Right Arrow
-//         // -------------------------
-//         if (keycode == KC_BSPC && (get_mods() & MOD_MASK_CTRL)) {
-//             if (record->event.pressed) {
-//                 register_code16(LALT(KC_BSPC));
-//             } else {
-//                 unregister_code16(LALT(KC_BSPC));
-//             }
-//             return false;
-//         }
-//         if (keycode == KC_LEFT && (get_mods() & MOD_MASK_CTRL)) {
-//             if (record->event.pressed) {
-//                 register_code16(LALT(KC_LEFT));
-//             } else {
-//                 unregister_code16(LALT(KC_LEFT));
-//             }
-//             return false;
-//         }
-//         if (keycode == KC_B && (get_mods() & MOD_MASK_CTRL)) {
-//             if (record->event.pressed) {
-//                 uint8_t mods = get_mods();
-//                 mods &= ~MOD_MASK_CTRL;
-//                 set_mods(mods);
-//                 register_code16(LALT(KC_RGHT));
-//             } else {
-//                 unregister_code16(LALT(KC_RGHT));
-//             }
-//             return false;
-//         }
-//
-//         // -------------------------
-//         // macOS Alt overrides:
-//         // Alt + Backspace -> LCTL + Backspace
-//         // Alt + Left    -> LCTL + Left Arrow
-//         // Alt + Right   -> LCTL + Right Arrow
-//         // -------------------------
-//         if (keycode == KC_BSPC && (get_mods() & MOD_MASK_ALT)) {
-//             if (record->event.pressed) {
-//                 register_code16(LCTL(KC_BSPC));
-//             } else {
-//                 unregister_code16(LCTL(KC_BSPC));
-//             }
-//             return false;
-//         }
-//         if (keycode == KC_LEFT && (get_mods() & MOD_MASK_ALT)) {
-//             if (record->event.pressed) {
-//                 register_code16(LCTL(KC_LEFT));
-//             } else {
-//                 unregister_code16(LCTL(KC_LEFT));
-//             }
-//             return false;
-//         }
-//         if (keycode == KC_RGHT && (get_mods() & MOD_MASK_ALT)) {
-//             if (record->event.pressed) {
-//                 register_code16(LCTL(KC_RGHT));
-//             } else {
-//                 unregister_code16(LCTL(KC_RGHT));
-//             }
-//             return false;
-//         }
-//
-//         // -------------------------
-//         // macOS Tab overrides:
-//         // Ctrl + Tab -> LGUI + Tab
-//         // GUI + Tab  -> LCTL + Tab
-//         // -------------------------
-//         if (keycode == KC_TAB && (get_mods() & MOD_MASK_CTRL)) {
-//             if (record->event.pressed) {
-//                 register_code16(LGUI(KC_TAB));
-//             } else {
-//                 unregister_code16(LGUI(KC_TAB));
-//             }
-//             return false;
-//         }
-//         if (keycode == KC_TAB && (get_mods() & MOD_MASK_GUI)) {
-//             if (record->event.pressed) {
-//                 register_code16(LCTL(KC_TAB));
-//             } else {
-//                 unregister_code16(LCTL(KC_TAB));
-//             }
-//             return false;
-//         }
-//     }
-//     // Process all other keycodes normally.
-//     return true;
-// }
-//
+        register_code(newmod);
+        tap_code(key);
+        unregister_code(newmod);
 
-
-
-
-
-// overrides
-
-// Custom callback for key override.
-typedef struct {
-    uint16_t replacement;
-    uint16_t original;
-} os_override_ctx_t;
-bool os_specific_override(bool key_down, void *ctx) {
-    os_override_ctx_t *override_ctx = (os_override_ctx_t *)ctx;
-    if (current_os == OS_MACOS || current_os == OS_IOS) {
-        // For macOS/iOS, send the replacement key.
-        if (key_down) {
-            register_code16(override_ctx->replacement);
-        } else {
-            unregister_code16(override_ctx->replacement);
-        }
+        set_mods(get_mods() | MOD_BIT(oldmod));
     } else {
-        // For other OSes (e.g., Linux), re-send the original key.
-        if (key_down) {
-            register_code16(override_ctx->original);
-        } else {
-            unregister_code16(override_ctx->original);
-        }
+        tap_code(key);
     }
-    return false;
 }
 
-// define custom overrides
-
-// const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
-// const key_override_t macos_right_ctl_override = ko_make_basic(MOD_MASK_CTRL, KC_B, KC_A);
-//
-// static const os_override_ctx_t macos_backspace_ctl_override_ctx = {
-//     .replacement = A(KC_BSPC), // Replacement for macOS: Alt+Backspace.
-//     .original    = G(KC_BSPC)  // Original key.
-// };
-// const key_override_t macos_backspace_ctl_override = {
-//     .trigger_mods      = MOD_MASK_GUI,
-//     .trigger           = KC_BSPC,
-//     .layers            = ~0,                    // Active on all layers.
-//     .negative_mod_mask = 0,
-//     .suppressed_mods   = 0,                     // Do not suppress modifiers.
-//     .custom_action     = os_specific_override,  // Our custom callback.
-//     .context           = (void *)&macos_backspace_ctl_override_ctx,
-//     .replacement       = KC_NO,                 // Not used since our callback handles it.
-//     .enabled           = NULL,
-//     .options           = ko_options_default,
-// };
-//
-// // Left Arrow (Ctrl → Alt)
-// static const os_override_ctx_t macos_left_ctl_override_ctx = {
-//     .replacement = A(KC_LEFT),
-//     .original    = G(KC_LEFT)
-// };
-// const key_override_t macos_left_ctl_override = {
-//     .trigger_mods      = MOD_MASK_GUI,
-//     .trigger           = KC_LEFT,
-//     .layers            = ~0,
-//     .negative_mod_mask = 0,
-//     .suppressed_mods   = 0,
-//     .custom_action     = os_specific_override,
-//     .context           = (void *)&macos_left_ctl_override_ctx,
-//     .replacement       = KC_NO,
-//     .enabled           = NULL,
-//     .options           = ko_options_default,
-// };
-//
-// // Right Arrow (Ctrl → Alt)
-// // static const os_override_ctx_t macos_right_ctl_override_ctx = {
-// //     .replacement = A(KC_RGHT),
-// //     .original    = C(KC_RGHT)
-// // };
-// // const key_override_t macos_right_ctl_override = {
-// //     .trigger_mods      = MOD_MASK_CTRL,
-// //     .trigger           = KC_RGHT,
-// //     // .layers            = 1 << L_MOVE,
-// //     // .negative_mod_mask = 0,
-// //     .suppressed_mods   = MOD_MASK_CTRL,
-// //     // .custom_action     = os_specific_override,
-// //     // .context           = (void *)&macos_right_ctl_override_ctx,
-// //     .replacement       = A(KC_RGHT),
-// //     .enabled           = NULL,
-// // };
-// // static const key_override_t macos_right_ctl_override = ko_make_basic(MOD_MASK_CTRL, KC_RIGHT, LALT(KC_RIGHT));
-// // Define the key override for Control + Right Arrow to produce Alt + Right Arrow
-// // const key_override_t macos_right_ctl_override = {
-// //     .trigger = KC_RIGHT,             // The key to override
-// //     .trigger_mods = MOD_MASK_CTRL,   // The modifier that triggers the override
-// //     .layers = ~0,                    // Active on all layers
-// //     .replacement = KC_A,    // The replacement keycode
-// //     .suppressed_mods = MOD_MASK_CTRL,// Suppress the Control modifier
-// // };
-//
-//
-// // Backspace (Alt → Ctrl)
-// static const os_override_ctx_t macos_backspace_alt_override_ctx = {
-//     .replacement = C(KC_BSPC),
-//     .original    = A(KC_BSPC)
-// };
-// const key_override_t macos_backspace_alt_override = {
-//     .trigger_mods      = MOD_MASK_ALT,
-//     .trigger           = KC_BSPC,
-//     .layers            = ~0,
-//     .negative_mod_mask = 0,
-//     .suppressed_mods   = 0,
-//     .custom_action     = os_specific_override,
-//     .context           = (void *)&macos_backspace_alt_override_ctx,
-//     .replacement       = KC_NO,
-//     .enabled           = NULL,
-//     .options           = ko_options_default,
-// };
-//
-// // Left Arrow (Alt → Ctrl)
-// static const os_override_ctx_t macos_left_alt_override_ctx = {
-//     .replacement = C(KC_LEFT),
-//     .original    = A(KC_LEFT)
-// };
-// const key_override_t macos_left_alt_override = {
-//     .trigger_mods      = MOD_MASK_ALT,
-//     .trigger           = KC_LEFT,
-//     .layers            = ~0,
-//     .negative_mod_mask = 0,
-//     .suppressed_mods   = 0,
-//     .custom_action     = os_specific_override,
-//     .context           = (void *)&macos_left_alt_override_ctx,
-//     .replacement       = KC_NO,
-//     .enabled           = NULL,
-//     .options           = ko_options_default,
-// };
-//
-// // Right Arrow (Alt → Ctrl)
-// static const os_override_ctx_t macos_right_alt_override_ctx = {
-//     .replacement = C(KC_RGHT),
-//     .original    = A(KC_RGHT)
-// };
-// const key_override_t macos_right_alt_override = {
-//     .trigger_mods      = MOD_MASK_ALT,
-//     .trigger           = KC_RGHT,
-//     .layers            = ~0,
-//     .negative_mod_mask = 0,
-//     .suppressed_mods   = 0,
-//     .custom_action     = os_specific_override,
-//     .context           = (void *)&macos_right_alt_override_ctx,
-//     .replacement       = KC_NO,
-//     .enabled           = NULL,
-//     .options           = ko_options_default,
-// };
-//
-// // Ctrl + Tab → GUI + Tab
-// static const os_override_ctx_t macos_ctl_tab_override_ctx = {
-//     .replacement = G(KC_TAB),
-//     .original    = C(KC_TAB)
-// };
-// const key_override_t macos_ctl_tab_override = {
-//     .trigger_mods      = MOD_MASK_CTRL,
-//     .trigger           = KC_TAB,
-//     .layers            = ~0,
-//     .negative_mod_mask = 0,
-//     .suppressed_mods   = 0,
-//     .custom_action     = os_specific_override,
-//     .context           = (void *)&macos_ctl_tab_override_ctx,
-//     .replacement       = KC_NO,
-//     .enabled           = NULL,
-//     .options           = ko_options_default,
-// };
-//
-// // GUI + Tab → Ctrl + Tab
-// static const os_override_ctx_t macos_gui_tab_override_ctx = {
-//     .replacement = C(KC_TAB),
-//     .original    = G(KC_TAB)
-// };
-// const key_override_t macos_gui_tab_override = {
-//     .trigger_mods      = MOD_MASK_GUI,
-//     .trigger           = KC_TAB,
-//     .layers            = ~0,
-//     .negative_mod_mask = 0,
-//     .suppressed_mods   = 0,
-//     .custom_action     = os_specific_override,
-//     .context           = (void *)&macos_gui_tab_override_ctx,
-//     .replacement       = KC_NO,
-//     .enabled           = NULL,
-//     .options           = ko_options_default,
-// };
-//
-// // Register all overrides
-// const key_override_t *key_overrides[] = {
-//     &delete_key_override,
-//     // &macos_backspace_ctl_override,
-//     // &macos_left_ctl_override,
-//     &macos_right_ctl_override,
-//     // &macos_backspace_alt_override,
-//     // &macos_left_alt_override,
-//     // &macos_right_alt_override,
-//     // &macos_ctl_tab_override,
-//     // &macos_gui_tab_override,
-//     NULL
-// };
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case C_RIGHT:
+            if (record->event.pressed) {
+                mod_replace_macro(KC_RIGHT, KC_LCTL, KC_LALT);
+            }
+            break;
+    }
+    return true;
+}
