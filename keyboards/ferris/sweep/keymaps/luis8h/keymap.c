@@ -346,7 +346,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
 
-        // macros for macos
+        // macros for macos on move layer
         case C_RIGHT:
             if (record->event.pressed) {
                 mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
@@ -368,9 +368,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         //     }
         //     break;
 
+        // macos rewrite
         case KC_BSPC:
             if (record->event.pressed) {
                 mod_swap(KC_BSPC, KC_LCTL, KC_LGUI);
+            }
+            break;
+
+        // fix tap hold behavior
+        case LCTL_T(KC_LT):
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_LT); // Send KC_DQUO on tap
+                return false;        // Return false to ignore further processing of key
             }
             break;
     }
