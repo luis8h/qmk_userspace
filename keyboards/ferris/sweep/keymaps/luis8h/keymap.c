@@ -376,7 +376,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
 
         // fix tap hold behavior
-        case LCTL_T(KC_LT):
+        case LSFT_T(KC_LT):
             if (record->tap.count && record->event.pressed) {
                 tap_code16(KC_LT); // Send KC_DQUO on tap
                 return false;        // Return false to ignore further processing of key
