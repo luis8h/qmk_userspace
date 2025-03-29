@@ -376,12 +376,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
 
         // fix tap hold behavior
+        // case LSFT_T(KC_LT):
+        //     if (record->tap.count && record->event.pressed) {
+        //         tap_code16(KC_LT); // Send KC_DQUO on tap
+        //         return false;        // Return false to ignore further processing of key
+        //     }
+        //     break;
         case LSFT_T(KC_LT):
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_LT); // Send KC_DQUO on tap
-                return false;        // Return false to ignore further processing of key
+            if (record->event.pressed) {
+                if (record->tap.count) {
+                    tap_code16(KC_LT); // Send KC_DQUO on tap
+                    return false;        // Prevent further processing
+                } else {
+                    is_held = true;      // Mark as held
+                    register_code16(KC_LSFT); // Start holding Control
+                }
+            } else {
+                if (is_held) {
+                    is_held = false;
+                    unregister_code16(KC_LSFT); // Release Control when key is released
+                }
             }
-            break;
+            return false; // Stop further processing
     }
     return true;
 }
