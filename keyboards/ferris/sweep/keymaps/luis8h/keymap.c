@@ -269,97 +269,196 @@ tap_dance_action_t tap_dance_actions[] = {
     [DANCE_9] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_9, dance_9_finished, dance_9_reset),
 };
 
+static os_variant_t current_os = OS_UNSURE;
 
-// general overrides
-const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
-
-
-// macos overrides
-static bool macos_overrides_enabled = false;
-
-const key_override_t macos_backspace_ctl_override = {
-    .trigger_mods = MOD_MASK_CTRL,
-    .trigger = KC_BSPC,
-    .replacement = LALT(KC_BSPC),
-    .enabled = &macos_overrides_enabled
-};
-const key_override_t macos_left_ctl_override = {
-    .trigger_mods = MOD_MASK_CTRL,
-    .trigger = KC_LEFT,
-    .replacement = LALT(KC_LEFT),
-    .enabled = &macos_overrides_enabled
-};
-const key_override_t macos_right_ctl_override = {
-    .trigger_mods = MOD_MASK_CTRL,
-    .trigger = KC_RGHT,
-    .replacement = LALT(KC_RGHT),
-    .enabled = &macos_overrides_enabled
-};
-
-const key_override_t macos_backspace_alt_override = {
-    .trigger_mods = MOD_MASK_ALT,
-    .trigger = KC_BSPC,
-    .replacement = LCTL(KC_BSPC),
-    .enabled = &macos_overrides_enabled
-};
-const key_override_t macos_left_alt_override = {
-    .trigger_mods = MOD_MASK_ALT,
-    .trigger = KC_LEFT,
-    .replacement = LCTL(KC_LEFT),
-    .enabled = &macos_overrides_enabled
-};
-const key_override_t macos_right_alt_override = {
-    .trigger_mods = MOD_MASK_ALT,
-    .trigger = KC_RGHT,
-    .replacement = LCTL(KC_RGHT),
-    .enabled = &macos_overrides_enabled
-};
-
-const key_override_t macos_ctl_tab_override = {
-    .trigger_mods = MOD_MASK_CTRL,
-    .trigger = KC_TAB,
-    .replacement = LGUI(KC_TAB),
-    .enabled = &macos_overrides_enabled
-};
-const key_override_t macos_gui_tab_override = {
-    .trigger_mods = MOD_MASK_GUI,
-    .trigger = KC_TAB,
-    .replacement = LCTL(KC_TAB),
-    .enabled = &macos_overrides_enabled
-};
-
-
-// global override array
-const key_override_t *key_overrides[] = {
-    &delete_key_override,
-
-    &macos_backspace_ctl_override,
-    &macos_left_ctl_override,
-    &macos_right_ctl_override,
-
-    &macos_backspace_alt_override,
-    &macos_left_alt_override,
-    &macos_right_alt_override,
-
-    &macos_ctl_tab_override,
-    &macos_gui_tab_override,
-
-    NULL
-};
-
-
-// os specific config
 bool process_detected_host_os_kb(os_variant_t detected_os) {
     if (!process_detected_host_os_user(detected_os)) {
         return false;
     }
 
     if (detected_os == OS_MACOS || detected_os == OS_IOS) {
-        macos_overrides_enabled = true;
         set_unicode_input_mode(UNICODE_MODE_MACOS);
     } else {
-        macos_overrides_enabled = false;
         set_unicode_input_mode(UNICODE_MODE_LINUX);
     }
+
+    current_os = detected_os;
     return true;
 }
+
+// overrides (with os detection)
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    // ---------- General override ----------
+    // Shift + Backspace -> Delete
+    if (keycode == KC_BSPC && (get_mods() & MOD_MASK_SHIFT)) {
+        if (record->event.pressed) {
+            register_code((uint16_t)KC_DEL);
+        } else {
+            unregister_code((uint16_t)KC_DEL);
+        }
+        return false;
+    }
+
+    // ---------- macOS overrides ----------
+    // Only apply these substitutions when the host is macOS/iOS.
+    if (current_os == OS_MACOS || current_os == OS_IOS) {
+
+        // Ctrl + Backspace -> Alt + Backspace
+        if (keycode == KC_BSPC && (get_mods() & MOD_MASK_CTRL)) {
+            if (record->event.pressed) {
+                register_code16(LALT(KC_BSPC));
+            } else {
+                unregister_code16(LALT(KC_BSPC));
+            }
+            return false;
+        }
+        // Ctrl + Left Arrow -> Alt + Left Arrow
+        if (keycode == KC_LEFT && (get_mods() & MOD_MASK_CTRL)) {
+            if (record->event.pressed) {
+                register_code16(LALT(KC_LEFT));
+            } else {
+                unregister_code16(LALT(KC_LEFT));
+            }
+            return false;
+        }
+        // Ctrl + Right Arrow -> Alt + Right Arrow
+        if (keycode == KC_RGHT && (get_mods() & MOD_MASK_CTRL)) {
+            if (record->event.pressed) {
+                register_code16(LALT(KC_RGHT));
+            } else {
+                unregister_code16(LALT(KC_RGHT));
+            }
+            return false;
+        }
+
+        // Alt + Backspace -> Control + Backspace
+        if (keycode == KC_BSPC && (get_mods() & MOD_MASK_ALT)) {
+            if (record->event.pressed) {
+                register_code16(LCTL(KC_BSPC));
+            } else {
+                unregister_code16(LCTL(KC_BSPC));
+            }
+            return false;
+        }
+        // Alt + Left Arrow -> Control + Left Arrow
+        if (keycode == KC_LEFT && (get_mods() & MOD_MASK_ALT)) {
+            if (record->event.pressed) {
+                register_code16(LCTL(KC_LEFT));
+            } else {
+                unregister_code16(LCTL(KC_LEFT));
+            }
+            return false;
+        }
+        // Alt + Right Arrow -> Control + Right Arrow
+        if (keycode == KC_RGHT && (get_mods() & MOD_MASK_ALT)) {
+            if (record->event.pressed) {
+                register_code16(LCTL(KC_RGHT));
+            } else {
+                unregister_code16(LCTL(KC_RGHT));
+            }
+            return false;
+        }
+
+        // Ctrl + Tab -> GUI + Tab
+        if (keycode == KC_TAB && (get_mods() & MOD_MASK_CTRL)) {
+            if (record->event.pressed) {
+                register_code16(LGUI(KC_TAB));
+            } else {
+                unregister_code16(LGUI(KC_TAB));
+            }
+            return false;
+        }
+        // GUI + Tab -> Control + Tab
+        if (keycode == KC_TAB && (get_mods() & MOD_MASK_GUI)) {
+            if (record->event.pressed) {
+                register_code16(LCTL(KC_TAB));
+            } else {
+                unregister_code16(LCTL(KC_TAB));
+            }
+            return false;
+        }
+    }
+    // Process all other keycodes normally.
+    return true;
+}
+
+
+// // general overrides
+// const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+//
+//
+// // macos overrides
+// static bool macos_overrides_enabled = false;
+//
+// const key_override_t macos_backspace_ctl_override = {
+//     .trigger_mods = MOD_MASK_CTRL,
+//     .trigger = KC_BSPC,
+//     .replacement = LALT(KC_BSPC),
+//     .enabled = &macos_overrides_enabled
+// };
+// const key_override_t macos_left_ctl_override = {
+//     .trigger_mods = MOD_MASK_CTRL,
+//     .trigger = KC_LEFT,
+//     .replacement = LALT(KC_LEFT),
+//     .enabled = &macos_overrides_enabled
+// };
+// const key_override_t macos_right_ctl_override = {
+//     .trigger_mods = MOD_MASK_CTRL,
+//     .trigger = KC_RGHT,
+//     .replacement = LALT(KC_RGHT),
+//     .enabled = &macos_overrides_enabled
+// };
+//
+// const key_override_t macos_backspace_alt_override = {
+//     .trigger_mods = MOD_MASK_ALT,
+//     .trigger = KC_BSPC,
+//     .replacement = LCTL(KC_BSPC),
+//     .enabled = &macos_overrides_enabled
+// };
+// const key_override_t macos_left_alt_override = {
+//     .trigger_mods = MOD_MASK_ALT,
+//     .trigger = KC_LEFT,
+//     .replacement = LCTL(KC_LEFT),
+//     .enabled = &macos_overrides_enabled
+// };
+// const key_override_t macos_right_alt_override = {
+//     .trigger_mods = MOD_MASK_ALT,
+//     .trigger = KC_RGHT,
+//     .replacement = LCTL(KC_RGHT),
+//     .enabled = &macos_overrides_enabled
+// };
+//
+// const key_override_t macos_ctl_tab_override = {
+//     .trigger_mods = MOD_MASK_CTRL,
+//     .trigger = KC_TAB,
+//     .replacement = LGUI(KC_TAB),
+//     .enabled = &macos_overrides_enabled
+// };
+// const key_override_t macos_gui_tab_override = {
+//     .trigger_mods = MOD_MASK_GUI,
+//     .trigger = KC_TAB,
+//     .replacement = LCTL(KC_TAB),
+//     .enabled = &macos_overrides_enabled
+// };
+
+
+// // global override array
+// const key_override_t *key_overrides[] = {
+//     &delete_key_override,
+//
+//     &macos_backspace_ctl_override,
+//     &macos_left_ctl_override,
+//     &macos_right_ctl_override,
+//
+//     &macos_backspace_alt_override,
+//     &macos_left_alt_override,
+//     &macos_right_alt_override,
+//
+//     &macos_ctl_tab_override,
+//     &macos_gui_tab_override,
+//
+//     NULL
+// };
+
+
+// os specific config
