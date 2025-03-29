@@ -365,9 +365,9 @@ const key_override_t macos_right_ctl_override = {
     // .layers            = 1 << L_MOVE,
     // .negative_mod_mask = 0,
     .suppressed_mods   = MOD_MASK_CTRL,
-    .custom_action     = os_specific_override,
-    .context           = (void *)&macos_right_ctl_override_ctx,
-    .replacement       = KC_NO,
+    // .custom_action     = os_specific_override,
+    // .context           = (void *)&macos_right_ctl_override_ctx,
+    .replacement       = A(KC_RGHT),
     .enabled           = NULL,
 };
 
