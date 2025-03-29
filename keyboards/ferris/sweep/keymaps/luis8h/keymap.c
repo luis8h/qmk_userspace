@@ -297,6 +297,12 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
     return true;
 }
 
+// overrides
+const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+const key_override_t *key_overrides[] = {
+	&delete_key_override
+};
+
 // macros
 void mod_swap(uint16_t key, uint16_t mod1, uint16_t mod2) {
     if (get_mods() & MOD_BIT(mod1) && (current_os == OS_MACOS || current_os == OS_IOS)) {
