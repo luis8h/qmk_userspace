@@ -306,27 +306,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // Ctrl + Backspace -> Alt + Backspace
         if (keycode == KC_BSPC && (get_mods() & MOD_MASK_CTRL)) {
             if (record->event.pressed) {
-                register_code16(LALT(KC_BSPC));
+                register_code16(A(KC_BSPC));
             } else {
-                unregister_code16(LALT(KC_BSPC));
+                unregister_code16(A(KC_BSPC));
             }
             return false;
         }
         // Ctrl + Left Arrow -> Alt + Left Arrow
         if (keycode == KC_LEFT && (get_mods() & MOD_MASK_CTRL)) {
             if (record->event.pressed) {
-                register_code16(LALT(KC_LEFT));
+                register_code16(A(KC_LEFT));
             } else {
-                unregister_code16(LALT(KC_LEFT));
+                unregister_code16(A(KC_LEFT));
             }
             return false;
         }
         // Ctrl + Right Arrow -> Alt + Right Arrow
         if (keycode == KC_RGHT && (get_mods() & MOD_MASK_CTRL)) {
             if (record->event.pressed) {
-                register_code16(LALT(KC_RGHT));
+                register_code16(A(KC_RGHT));
             } else {
-                unregister_code16(LALT(KC_RGHT));
+                unregister_code16(A(KC_RGHT));
             }
             return false;
         }
@@ -334,27 +334,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // Alt + Backspace -> Control + Backspace
         if (keycode == KC_BSPC && (get_mods() & MOD_MASK_ALT)) {
             if (record->event.pressed) {
-                register_code16(LCTL(KC_BSPC));
+                register_code16(C(KC_BSPC));
             } else {
-                unregister_code16(LCTL(KC_BSPC));
+                unregister_code16(C(KC_BSPC));
             }
             return false;
         }
         // Alt + Left Arrow -> Control + Left Arrow
         if (keycode == KC_LEFT && (get_mods() & MOD_MASK_ALT)) {
             if (record->event.pressed) {
-                register_code16(LCTL(KC_LEFT));
+                register_code16(C(KC_LEFT));
             } else {
-                unregister_code16(LCTL(KC_LEFT));
+                unregister_code16(C(KC_LEFT));
             }
             return false;
         }
         // Alt + Right Arrow -> Control + Right Arrow
         if (keycode == KC_RGHT && (get_mods() & MOD_MASK_ALT)) {
             if (record->event.pressed) {
-                register_code16(LCTL(KC_RGHT));
+                register_code16(C(KC_RGHT));
             } else {
-                unregister_code16(LCTL(KC_RGHT));
+                unregister_code16(C(KC_RGHT));
             }
             return false;
         }
@@ -362,18 +362,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // Ctrl + Tab -> GUI + Tab
         if (keycode == KC_TAB && (get_mods() & MOD_MASK_CTRL)) {
             if (record->event.pressed) {
-                register_code16(LGUI(KC_TAB));
+                register_code16(G(KC_TAB));
             } else {
-                unregister_code16(LGUI(KC_TAB));
+                unregister_code16(G(KC_TAB));
             }
             return false;
         }
         // GUI + Tab -> Control + Tab
         if (keycode == KC_TAB && (get_mods() & MOD_MASK_GUI)) {
             if (record->event.pressed) {
-                register_code16(LCTL(KC_TAB));
+                register_code16(C(KC_TAB));
             } else {
-                unregister_code16(LCTL(KC_TAB));
+                unregister_code16(C(KC_TAB));
             }
             return false;
         }
