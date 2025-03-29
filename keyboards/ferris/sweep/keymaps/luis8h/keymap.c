@@ -328,7 +328,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
         }
-        if (keycode == KC_RGHT && (get_mods() & MOD_MASK_CTRL)) {
+        if (keycode == KC_B && (get_mods() & MOD_MASK_CTRL)) {
             if (record->event.pressed) {
                 uint8_t mods = get_mods();
                 mods &= ~MOD_MASK_CTRL;
