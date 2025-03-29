@@ -49,7 +49,7 @@ enum custom_keycodes {
 #define D_R2_3(key) LSFT_T(key)
 #define D_R2_4(key) LALT_T(key)
 #define D_R2_4_RIGHT LALT_T(C_RIGHT)
-#define D_R2_5() C_BSPC
+#define D_R2_5() KC_BSPC
 
 // third row
 #define D_L3_1(key) LT(L_MOVE, key)
@@ -346,6 +346,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
 
+        // macros for macos
         case C_RIGHT:
             if (record->event.pressed) {
                 mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
@@ -361,9 +362,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 mod_swap(KC_TAB, KC_LCTL, KC_LGUI);
             }
             break;
-        case C_BSPC:
+        // case C_BSPC:
+        //     if (record->event.pressed) {
+        //         mod_swap(KC_BSPC, KC_LCTL, KC_LALT);
+        //     }
+        //     break;
+
+        case KC_BSPC:
             if (record->event.pressed) {
-                mod_swap(KC_BSPC, KC_LCTL, KC_LALT);
+                mod_swap(KC_BSPC, KC_LCTL, KC_LGUI);
             }
             break;
     }
