@@ -299,8 +299,16 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 
 // overrides
 const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+const key_override_t macos_ctl_bspc_override = {
+    .trigger_mods      = MOD_MASK_CTRL,
+    .trigger           = KC_BSPC,
+    .suppressed_mods   = MOD_MASK_CTRL,
+    .replacement       = A(KC_BSPC),
+    .enabled           = (current_os == OS_MACOS || current_os == OS_IOS),
+};
 const key_override_t *key_overrides[] = {
-	&delete_key_override
+	&delete_key_override,
+    &macos_ctl_bspc_override,
 };
 
 // macros
@@ -369,11 +377,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         //     break;
 
         // macos rewrite
-        case KC_BSPC:
-            if (record->event.pressed) {
-                mod_swap(KC_BSPC, KC_LCTL, KC_LALT);
-            }
-            break;
+        // case KC_BSPC:
+        //     if (record->event.pressed) {
+        //         mod_swap(KC_BSPC, KC_LCTL, KC_LALT);
+        //     }
+        //     break;
 
         // fix tap hold behavior
         // case LSFT_T(KC_LT):
