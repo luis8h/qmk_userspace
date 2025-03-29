@@ -318,7 +318,7 @@ bool os_specific_override(bool key_down, void *ctx) {
 // define custom overrides
 
 const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
-const key_override_t macos_right_ctl_override = ko_make_basic(MOD_MASK_CTRL, KC_RIGHT, KC_A);
+const key_override_t macos_right_ctl_override = ko_make_basic(MOD_MASK_CTRL, KC_B, KC_A);
 
 static const os_override_ctx_t macos_backspace_ctl_override_ctx = {
     .replacement = A(KC_BSPC), // Replacement for macOS: Alt+Backspace.
