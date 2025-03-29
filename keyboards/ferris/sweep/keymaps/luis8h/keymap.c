@@ -355,21 +355,22 @@ const key_override_t macos_left_ctl_override = {
 };
 
 // Right Arrow (Ctrl → Alt)
-static const os_override_ctx_t macos_right_ctl_override_ctx = {
-    .replacement = A(KC_RGHT),
-    .original    = C(KC_RGHT)
-};
-const key_override_t macos_right_ctl_override = {
-    .trigger_mods      = MOD_MASK_CTRL,
-    .trigger           = KC_RGHT,
-    // .layers            = 1 << L_MOVE,
-    // .negative_mod_mask = 0,
-    .suppressed_mods   = MOD_MASK_CTRL,
-    // .custom_action     = os_specific_override,
-    // .context           = (void *)&macos_right_ctl_override_ctx,
-    .replacement       = A(KC_RGHT),
-    .enabled           = NULL,
-};
+// static const os_override_ctx_t macos_right_ctl_override_ctx = {
+//     .replacement = A(KC_RGHT),
+//     .original    = C(KC_RGHT)
+// };
+// const key_override_t macos_right_ctl_override = {
+//     .trigger_mods      = MOD_MASK_CTRL,
+//     .trigger           = KC_RGHT,
+//     // .layers            = 1 << L_MOVE,
+//     // .negative_mod_mask = 0,
+//     .suppressed_mods   = MOD_MASK_CTRL,
+//     // .custom_action     = os_specific_override,
+//     // .context           = (void *)&macos_right_ctl_override_ctx,
+//     .replacement       = A(KC_RGHT),
+//     .enabled           = NULL,
+// };
+static const key_override_t macos_right_ctl_override = ko_make_basic(MOD_MASK_CTRL, KC_RIGHT, LALT(KC_RIGHT));
 
 // Backspace (Alt → Ctrl)
 static const os_override_ctx_t macos_backspace_alt_override_ctx = {
