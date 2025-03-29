@@ -317,16 +317,7 @@ bool os_specific_override(bool key_down, void *ctx) {
 
 // define custom overrides
 
-// Define the key override for Control + Right Arrow to produce Alt + Right Arrow
-const key_override_t macos_right_ctl_override = {
-    .trigger = KC_RIGHT,             // The key to override
-    .trigger_mods = MOD_MASK_CTRL,   // The modifier that triggers the override
-    .layers = ~0,                    // Active on all layers
-    .replacement = LALT(KC_RGHT),    // The replacement keycode
-    .suppressed_mods = MOD_MASK_CTRL,// Suppress the Control modifier
-    .options = ko_option_no_unregister_on_other_key_down,
-};
-
+const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
 
 static const os_override_ctx_t macos_backspace_ctl_override_ctx = {
     .replacement = A(KC_BSPC), // Replacement for macOS: Alt+Backspace.
@@ -379,7 +370,17 @@ const key_override_t macos_left_ctl_override = {
 //     .replacement       = A(KC_RGHT),
 //     .enabled           = NULL,
 // };
-static const key_override_t macos_right_ctl_override = ko_make_basic(MOD_MASK_CTRL, KC_RIGHT, LALT(KC_RIGHT));
+// static const key_override_t macos_right_ctl_override = ko_make_basic(MOD_MASK_CTRL, KC_RIGHT, LALT(KC_RIGHT));
+// Define the key override for Control + Right Arrow to produce Alt + Right Arrow
+const key_override_t macos_right_ctl_override = {
+    .trigger = KC_RIGHT,             // The key to override
+    .trigger_mods = MOD_MASK_CTRL,   // The modifier that triggers the override
+    .layers = ~0,                    // Active on all layers
+    .replacement = LALT(KC_RGHT),    // The replacement keycode
+    .suppressed_mods = MOD_MASK_CTRL,// Suppress the Control modifier
+    .options = ko_option_no_unregister_on_other_key_down,
+};
+
 
 // Backspace (Alt → Ctrl)
 static const os_override_ctx_t macos_backspace_alt_override_ctx = {
