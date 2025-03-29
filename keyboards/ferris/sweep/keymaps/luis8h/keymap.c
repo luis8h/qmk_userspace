@@ -465,13 +465,13 @@ const key_override_t macos_gui_tab_override = {
 // Register all overrides
 const key_override_t *key_overrides[] = {
     &delete_key_override,
-    &macos_backspace_ctl_override,
-    &macos_left_ctl_override,
+    // &macos_backspace_ctl_override,
+    // &macos_left_ctl_override,
     &macos_right_ctl_override,
-    &macos_backspace_alt_override,
-    &macos_left_alt_override,
-    &macos_right_alt_override,
-    &macos_ctl_tab_override,
-    &macos_gui_tab_override,
+    // &macos_backspace_alt_override,
+    // &macos_left_alt_override,
+    // &macos_right_alt_override,
+    // &macos_ctl_tab_override,
+    // &macos_gui_tab_override,
     NULL
 };
