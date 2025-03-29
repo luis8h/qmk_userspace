@@ -288,40 +288,52 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 
 // overrides (with os detection)
 
+typedef struct {
+    uint16_t replacement;
+    uint16_t original;
+} os_override_ctx_t;
 
-// Custom callback: only perform the override if the host is macOS/iOS.
-bool os_specific_override(bool key_down, void *context) {
-    // 'context' points to a replacement keycode (e.g. LALT(KC_BSPC))
-    uint16_t replacement = *(uint16_t *)context;
+
+// Custom callback for key override.
+bool os_specific_override(bool key_down, void *ctx) {
+    os_override_ctx_t *override_ctx = (os_override_ctx_t *)ctx;
     if (current_os == OS_MACOS || current_os == OS_IOS) {
+        // For macOS/iOS, send the replacement key.
         if (key_down) {
-            register_code16(replacement);
+            register_code16(override_ctx->replacement);
         } else {
-            unregister_code16(replacement);
+            unregister_code16(override_ctx->replacement);
         }
-        // Return false to indicate we've handled it.
-        return false;
+    } else {
+        // For other OSes (e.g., Linux), re-send the original key.
+        if (key_down) {
+            register_code16(override_ctx->original);
+        } else {
+            unregister_code16(override_ctx->original);
+        }
     }
-    // For other OSes, return true to let normal processing occur.
-    return true;
+    // We’ve handled the key event, so return false.
+    return false;
 }
 
-// Example usage for one override (adjust as needed for others)
-// Replacement for Ctrl + Backspace: on macOS, send LALT(KC_BSPC)
-// Store the replacement keycode in a static variable.
-static const uint16_t macos_bspc_repl = A(KC_BSPC);
+
+// Context for Ctrl+Backspace override.
+static const os_override_ctx_t macos_bspc_ctx = {
+    .replacement = A(KC_BSPC), // Replacement for macOS: Alt+Backspace.
+    .original    = C(KC_BSPC)        // Original key.
+};
 
 const key_override_t macos_backspace_ctl_override = {
     .trigger_mods      = MOD_MASK_CTRL,
     .trigger           = KC_BSPC,
-    .layers            = ~0,                   // Active on all layers.
+    .layers            = ~0,                    // Active on all layers.
     .negative_mod_mask = 0,
-    .suppressed_mods   = MOD_MASK_CTRL,
-    .custom_action     = os_specific_override, // Our custom callback.
-    .context           = (void *)&macos_bspc_repl,  // Pass replacement key.
-    .trigger           = KC_BSPC,
-    .replacement       = KC_NO,
-    .enabled           = NULL
+    .suppressed_mods   = 0,                     // Do not suppress modifiers.
+    .custom_action     = os_specific_override,  // Our custom callback.
+    .context           = (void *)&macos_bspc_ctx,
+    .replacement       = KC_NO,                 // Not used since our callback handles it.
+    .enabled           = NULL,
+    .options           = ko_options_default,
 };
 
 const key_override_t *key_overrides[] = {
