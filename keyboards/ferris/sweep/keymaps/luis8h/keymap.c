@@ -298,15 +298,24 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 }
 
 // macros
-void mod_replace_macro(uint16_t key, uint16_t oldmod, uint16_t newmod) {
-    if (get_mods() & MOD_BIT(oldmod) && (current_os == OS_MACOS || current_os == OS_IOS)) {
-        del_mods(MOD_BIT(oldmod));
+void mod_swap(uint16_t key, uint16_t mod1, uint16_t mod2) {
+    if (get_mods() & MOD_BIT(mod1) && (current_os == OS_MACOS || current_os == OS_IOS)) {
+        del_mods(MOD_BIT(mod1));
 
-        register_code(newmod);
+        register_code(mod2);
         tap_code(key);
-        unregister_code(newmod);
+        unregister_code(mod2);
 
-        set_mods(get_mods() | MOD_BIT(oldmod));
+        set_mods(get_mods() | MOD_BIT(mod1));
+    }
+    else if (get_mods() & MOD_BIT(mod2) && (current_os == OS_MACOS || current_os == OS_IOS)) {
+        del_mods(MOD_BIT(mod2));
+
+        register_code(mod1)
+        tap_code(key);
+        unregister_code(mod1);
+
+        set_mods(get_mods() | MOD_BIT(mod2));
     } else {
         tap_code(key);
     }
@@ -317,6 +326,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case C_RIGHT:
             if (record->event.pressed) {
                 mod_replace_macro(KC_RIGHT, KC_LCTL, KC_LALT);
+            }
+            break;
+        case C_LEFT:
+            if (record->event.pressed) {
+                mod_replace_macro(KC_LEFT, KC_LCTL, KC_LALT);
+            }
+            break;
+        case C_UP:
+            if (record->event.pressed) {
+                mod_replace_macro(KC_UP, KC_LCTL, KC_LALT);
+            }
+            break;
+        case C_DOWN:
+            if (record->event.pressed) {
+                mod_replace_macro(KC_DOWN, KC_LCTL, KC_LALT);
             }
             break;
     }
