@@ -310,16 +310,16 @@ bool os_specific_override(bool key_down, void *ctx) {
     if (current_os == OS_MACOS || current_os == OS_IOS) {
         // For macOS/iOS, send the replacement key.
         if (key_down) {
-            register_code(override_ctx->replacement);
+            register_code16(override_ctx->replacement);
         } else {
-            unregister_code(override_ctx->replacement);
+            unregister_code16(override_ctx->replacement);
         }
     } else {
         // For other OSes (e.g., Linux), re-send the original key.
         if (key_down) {
-            register_code(override_ctx->original);
+            register_code16(override_ctx->original);
         } else {
-            unregister_code(override_ctx->original);
+            unregister_code16(override_ctx->original);
         }
     }
     // We’ve handled the key event, so return false.
