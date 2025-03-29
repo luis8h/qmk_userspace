@@ -323,11 +323,23 @@ void mod_swap(uint16_t key, uint16_t mod1, uint16_t mod2) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        // otherwiese the tap hold behavior would not work in move layer
         case D_R2_4(C_RIGHT):
             if (record->event.pressed) {
                 mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
             }
             break;
+        case D_L2_4(C_RIGHT):
+            if (record->event.pressed) {
+                mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
+            }
+            break;
+        case D_L2_2(C_LEFT):
+            if (record->event.pressed) {
+                mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
+            }
+            break;
+
         case C_RIGHT:
             if (record->event.pressed) {
                 mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
