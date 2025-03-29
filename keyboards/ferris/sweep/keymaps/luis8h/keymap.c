@@ -318,6 +318,7 @@ bool os_specific_override(bool key_down, void *ctx) {
 // define custom overrides
 
 const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+const key_override_t macos_right_ctl_override = ko_make_basic(MOD_MASK_CTRL, KC_RIGHT, KC_A);
 
 static const os_override_ctx_t macos_backspace_ctl_override_ctx = {
     .replacement = A(KC_BSPC), // Replacement for macOS: Alt+Backspace.
@@ -372,13 +373,13 @@ const key_override_t macos_left_ctl_override = {
 // };
 // static const key_override_t macos_right_ctl_override = ko_make_basic(MOD_MASK_CTRL, KC_RIGHT, LALT(KC_RIGHT));
 // Define the key override for Control + Right Arrow to produce Alt + Right Arrow
-const key_override_t macos_right_ctl_override = {
-    .trigger = KC_RIGHT,             // The key to override
-    .trigger_mods = MOD_MASK_CTRL,   // The modifier that triggers the override
-    .layers = ~0,                    // Active on all layers
-    .replacement = KC_A,    // The replacement keycode
-    .suppressed_mods = MOD_MASK_CTRL,// Suppress the Control modifier
-};
+// const key_override_t macos_right_ctl_override = {
+//     .trigger = KC_RIGHT,             // The key to override
+//     .trigger_mods = MOD_MASK_CTRL,   // The modifier that triggers the override
+//     .layers = ~0,                    // Active on all layers
+//     .replacement = KC_A,    // The replacement keycode
+//     .suppressed_mods = MOD_MASK_CTRL,// Suppress the Control modifier
+// };
 
 
 // Backspace (Alt → Ctrl)
