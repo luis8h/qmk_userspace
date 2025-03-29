@@ -48,6 +48,7 @@ enum custom_keycodes {
 #define D_R2_2(key) LCTL_T(key)
 #define D_R2_3(key) LSFT_T(key)
 #define D_R2_4(key) LALT_T(key)
+#define D_R2_4_RIGHT LALT_T(C_RIGHT)
 #define D_R2_5() C_BSPC
 
 // third row
@@ -322,6 +323,11 @@ void mod_swap(uint16_t key, uint16_t mod1, uint16_t mod2) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case D_R2_4(C_RIGHT):
+            if (record->event.pressed) {
+                mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
+            }
+            break;
         case C_RIGHT:
             if (record->event.pressed) {
                 mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
