@@ -125,7 +125,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_ESC] = LAYOUT_split_3x5_2(
         KC_COPY, KC_PASTE, LCTL(KC_SPC), KC_F8, KC_TRNS,                                        KC_TRNS, CW_TOGG, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TAB, KC_DEL, KC_LSFT, KC_TRNS, KC_BSPC,                                              KC_TRNS, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
-        KC_ENT, KC_WBAK, KC_PGUP, KC_PGDN, KC_WFWD,                                             KC_RCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_ENT, KC_WBAK, KC_UNDO, KC_AGIN, KC_WFWD,                                             KC_RCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                                       KC_ENT, KC_TRNS
     ),
     [L_MOVE] = LAYOUT_split_3x5_2(
@@ -321,10 +321,10 @@ const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC
 
 static const os_override_ctx_t macos_backspace_ctl_override_ctx = {
     .replacement = A(KC_BSPC), // Replacement for macOS: Alt+Backspace.
-    .original    = C(KC_BSPC)  // Original key.
+    .original    = G(KC_BSPC)  // Original key.
 };
 const key_override_t macos_backspace_ctl_override = {
-    .trigger_mods      = MOD_MASK_CTRL,
+    .trigger_mods      = MOD_MASK_GUI,
     .trigger           = KC_BSPC,
     .layers            = ~0,                    // Active on all layers.
     .negative_mod_mask = 0,
@@ -339,10 +339,10 @@ const key_override_t macos_backspace_ctl_override = {
 // Left Arrow (Ctrl → Alt)
 static const os_override_ctx_t macos_left_ctl_override_ctx = {
     .replacement = A(KC_LEFT),
-    .original    = C(KC_LEFT)
+    .original    = G(KC_LEFT)
 };
 const key_override_t macos_left_ctl_override = {
-    .trigger_mods      = MOD_MASK_CTRL,
+    .trigger_mods      = MOD_MASK_GUI,
     .trigger           = KC_LEFT,
     .layers            = ~0,
     .negative_mod_mask = 0,
@@ -357,10 +357,10 @@ const key_override_t macos_left_ctl_override = {
 // Right Arrow (Ctrl → Alt)
 static const os_override_ctx_t macos_right_ctl_override_ctx = {
     .replacement = A(KC_RGHT),
-    .original    = C(KC_RGHT)
+    .original    = G(KC_RGHT)
 };
 const key_override_t macos_right_ctl_override = {
-    .trigger_mods      = MOD_MASK_CTRL,
+    .trigger_mods      = MOD_MASK_GUI,
     .trigger           = KC_RGHT,
     .layers            = ~0,
     .negative_mod_mask = 0,
