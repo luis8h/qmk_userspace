@@ -1,4 +1,6 @@
 #include QMK_KEYBOARD_H
+#include "quantum.h"
+#include "print.h"
 #include "tapdance_helper.h"
 #if __has_include("keymap.h")
     #include "keymap.h"
@@ -10,6 +12,47 @@ void keyboard_post_init_user(void) {
   debug_matrix=true;
   //debug_keyboard=true;
   //debug_mouse=true;
+}
+
+enum custom_keycodes {
+    C_RIGHT = SAFE_RANGE,
+};
+
+// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+//     switch (keycode) {
+//         case C_RIGHT:
+//         if (record->event.pressed) {
+//             // without mod
+//             SEND_STRING(SS_TAP(X_RIGHT));
+//
+//             // with lctl
+//             SEND_STRING(SS_LALT(SS_TAP(X_RIGHT)));
+//         } else {
+//             // when keycode QMKBEST is released
+//         }
+//         break;
+//     }
+//     return true;
+// };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case C_RIGHT:
+            if (record->event.pressed) {
+                // Check if Left Control is held
+                if (get_mods() & MOD_BIT(KC_LCTL)) {
+                    // Left Control is active; send Alt + Right Arrow
+                    register_code(KC_LALT);
+                    tap_code(KC_RIGHT);
+                    unregister_code(KC_LALT);
+                } else {
+                    // Left Control is not active; send Right Arrow
+                    tap_code(KC_RIGHT);
+                }
+            }
+            break;
+    }
+    return true;
 }
 
 // Layers
@@ -138,7 +181,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [L_MOVE] = LAYOUT_split_3x5_2(
         D_L1_1(KC_Q), D_L1_2(KC_W), D_L1_3(KC_UP), D_L1_4(KC_R), D_L1_5(KC_T),                  D_R1_1(KC_HOME), D_R1_2(KC_U), D_R1_3(KC_I), D_R1_4(KC_END), D_R1_5(KC_UP),
-        D_L2_1(KC_A), D_L2_2(KC_LEFT), D_L2_3(KC_DOWN), D_L2_4(KC_RGHT), D_L2_5(KC_G),          D_R2_1(KC_LEFT), D_R2_2(KC_DOWN), D_R2_3(KC_UP), D_R2_4(KC_RGHT), KC_TRNS,
+        D_L2_1(KC_A), D_L2_2(KC_LEFT), D_L2_3(KC_DOWN), D_L2_4(KC_RGHT), D_L2_5(KC_G),          D_R2_1(KC_LEFT), D_R2_2(KC_DOWN), D_R2_3(KC_UP), C_RIGHT, KC_TRNS,
         D_L3_1(KC_Z), D_L3_2(KC_WBAK), D_L3_3(KC_PGUP), D_L3_4(KC_PGDN), D_L3_5(KC_WFWD),       D_R3_1(KC_DOWN), D_R3_2(KC_M), D_R3_3(KC_COMM), D_R3_4(KC_DOT), KC_TRNS,
         D_TL_1(), D_TL_2(),                                                                     D_TR_1(), D_TR_2()
     ),
@@ -296,115 +339,113 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 }
 
 
-
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // Only process these substitutions if the host is macOS or iOS.
-    if (current_os == OS_MACOS || current_os == OS_IOS) {
-        // -------------------------
-        // General override:
-        // Shift + Backspace -> Delete
-        // -------------------------
-        if (keycode == KC_BSPC && (get_mods() & MOD_MASK_SHIFT)) {
-            if (record->event.pressed) {
-                register_code16(KC_DEL);
-            } else {
-                unregister_code16(KC_DEL);
-            }
-            return false;
-        }
-
-        // -------------------------
-        // macOS Ctrl overrides:
-        // Ctrl + Backspace -> LALT + Backspace
-        // Ctrl + Left    -> LALT + Left Arrow
-        // Ctrl + Right   -> LALT + Right Arrow
-        // -------------------------
-        if (keycode == KC_BSPC && (get_mods() & MOD_MASK_CTRL)) {
-            if (record->event.pressed) {
-                register_code16(LALT(KC_BSPC));
-            } else {
-                unregister_code16(LALT(KC_BSPC));
-            }
-            return false;
-        }
-        if (keycode == KC_LEFT && (get_mods() & MOD_MASK_CTRL)) {
-            if (record->event.pressed) {
-                register_code16(LALT(KC_LEFT));
-            } else {
-                unregister_code16(LALT(KC_LEFT));
-            }
-            return false;
-        }
-        if (keycode == KC_B && (get_mods() & MOD_MASK_CTRL)) {
-            if (record->event.pressed) {
-                uint8_t mods = get_mods();
-                mods &= ~MOD_MASK_CTRL;
-                set_mods(mods);
-                register_code16(LALT(KC_RGHT));
-            } else {
-                unregister_code16(LALT(KC_RGHT));
-            }
-            return false;
-        }
-
-        // -------------------------
-        // macOS Alt overrides:
-        // Alt + Backspace -> LCTL + Backspace
-        // Alt + Left    -> LCTL + Left Arrow
-        // Alt + Right   -> LCTL + Right Arrow
-        // -------------------------
-        if (keycode == KC_BSPC && (get_mods() & MOD_MASK_ALT)) {
-            if (record->event.pressed) {
-                register_code16(LCTL(KC_BSPC));
-            } else {
-                unregister_code16(LCTL(KC_BSPC));
-            }
-            return false;
-        }
-        if (keycode == KC_LEFT && (get_mods() & MOD_MASK_ALT)) {
-            if (record->event.pressed) {
-                register_code16(LCTL(KC_LEFT));
-            } else {
-                unregister_code16(LCTL(KC_LEFT));
-            }
-            return false;
-        }
-        if (keycode == KC_RGHT && (get_mods() & MOD_MASK_ALT)) {
-            if (record->event.pressed) {
-                register_code16(LCTL(KC_RGHT));
-            } else {
-                unregister_code16(LCTL(KC_RGHT));
-            }
-            return false;
-        }
-
-        // -------------------------
-        // macOS Tab overrides:
-        // Ctrl + Tab -> LGUI + Tab
-        // GUI + Tab  -> LCTL + Tab
-        // -------------------------
-        if (keycode == KC_TAB && (get_mods() & MOD_MASK_CTRL)) {
-            if (record->event.pressed) {
-                register_code16(LGUI(KC_TAB));
-            } else {
-                unregister_code16(LGUI(KC_TAB));
-            }
-            return false;
-        }
-        if (keycode == KC_TAB && (get_mods() & MOD_MASK_GUI)) {
-            if (record->event.pressed) {
-                register_code16(LCTL(KC_TAB));
-            } else {
-                unregister_code16(LCTL(KC_TAB));
-            }
-            return false;
-        }
-    }
-    // Process all other keycodes normally.
-    return true;
-}
-
+// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+//     // Only process these substitutions if the host is macOS or iOS.
+//     if (current_os == OS_MACOS || current_os == OS_IOS) {
+//         // -------------------------
+//         // General override:
+//         // Shift + Backspace -> Delete
+//         // -------------------------
+//         if (keycode == KC_BSPC && (get_mods() & MOD_MASK_SHIFT)) {
+//             if (record->event.pressed) {
+//                 register_code16(KC_DEL);
+//             } else {
+//                 unregister_code16(KC_DEL);
+//             }
+//             return false;
+//         }
+//
+//         // -------------------------
+//         // macOS Ctrl overrides:
+//         // Ctrl + Backspace -> LALT + Backspace
+//         // Ctrl + Left    -> LALT + Left Arrow
+//         // Ctrl + Right   -> LALT + Right Arrow
+//         // -------------------------
+//         if (keycode == KC_BSPC && (get_mods() & MOD_MASK_CTRL)) {
+//             if (record->event.pressed) {
+//                 register_code16(LALT(KC_BSPC));
+//             } else {
+//                 unregister_code16(LALT(KC_BSPC));
+//             }
+//             return false;
+//         }
+//         if (keycode == KC_LEFT && (get_mods() & MOD_MASK_CTRL)) {
+//             if (record->event.pressed) {
+//                 register_code16(LALT(KC_LEFT));
+//             } else {
+//                 unregister_code16(LALT(KC_LEFT));
+//             }
+//             return false;
+//         }
+//         if (keycode == KC_B && (get_mods() & MOD_MASK_CTRL)) {
+//             if (record->event.pressed) {
+//                 uint8_t mods = get_mods();
+//                 mods &= ~MOD_MASK_CTRL;
+//                 set_mods(mods);
+//                 register_code16(LALT(KC_RGHT));
+//             } else {
+//                 unregister_code16(LALT(KC_RGHT));
+//             }
+//             return false;
+//         }
+//
+//         // -------------------------
+//         // macOS Alt overrides:
+//         // Alt + Backspace -> LCTL + Backspace
+//         // Alt + Left    -> LCTL + Left Arrow
+//         // Alt + Right   -> LCTL + Right Arrow
+//         // -------------------------
+//         if (keycode == KC_BSPC && (get_mods() & MOD_MASK_ALT)) {
+//             if (record->event.pressed) {
+//                 register_code16(LCTL(KC_BSPC));
+//             } else {
+//                 unregister_code16(LCTL(KC_BSPC));
+//             }
+//             return false;
+//         }
+//         if (keycode == KC_LEFT && (get_mods() & MOD_MASK_ALT)) {
+//             if (record->event.pressed) {
+//                 register_code16(LCTL(KC_LEFT));
+//             } else {
+//                 unregister_code16(LCTL(KC_LEFT));
+//             }
+//             return false;
+//         }
+//         if (keycode == KC_RGHT && (get_mods() & MOD_MASK_ALT)) {
+//             if (record->event.pressed) {
+//                 register_code16(LCTL(KC_RGHT));
+//             } else {
+//                 unregister_code16(LCTL(KC_RGHT));
+//             }
+//             return false;
+//         }
+//
+//         // -------------------------
+//         // macOS Tab overrides:
+//         // Ctrl + Tab -> LGUI + Tab
+//         // GUI + Tab  -> LCTL + Tab
+//         // -------------------------
+//         if (keycode == KC_TAB && (get_mods() & MOD_MASK_CTRL)) {
+//             if (record->event.pressed) {
+//                 register_code16(LGUI(KC_TAB));
+//             } else {
+//                 unregister_code16(LGUI(KC_TAB));
+//             }
+//             return false;
+//         }
+//         if (keycode == KC_TAB && (get_mods() & MOD_MASK_GUI)) {
+//             if (record->event.pressed) {
+//                 register_code16(LCTL(KC_TAB));
+//             } else {
+//                 unregister_code16(LCTL(KC_TAB));
+//             }
+//             return false;
+//         }
+//     }
+//     // Process all other keycodes normally.
+//     return true;
+// }
+//
 
 
 
