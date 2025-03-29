@@ -337,7 +337,7 @@ static const os_override_ctx_t macos_backspace_ctl_override_ctx = {
 const key_override_t macos_backspace_ctl_override = {
     .trigger_mods      = MOD_MASK_CTRL,
     .trigger           = KC_BSPC,
-    // .suppressed_mods   = MOD_MASK_CTRL,                     // Do not suppress modifiers.
+    .suppressed_mods   = MOD_MASK_CTRL,                     // Do not suppress modifiers.
     .custom_action     = os_specific_override,  // Our custom callback.
     .context           = (void *)&macos_backspace_ctl_override_ctx,
     .enabled           = NULL,
@@ -347,8 +347,8 @@ const key_override_t macos_backspace_ctl_override = {
 
 const key_override_t *key_overrides[] = {
 	&delete_key_override,
-    // &macos_backspace_ctl_override,
-    &delete_key_override_test,
+    &macos_backspace_ctl_override,
+    // &delete_key_override_test,
     NULL,
 };
 
