@@ -371,7 +371,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // macos rewrite
         case KC_BSPC:
             if (record->event.pressed) {
-                mod_swap(KC_BSPC, KC_LCTL, KC_LGUI);
+                mod_swap(KC_BSPC, KC_LCTL, KC_LALT);
             }
             break;
 
