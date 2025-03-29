@@ -287,100 +287,144 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 }
 
 // overrides (with os detection)
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // ---------- General override ----------
-    // Shift + Backspace -> Delete
-    if (keycode == KC_BSPC && (get_mods() & MOD_MASK_SHIFT)) {
-        if (record->event.pressed) {
-            register_code((uint16_t)KC_DEL);
+
+
+// Custom callback: only perform the override if the host is macOS/iOS.
+bool os_specific_override(bool key_down, void *context) {
+    // 'context' points to a replacement keycode (e.g. LALT(KC_BSPC))
+    uint16_t replacement = *(uint16_t *)context;
+    if (current_os == OS_MACOS || current_os == OS_IOS) {
+        if (key_down) {
+            register_code(replacement);
         } else {
-            unregister_code((uint16_t)KC_DEL);
+            unregister_code(replacement);
         }
+        // Return false to indicate we've handled it.
         return false;
     }
-
-    // ---------- macOS overrides ----------
-    // Only apply these substitutions when the host is macOS/iOS.
-    if (current_os == OS_MACOS || current_os == OS_IOS) {
-
-        // Ctrl + Backspace -> Alt + Backspace
-        if (keycode == KC_BSPC && (get_mods() & MOD_MASK_CTRL)) {
-            if (record->event.pressed) {
-                register_code16(A(KC_BSPC));
-            } else {
-                unregister_code16(A(KC_BSPC));
-            }
-            return false;
-        }
-        // Ctrl + Left Arrow -> Alt + Left Arrow
-        if (keycode == KC_LEFT && (get_mods() & MOD_MASK_CTRL)) {
-            if (record->event.pressed) {
-                register_code16(A(KC_LEFT));
-            } else {
-                unregister_code16(A(KC_LEFT));
-            }
-            return false;
-        }
-        // Ctrl + Right Arrow -> Alt + Right Arrow
-        if (keycode == KC_RGHT && (get_mods() & MOD_MASK_CTRL)) {
-            if (record->event.pressed) {
-                register_code16(A(KC_RGHT));
-            } else {
-                unregister_code16(A(KC_RGHT));
-            }
-            return false;
-        }
-
-        // Alt + Backspace -> Control + Backspace
-        if (keycode == KC_BSPC && (get_mods() & MOD_MASK_ALT)) {
-            if (record->event.pressed) {
-                register_code16(C(KC_BSPC));
-            } else {
-                unregister_code16(C(KC_BSPC));
-            }
-            return false;
-        }
-        // Alt + Left Arrow -> Control + Left Arrow
-        if (keycode == KC_LEFT && (get_mods() & MOD_MASK_ALT)) {
-            if (record->event.pressed) {
-                register_code16(C(KC_LEFT));
-            } else {
-                unregister_code16(C(KC_LEFT));
-            }
-            return false;
-        }
-        // Alt + Right Arrow -> Control + Right Arrow
-        if (keycode == KC_RGHT && (get_mods() & MOD_MASK_ALT)) {
-            if (record->event.pressed) {
-                register_code16(C(KC_RGHT));
-            } else {
-                unregister_code16(C(KC_RGHT));
-            }
-            return false;
-        }
-
-        // Ctrl + Tab -> GUI + Tab
-        if (keycode == KC_TAB && (get_mods() & MOD_MASK_CTRL)) {
-            if (record->event.pressed) {
-                register_code16(G(KC_TAB));
-            } else {
-                unregister_code16(G(KC_TAB));
-            }
-            return false;
-        }
-        // GUI + Tab -> Control + Tab
-        if (keycode == KC_TAB && (get_mods() & MOD_MASK_GUI)) {
-            if (record->event.pressed) {
-                register_code16(C(KC_TAB));
-            } else {
-                unregister_code16(C(KC_TAB));
-            }
-            return false;
-        }
-    }
-    // Process all other keycodes normally.
+    // For other OSes, return true to let normal processing occur.
     return true;
 }
+
+// Example usage for one override (adjust as needed for others)
+// Replacement for Ctrl + Backspace: on macOS, send LALT(KC_BSPC)
+// Store the replacement keycode in a static variable.
+static const uint16_t macos_bspc_repl = A(KC_BSPC);
+
+const key_override_t macos_backspace_ctl_override = {
+    .trigger_mods      = MOD_MASK_CTRL,
+    .trigger           = KC_BSPC,
+    .layers            = ~0,                   // Active on all layers.
+    .negative_mod_mask = 0,
+    .suppressed_mods   = MOD_MASK_CTRL,
+    .custom_action     = os_specific_override, // Our custom callback.
+    .context           = (void *)&macos_bspc_repl,  // Pass replacement key.
+    .trigger           = KC_BSPC,
+    .replacement       = KC_NO,
+    .enabled           = NULL
+};
+
+const key_override_t *key_overrides[] = {
+    &macos_backspace_ctl_override,
+    NULL
+};
+
+
+
+// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+//     // ---------- General override ----------
+//     // Shift + Backspace -> Delete
+//     if (keycode == KC_BSPC && (get_mods() & MOD_MASK_SHIFT)) {
+//         if (record->event.pressed) {
+//             register_code((uint16_t)KC_DEL);
+//         } else {
+//             unregister_code((uint16_t)KC_DEL);
+//         }
+//         return false;
+//     }
+//
+//     // ---------- macOS overrides ----------
+//     // Only apply these substitutions when the host is macOS/iOS.
+//     if (current_os == OS_MACOS || current_os == OS_IOS) {
+//
+//         // Ctrl + Backspace -> Alt + Backspace
+//         if (keycode == KC_BSPC && (get_mods() & MOD_MASK_CTRL)) {
+//             if (record->event.pressed) {
+//                 register_code16(A(KC_BSPC));
+//             } else {
+//                 unregister_code16(A(KC_BSPC));
+//             }
+//             return false;
+//         }
+//         // Ctrl + Left Arrow -> Alt + Left Arrow
+//         if (keycode == KC_LEFT && (get_mods() & MOD_MASK_CTRL)) {
+//             if (record->event.pressed) {
+//                 register_code16(A(KC_LEFT));
+//             } else {
+//                 unregister_code16(A(KC_LEFT));
+//             }
+//             return false;
+//         }
+//         // Ctrl + Right Arrow -> Alt + Right Arrow
+//         if (keycode == KC_RGHT && (get_mods() & MOD_MASK_CTRL)) {
+//             if (record->event.pressed) {
+//                 register_code16(A(KC_RGHT));
+//             } else {
+//                 unregister_code16(A(KC_RGHT));
+//             }
+//             return false;
+//         }
+//
+//         // Alt + Backspace -> Control + Backspace
+//         if (keycode == KC_BSPC && (get_mods() & MOD_MASK_ALT)) {
+//             if (record->event.pressed) {
+//                 register_code16(C(KC_BSPC));
+//             } else {
+//                 unregister_code16(C(KC_BSPC));
+//             }
+//             return false;
+//         }
+//         // Alt + Left Arrow -> Control + Left Arrow
+//         if (keycode == KC_LEFT && (get_mods() & MOD_MASK_ALT)) {
+//             if (record->event.pressed) {
+//                 register_code16(C(KC_LEFT));
+//             } else {
+//                 unregister_code16(C(KC_LEFT));
+//             }
+//             return false;
+//         }
+//         // Alt + Right Arrow -> Control + Right Arrow
+//         if (keycode == KC_RGHT && (get_mods() & MOD_MASK_ALT)) {
+//             if (record->event.pressed) {
+//                 register_code16(C(KC_RGHT));
+//             } else {
+//                 unregister_code16(C(KC_RGHT));
+//             }
+//             return false;
+//         }
+//
+//         // Ctrl + Tab -> GUI + Tab
+//         if (keycode == KC_TAB && (get_mods() & MOD_MASK_CTRL)) {
+//             if (record->event.pressed) {
+//                 register_code16(G(KC_TAB));
+//             } else {
+//                 unregister_code16(G(KC_TAB));
+//             }
+//             return false;
+//         }
+//         // GUI + Tab -> Control + Tab
+//         if (keycode == KC_TAB && (get_mods() & MOD_MASK_GUI)) {
+//             if (record->event.pressed) {
+//                 register_code16(C(KC_TAB));
+//             } else {
+//                 unregister_code16(C(KC_TAB));
+//             }
+//             return false;
+//         }
+//     }
+//     // Process all other keycodes normally.
+//     return true;
+// }
 
 
 // // general overrides
