@@ -301,18 +301,18 @@ void mod_swap(uint16_t key, uint16_t mod1, uint16_t mod2) {
     if (get_mods() & MOD_BIT(mod1) && (current_os == OS_MACOS || current_os == OS_IOS)) {
         del_mods(MOD_BIT(mod1));
 
-        register_code(mod2);
-        tap_code(key);
-        unregister_code(mod2);
+        register_code16(mod2);
+        tap_code16(key);
+        unregister_code16(mod2);
 
         set_mods(get_mods() | MOD_BIT(mod1));
     }
     else if (get_mods() & MOD_BIT(mod2) && (current_os == OS_MACOS || current_os == OS_IOS)) {
         del_mods(MOD_BIT(mod2));
 
-        register_code(mod1);
-        tap_code(key);
-        unregister_code(mod1);
+        register_code16(mod1);
+        tap_code16(key);
+        unregister_code16(mod1);
 
         set_mods(get_mods() | MOD_BIT(mod2));
     } else {
