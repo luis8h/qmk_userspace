@@ -252,22 +252,22 @@ void move_on_dance_1(tap_dance_state_t *state, void *user_data) {
     uint16_t key = KC_LEFT;
 
     if (get_mods() & MOD_BIT(mod1) && (current_os == OS_MACOS || current_os == OS_IOS)) {
-        del_mods(MOD_BIT(mod1));
-
-        register_code16(mod2);
-        tap_code16(key);
-        unregister_code16(mod2);
-
-        set_mods(get_mods() | MOD_BIT(mod1));
+        // del_mods(MOD_BIT(mod1));
+        //
+        // register_code16(mod2);
+        // tap_code16(key);
+        // unregister_code16(mod2);
+        //
+        // set_mods(get_mods() | MOD_BIT(mod1));
     }
     else if (get_mods() & MOD_BIT(mod2) && (current_os == OS_MACOS || current_os == OS_IOS)) {
-        del_mods(MOD_BIT(mod2));
-
-        register_code16(mod1);
-        tap_code16(key);
-        unregister_code16(mod1);
-
-        set_mods(get_mods() | MOD_BIT(mod2));
+        // del_mods(MOD_BIT(mod2));
+        //
+        // register_code16(mod1);
+        // tap_code16(key);
+        // unregister_code16(mod1);
+        //
+        // set_mods(get_mods() | MOD_BIT(mod2));
     } else {
         if (state->count == 3) {
             tap_code16(key);
