@@ -24,7 +24,7 @@ enum custom_keycodes {
 #define L_WORKAC 7
 #define L_ESC 8
 #define L_MOVE 9
-#define L_SYS 10 // TODO: make sys accessible
+#define L_SYS 10
 
 // define tap dance keys
 enum {
@@ -37,74 +37,77 @@ enum {
     DANCE_7,
     DANCE_8,
     DANCE_9,
+    DANCE_10,
+    DANCE_11,
+    DANCE_12,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE] = LAYOUT_split_3x5_2(
-        KC_Q, KC_W, HYPR_T(KC_E), KC_R, KC_T,                   KC_Y, LT(L_WORKAC, KC_U), HYPR_T(KC_I), LT(L_WORKA, KC_O), LGUI_T(KC_P),
-        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,       KC_H, LCTL_T(KC_J), LSFT_T(KC_K), LALT_T(KC_L), KC_BSPC,
-        LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RGUI_T(KC_V), KC_B,   KC_N, RGUI_T(KC_M), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
-        LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                              OSM(MOD_LSFT), OSL(L_SYM)
+        KC_Q, KC_W, HYPR_T(KC_E), KC_R, KC_T,                                   KC_Y, LT(L_WORKAC, KC_U), HYPR_T(KC_I), LT(L_WORKA, KC_O), LGUI_T(KC_P),
+        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,           KC_H, LCTL_T(KC_J), LSFT_T(KC_K), LALT_T(KC_L), KC_BSPC,
+        LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RGUI_T(KC_V), KC_B,        KC_N, RGUI_T(KC_M), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
+        LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                  OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_COLE] = LAYOUT_split_3x5_2(
-        KC_Q, KC_W, HYPR_T(KC_E), KC_R, KC_T,                   KC_Y, LT(L_WORKAC, KC_U), HYPR_T(KC_I), LT(L_WORKA, KC_O), LGUI_T(KC_P),
-        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,       KC_H, LCTL_T(KC_J), LSFT_T(KC_K), LALT_T(KC_L), KC_BSPC,
-        LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RGUI_T(KC_V), KC_B,   KC_N, RGUI_T(KC_M), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
-        LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                              OSM(MOD_LSFT), OSL(L_SYM)
+        KC_Q, KC_W, HYPR_T(KC_E), KC_R, KC_T,                                   KC_Y, LT(L_WORKAC, KC_U), HYPR_T(KC_I), LT(L_WORKA, KC_O), LGUI_T(KC_P),
+        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,           KC_H, LCTL_T(KC_J), LSFT_T(KC_K), LALT_T(KC_L), KC_BSPC,
+        LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RGUI_T(KC_V), KC_B,        KC_N, RGUI_T(KC_M), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
+        LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                  OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_SYM] = LAYOUT_split_3x5_2(
-        KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,               KC_CIRC, TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
+        KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,                               KC_CIRC, TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
         LGUI_T(KC_MINS), LALT_T(KC_QUOT), TD(DANCE_6), TD(DANCE_7), KC_GRAVE,   KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_8), TD(DANCE_9), KC_TRNS,
-        TD(DANCE_2), KC_SCLN, KC_LBRC, RGUI_T(KC_RBRC), KC_EQL,         KC_TILD, RGUI_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
-        TD(DANCE_1), KC_TRNS,                                                                   KC_TRNS, KC_TRNS
+        TD(DANCE_2), KC_SCLN, KC_LBRC, RGUI_T(KC_RBRC), KC_EQL,                 KC_TILD, RGUI_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
+        TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_NUMT] = LAYOUT_split_3x5_2(
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, TO(L_SYMSPEC), KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, TO(L_SYMSPEC), KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
     ),
     [L_SYMSPEC] = LAYOUT_split_3x5_2(
-        KC_F1, KC_F2, KC_F3, KC_F4, KC_F5,                                                      KC_F8, KC_F9, KC_F10, KC_F11, KC_F12,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_F6,                                              LT(L_SYS, KC_F7), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, UC(0x00E4), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        TD(DANCE_1), KC_TRNS,                                                                       KC_TRNS, KC_TRNS
+        KC_F1, KC_F2, KC_F3, KC_F4, KC_F5,                                      KC_F8, KC_F9, KC_F10, KC_F11, KC_F12,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_F6,                              LT(L_SYS, KC_F7), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, UC(0x00E4), KC_TRNS,                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_NUMH] = LAYOUT_split_3x5_2(
-        KC_DOT, KC_1, KC_2, KC_3, KC_COMM,                                                          KC_QUES, KC_PIPE, KC_LPRN, KC_RPRN, LGUI_T(KC_ASTR),
-        LALT_T(KC_MINS), LGUI_T(KC_4), LSFT_T(KC_5), LCTL_T(KC_6), KC_0,                            KC_PLUS, LCTL_T(KC_SLSH), LSFT_T(KC_LT), LALT_T(KC_GT), KC_TRNS,
-        LCA_T(QK_LLCK), KC_7, KC_8, RGUI_T(KC_9), KC_EQL,                                           KC_TILD, RGUI_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
-        TD(DANCE_1), KC_TRNS,                                                                       KC_TRNS, KC_TRNS
+        KC_DOT, KC_1, KC_2, KC_3, KC_COMM,                                      KC_QUES, KC_PIPE, KC_LPRN, KC_RPRN, TD(DANCE_12),
+        LALT_T(KC_MINS), LGUI_T(KC_4), LSFT_T(KC_5), LCTL_T(KC_6), KC_0,        KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_10), TD(DANCE_11), KC_TRNS,
+        LCA_T(QK_LLCK), KC_7, KC_8, RGUI_T(KC_9), KC_EQL,                       KC_TILD, RGUI_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
+        TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_WORKA] = LAYOUT_split_3x5_2(
-        KC_TRNS, LALT(KC_1), LALT(KC_2), LALT(KC_3), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_LSFT, LALT(KC_4), LALT(KC_5), LALT(KC_6), LALT(KC_0),                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, LALT(KC_7), LALT(KC_8), LALT(KC_9), KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
+        KC_TRNS, LALT(KC_1), LALT(KC_2), LALT(KC_3), KC_TRNS,                   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_LSFT, LALT(KC_4), LALT(KC_5), LALT(KC_6), LALT(KC_0),                KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, LALT(KC_7), LALT(KC_8), LALT(KC_9), KC_TRNS,                   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
     ),
     [L_WORKAC] = LAYOUT_split_3x5_2(
-        KC_TRNS, LCA(KC_1), LCA(KC_2), LCA(KC_3), KC_TRNS,                                               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_LSFT, LCA(KC_4), LCA(KC_5), LCA(KC_6), LCA(KC_0),                                               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, LCA(KC_7), LCA(KC_8), LCA(KC_9), KC_TRNS,                                               KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS,                                                                       KC_TRNS, KC_TRNS
+        KC_TRNS, LCA(KC_1), LCA(KC_2), LCA(KC_3), KC_TRNS,                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_LSFT, LCA(KC_4), LCA(KC_5), LCA(KC_6), LCA(KC_0),                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, LCA(KC_7), LCA(KC_8), LCA(KC_9), KC_TRNS,                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
     ),
     [L_ESC] = LAYOUT_split_3x5_2(
-        KC_COPY, KC_PASTE, LCTL(KC_SPC), KC_F8, KC_TRNS,                                        KC_TRNS, CW_TOGG, KC_TRNS, KC_TRNS, KC_TRNS,
-        C_TAB, KC_DEL, KC_LSFT, KC_TRNS, KC_BSPC,                                              KC_TRNS, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
-        KC_ENT, KC_WBAK, KC_UNDO, KC_AGIN, KC_WFWD,                                             KC_RCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS,                                                                       KC_ENT, KC_TRNS
+        KC_COPY, KC_PASTE, LCTL(KC_SPC), KC_F8, KC_TRNS,                        KC_TRNS, CW_TOGG, KC_TRNS, KC_TRNS, KC_TRNS,
+        C_TAB, KC_DEL, KC_LSFT, KC_TRNS, KC_BSPC,                               KC_TRNS, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
+        KC_ENT, KC_WBAK, KC_UNDO, KC_AGIN, KC_WFWD,                             KC_RCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS,                                                       KC_ENT, KC_TRNS
     ),
     [L_MOVE] = LAYOUT_split_3x5_2(
-        KC_Q, KC_W, KC_UP, KC_R, KC_T,                  KC_HOME, KC_U, KC_I, KC_END, LGUI_T(KC_UP),
-        LGUI_T(KC_A), LALT_T(C_LEFT), LSFT_T(KC_DOWN), LCTL_T(C_RIGHT), KC_G,          C_LEFT, LCTL_T(KC_DOWN), LSFT_T(KC_UP), LALT_T(C_RIGHT), KC_TRNS,
-        KC_Z, KC_WBAK, KC_PGUP, KC_PGDN, KC_WFWD,       KC_DOWN, KC_M, KC_COMM, KC_DOT, KC_TRNS,
-        KC_TRNS, KC_TRNS,                                                                     KC_TRNS, KC_TRNS
+        KC_Q, KC_W, KC_UP, KC_R, KC_T,                                          KC_HOME, KC_U, KC_I, KC_END, LGUI_T(KC_UP),
+        LGUI_T(KC_A), LALT_T(C_LEFT), LSFT_T(KC_DOWN), LCTL_T(C_RIGHT), KC_G,   C_LEFT, LCTL_T(KC_DOWN), LSFT_T(KC_UP), LALT_T(C_RIGHT), KC_TRNS,
+        KC_Z, KC_WBAK, KC_PGUP, KC_PGDN, KC_WFWD,                               KC_DOWN, KC_M, KC_COMM, KC_DOT, KC_TRNS,
+        KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
     ),
     [L_SYS] = LAYOUT_split_3x5_2(
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        QK_BOOTLOADER, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        TD(DANCE_1), KC_TRNS,                                                                       KC_TRNS, KC_TRNS
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        QK_BOOTLOADER, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
 };
 
@@ -222,6 +225,39 @@ void dance_9_reset(tap_dance_state_t *state, void *user_data) {
     hold_tap_mod_dance_reset(state, KC_COLN, KC_LALT, 8);
 }
 
+// tap dance 10 functions
+void on_dance_10(tap_dance_state_t *state, void *user_data) {
+    hold_tap_mod_on_dance(state, KC_LT);
+}
+void dance_10_finished(tap_dance_state_t *state, void *user_data) {
+    hold_tap_mod_dance_finished(state, KC_LT, KC_LSFT, 9);
+}
+void dance_10_reset(tap_dance_state_t *state, void *user_data) {
+    hold_tap_mod_dance_reset(state, KC_LT, KC_LSFT, 9);
+}
+
+// tap dance 11 functions
+void on_dance_11(tap_dance_state_t *state, void *user_data) {
+    hold_tap_mod_on_dance(state, KC_GT);
+}
+void dance_11_finished(tap_dance_state_t *state, void *user_data) {
+    hold_tap_mod_dance_finished(state, KC_GT, KC_LALT, 10);
+}
+void dance_11_reset(tap_dance_state_t *state, void *user_data) {
+    hold_tap_mod_dance_reset(state, KC_GT, KC_LALT, 10);
+}
+
+// tap dance 12 functions
+void on_dance_12(tap_dance_state_t *state, void *user_data) {
+    hold_tap_mod_on_dance(state, KC_ASTR);
+}
+void dance_12_finished(tap_dance_state_t *state, void *user_data) {
+    hold_tap_mod_dance_finished(state, KC_ASTR, KC_LGUI, 11);
+}
+void dance_12_reset(tap_dance_state_t *state, void *user_data) {
+    hold_tap_mod_dance_reset(state, KC_ASTR, KC_LGUI, 11);
+}
+
 // register tap dance keys
 tap_dance_action_t tap_dance_actions[] = {
     [DANCE_1] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_1_finished, dance_1_reset),
@@ -233,6 +269,9 @@ tap_dance_action_t tap_dance_actions[] = {
     [DANCE_7] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_7, dance_7_finished, dance_7_reset),
     [DANCE_8] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_8, dance_8_finished, dance_8_reset),
     [DANCE_9] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_9, dance_9_finished, dance_9_reset),
+    [DANCE_10] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_10, dance_10_finished, dance_10_reset),
+    [DANCE_11] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_11, dance_11_finished, dance_11_reset),
+    [DANCE_12] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_12, dance_12_finished, dance_12_reset),
 };
 
 
@@ -313,8 +352,6 @@ void mod_swap(uint16_t key, uint16_t mod1, uint16_t mod2) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    static bool is_held = false;
-
     // TODO: the mod swap behavior could also be implemented with tap dance in the future
 
     switch (keycode) {
