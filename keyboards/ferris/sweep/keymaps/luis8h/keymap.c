@@ -287,49 +287,33 @@ bool os_specific_override(bool key_down, void *ctx) {
 
 
 const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
-// const key_override_t delete_key_override_test = ko_make_basic(MOD_MASK_CTRL, KC_BSPC, A(KC_BSPC));
 
-static const os_override_ctx_t macos_backspace_ctl_override_ctx = {
-    .replacement = A(KC_BSPC), // Replacement for macOS: Alt+Backspace.
-    .original    = C(KC_BSPC)  // Original key.
-};
 const key_override_t macos_backspace_ctl_override = {
     .trigger_mods      = MOD_MASK_CTRL,
     .trigger           = KC_BSPC,
-    .suppressed_mods   = MOD_BIT(KC_LCTL),                     // Do not suppress modifiers.
     .replacement       = A(KC_BSPC),
-    // .custom_action     = os_specific_override,  // Our custom callback.
-    // .context           = (void *)&macos_backspace_ctl_override_ctx,
-    .enabled           = NULL,
-};
-
-bool test_action(bool key_down, void *layer) {
-    if (current_os == OS_MACOS || current_os == OS_IOS) {
-        return true;
-    }
-    return false;
-}
-
-const key_override_t delete_key_override_test = {
-    .trigger_mods      = MOD_MASK_CTRL,
-    .trigger           = KC_BSPC,
-    .replacement       = A(KC_BSPC),
-    .layers            = ~0,                  // Active on all layers.
+    .layers            = ~0,
     .negative_mod_mask = 0,
-    .suppressed_mods   = MOD_MASK_CTRL,       // Suppress the triggering modifier.
-    .enabled           = &macos_overrides_enabled,                // Always enabled.
-    // .context           = (void *)L_MOVE,
-    // .custom_action     = test_action,
+    .suppressed_mods   = MOD_MASK_CTRL,
+    .enabled           = &macos_overrides_enabled,
     .options           = ko_options_default,
 };
 
-
-
+const key_override_t macos_backspace_alt_override = {
+    .trigger_mods      = MOD_MASK_ALT,
+    .trigger           = KC_BSPC,
+    .replacement       = C(KC_BSPC),
+    .layers            = ~0,
+    .negative_mod_mask = 0,
+    .suppressed_mods   = MOD_MASK_ALT,
+    .enabled           = &macos_overrides_enabled,
+    .options           = ko_options_default,
+};
 
 const key_override_t *key_overrides[] = {
 	&delete_key_override,
-    // &macos_backspace_ctl_override,
-    &delete_key_override_test,
+    &macos_backspace_ctl_override,
+    &macos_backspace_alt_override,
     NULL,
 };
 
