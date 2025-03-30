@@ -26,50 +26,6 @@ enum custom_keycodes {
 #define L_MOVE 9
 #define L_SYS 10 // TODO: make sys accessible
 
-// first row
-#define D_L1_1(key) key
-#define D_L1_2(key) key
-#define D_L1_3(key) MT(MOD_LCTL | MOD_LSFT | MOD_LALT | MOD_LGUI, key)
-#define D_L1_4(key) key
-#define D_L1_5(key) key
-#define D_R1_1(key) key
-#define D_R1_2(key) LT(L_WORKAC, key)
-#define D_R1_3(key) HYPR_T(key)
-#define D_R1_4(key) LT(L_WORKA, key)
-#define D_R1_5(key) LGUI_T(key)
-
-// second row
-#define D_L2_1(key) MT(MOD_LGUI, key)
-#define D_L2_2(key) LALT_T(key)
-#define D_L2_3(key) LSFT_T(key)
-#define D_L2_4(key) MT(MOD_LCTL, key)
-#define D_L2_5(key) key
-#define D_R2_1(key) key
-#define D_R2_2(key) LCTL_T(key)
-#define D_R2_3(key) LSFT_T(key)
-#define D_R2_4(key) LALT_T(key)
-#define D_R2_4_RIGHT LALT_T(C_RIGHT)
-#define D_R2_5() KC_BSPC
-
-// third row
-#define D_L3_1(key) LT(L_MOVE, key)
-#define D_L3_2(key) LT(L_SYMSPEC, key)
-#define D_L3_3(key) key
-#define D_L3_4(key) RGUI_T(key)
-#define D_L3_5(key) key
-#define D_R3_1(key) key
-#define D_R3_2(key) RGUI_T(key)
-#define D_R3_3(key) key
-#define D_R3_4(key) LT(L_SYMSPEC, key)
-#define D_R3_5() OSL(L_NUMT)
-
-// thumb cluster
-#define D_TL_1() LT(L_ESC, KC_ESC)
-#define D_TL_2() LT(L_NUMH, KC_SPC)
-#define D_TR_1() OSM(MOD_LSFT)
-#define D_TR_2() OSL(L_SYM)
-
-
 // define tap dance keys
 enum {
     DANCE_1,
@@ -85,21 +41,21 @@ enum {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE] = LAYOUT_split_3x5_2(
-        D_L1_1(KC_Q), D_L1_2(KC_W), D_L1_3(KC_E), D_L1_4(KC_R), D_L1_5(KC_T),                   D_R1_1(KC_Y), D_R1_2(KC_U), D_R1_3(KC_I), D_R1_4(KC_O), D_R1_5(KC_P),
-        D_L2_1(KC_A), D_L2_2(KC_S), D_L2_3(KC_D), D_L2_4(KC_F), D_L2_5(KC_G),                   D_R2_1(KC_H), D_R2_2(KC_J), D_R2_3(KC_K), D_R2_4(KC_L), D_R2_5(),
-        D_L3_1(KC_Z), D_L3_2(KC_X), D_L3_3(KC_C), D_L3_4(KC_V), D_L3_5(KC_B),                   D_R3_1(KC_N), D_R3_2(KC_M), D_R3_3(KC_COMM), D_R3_4(KC_DOT), D_R3_5(),
-        D_TL_1(), D_TL_2(),                                                                     D_TR_1(), D_TR_2()
+        KC_Q, KC_W, HYPR_T(KC_E), KC_R, KC_T,                   KC_Y, LT(L_WORKAC, KC_U), HYPR_T(KC_I), LT(L_WORKA, KC_O), LGUI_T(KC_P),
+        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,       KC_H, LCTL_T(KC_J), LSFT_T(KC_K), LALT_T(KC_L), KC_BSPC,
+        LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RGUI_T(KC_V), KC_B,   KC_N, RGUI_T(KC_M), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
+        LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                              OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_COLE] = LAYOUT_split_3x5_2(
-        D_L1_1(KC_Q), D_L1_2(KC_W), D_L1_3(KC_E), D_L1_4(KC_R), D_L1_5(KC_T),                   D_R1_1(KC_Y), D_R1_2(KC_U), D_R1_3(KC_I), D_R1_4(KC_O), D_R1_5(KC_P),
-        D_L2_1(KC_A), D_L2_2(KC_S), D_L2_3(KC_D), D_L2_4(KC_F), D_L2_5(KC_G),                   D_R2_1(KC_H), D_R2_2(KC_J), D_R2_3(KC_K), D_R2_4(KC_L), D_R2_5(),
-        D_L3_1(KC_Z), D_L3_2(KC_X), D_L3_3(KC_C), D_L3_4(KC_V), D_L3_5(KC_B),                   D_R3_1(KC_N), D_R3_2(KC_M), D_R3_3(KC_COMM), D_R3_4(KC_DOT), D_R3_5(),
-        D_TL_1(), D_TL_2(),                                                                     D_TR_1(), D_TR_2()
+        KC_Q, KC_W, HYPR_T(KC_E), KC_R, KC_T,                   KC_Y, LT(L_WORKAC, KC_U), HYPR_T(KC_I), LT(L_WORKA, KC_O), LGUI_T(KC_P),
+        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,       KC_H, LCTL_T(KC_J), LSFT_T(KC_K), LALT_T(KC_L), KC_BSPC,
+        LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RGUI_T(KC_V), KC_B,   KC_N, RGUI_T(KC_M), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
+        LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                              OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_SYM] = LAYOUT_split_3x5_2(
-        D_L1_1(KC_EXLM), D_L1_2(KC_AT), KC_HASH, D_L1_4(KC_DLR), D_L1_5(KC_PERC),               D_R1_1(KC_CIRC), TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
-        D_L2_1(KC_MINS), D_L2_2(KC_QUOT), TD(DANCE_6), TD(DANCE_7), D_L2_5(KC_GRAVE),           D_R2_1(KC_PLUS), D_R2_2(KC_SLSH), TD(DANCE_8), TD(DANCE_9), KC_TRNS,
-        TD(DANCE_2), D_L3_2(KC_SCLN), D_L3_3(KC_LBRC), D_L3_4(KC_RBRC), D_L3_5(KC_EQL),         D_R3_1(KC_TILD), D_R3_2(KC_BSLS), D_R3_3(KC_COMM), D_R3_4(KC_DOT), KC_TRNS,
+        KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,               KC_CIRC, TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
+        LGUI_T(KC_MINS), LALT_T(KC_QUOT), TD(DANCE_6), TD(DANCE_7), KC_GRAVE,   KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_8), TD(DANCE_9), KC_TRNS,
+        TD(DANCE_2), KC_SCLN, KC_LBRC, RGUI_T(KC_RBRC), KC_EQL,         KC_TILD, RGUI_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
         TD(DANCE_1), KC_TRNS,                                                                   KC_TRNS, KC_TRNS
     ),
     [L_NUMT] = LAYOUT_split_3x5_2(
@@ -115,9 +71,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         TD(DANCE_1), KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
     [L_NUMH] = LAYOUT_split_3x5_2(
-        D_L1_1(KC_DOT), D_L1_2(KC_1), D_L1_3(KC_2), D_L1_4(KC_3), D_L1_5(KC_COMM),              D_R1_1(KC_QUES), D_R1_2(KC_PIPE), D_R1_3(KC_LPRN), D_R1_4(KC_RPRN), D_R1_5(KC_ASTR),
-        LALT_T(KC_MINS), LGUI_T(KC_4), D_L2_3(KC_5), D_L2_4(KC_6), D_L2_5(KC_0),             D_R2_1(KC_PLUS), LSFT_T(KC_LT), D_R2_3(KC_GT), D_R2_4(KC_COLN), KC_TRNS,
-        LCA_T(QK_LLCK), D_L3_2(KC_7), D_L3_3(KC_8), D_L3_4(KC_9), D_L3_5(KC_EQL),               D_R3_1(KC_TILD), D_R3_2(KC_BSLS), D_R3_3(KC_COMM), D_R3_4(KC_DOT), KC_TRNS,
+        KC_DOT, KC_1, KC_2, KC_3, KC_COMM,                                                          KC_QUES, KC_PIPE, KC_LPRN, KC_RPRN, LGUI_T(KC_ASTR),
+        LALT_T(KC_MINS), LGUI_T(KC_4), LSFT_T(KC_5), LCTL_T(KC_6), KC_0,                            KC_PLUS, LCTL_T(KC_SLSH), LSFT_T(KC_LT), LALT_T(KC_GT), KC_TRNS,
+        LCA_T(QK_LLCK), KC_7, KC_8, RGUI_T(KC_9), KC_EQL,                                           KC_TILD, RGUI_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
         TD(DANCE_1), KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
     [L_WORKA] = LAYOUT_split_3x5_2(
@@ -139,10 +95,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_TRNS,                                                                       KC_ENT, KC_TRNS
     ),
     [L_MOVE] = LAYOUT_split_3x5_2(
-        D_L1_1(KC_Q), D_L1_2(KC_W), D_L1_3(KC_UP), D_L1_4(KC_R), D_L1_5(KC_T),                  D_R1_1(KC_HOME), D_R1_2(KC_U), D_R1_3(KC_I), D_R1_4(KC_END), D_R1_5(KC_UP),
-        D_L2_1(KC_A), D_L2_2(C_LEFT), D_L2_3(KC_DOWN), D_L2_4(C_RIGHT), D_L2_5(KC_G),          D_R2_1(C_LEFT), D_R2_2(KC_DOWN), D_R2_3(KC_UP), D_R2_4(C_RIGHT), KC_TRNS,
-        D_L3_1(KC_Z), D_L3_2(KC_WBAK), D_L3_3(KC_PGUP), D_L3_4(KC_PGDN), D_L3_5(KC_WFWD),       D_R3_1(KC_DOWN), D_R3_2(KC_M), D_R3_3(KC_COMM), D_R3_4(KC_DOT), KC_TRNS,
-        D_TL_1(), D_TL_2(),                                                                     D_TR_1(), D_TR_2()
+        KC_Q, KC_W, KC_UP, KC_R, KC_T,                  KC_HOME, KC_U, KC_I, KC_END, LGUI_T(KC_UP),
+        LGUI_T(KC_A), LALT_T(C_LEFT), LSFT_T(KC_DOWN), LCTL_T(C_RIGHT), KC_G,          C_LEFT, LCTL_T(KC_DOWN), LSFT_T(KC_UP), LALT_T(C_RIGHT), KC_TRNS,
+        KC_Z, KC_WBAK, KC_PGUP, KC_PGDN, KC_WFWD,       KC_DOWN, KC_M, KC_COMM, KC_DOT, KC_TRNS,
+        KC_TRNS, KC_TRNS,                                                                     KC_TRNS, KC_TRNS
     ),
     [L_SYS] = LAYOUT_split_3x5_2(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -382,17 +338,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     switch (keycode) {
         // otherwiese the tap hold behavior would not work in move layer
-        case D_R2_4(C_RIGHT):
+        case LALT_T(C_RIGHT):
             if (record->event.pressed) {
                 mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
             }
             break;
-        case D_L2_4(C_RIGHT):
+        case LCTL_T(C_RIGHT):
             if (record->event.pressed) {
                 mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
             }
             break;
-        case D_L2_2(C_LEFT):
+        case LALT_T(C_LEFT):
             if (record->event.pressed) {
                 mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
             }
