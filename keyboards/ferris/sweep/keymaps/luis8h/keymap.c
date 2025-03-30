@@ -300,6 +300,13 @@ const key_override_t macos_backspace_ctl_override = {
     .enabled           = NULL,
 };
 
+bool test_action(bool key_down, void *layer) {
+    if (current_os == OS_MACOS || current_os == OS_IOS) {
+        return true;
+    }
+    return false;
+}
+
 const key_override_t delete_key_override_test = {
     .trigger_mods      = MOD_MASK_CTRL,
     .trigger           = KC_BSPC,
@@ -308,6 +315,8 @@ const key_override_t delete_key_override_test = {
     .negative_mod_mask = 0,
     .suppressed_mods   = MOD_MASK_CTRL,       // Suppress the triggering modifier.
     .enabled           = NULL,                // Always enabled.
+    .context           = (void *)L_MOVE,
+    .custom_action     = test_action,
     .options           = ko_options_default,
 };
 
