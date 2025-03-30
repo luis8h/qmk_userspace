@@ -284,7 +284,7 @@ bool os_specific_override(bool key_down, void *ctx) {
 
 
 const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
-const key_override_t delete_key_override_test = ko_make_basic(MOD_MASK_CTRL, KC_BSPC, A(KC_BSPC));
+// const key_override_t delete_key_override_test = ko_make_basic(MOD_MASK_CTRL, KC_BSPC, A(KC_BSPC));
 
 static const os_override_ctx_t macos_backspace_ctl_override_ctx = {
     .replacement = A(KC_BSPC), // Replacement for macOS: Alt+Backspace.
@@ -300,12 +300,24 @@ const key_override_t macos_backspace_ctl_override = {
     .enabled           = NULL,
 };
 
+const key_override_t delete_key_override_test = {
+    .trigger_mods      = MOD_MASK_CTRL,
+    .trigger           = KC_BSPC,
+    .replacement       = A(KC_BSPC),
+    .layers            = ~0,                  // Active on all layers.
+    .negative_mod_mask = 0,
+    .suppressed_mods   = MOD_MASK_CTRL,       // Suppress the triggering modifier.
+    .enabled           = NULL,                // Always enabled.
+    .options           = ko_options_default,
+};
+
+
 
 
 const key_override_t *key_overrides[] = {
 	&delete_key_override,
-    &macos_backspace_ctl_override,
-    // &delete_key_override_test,
+    // &macos_backspace_ctl_override,
+    &delete_key_override_test,
     NULL,
 };
 
