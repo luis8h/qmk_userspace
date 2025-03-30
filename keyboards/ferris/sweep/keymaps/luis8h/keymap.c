@@ -37,6 +37,7 @@ enum {
     DANCE_7,
     DANCE_8,
     DANCE_9,
+    DANCE_MOVE_1,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -96,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [L_MOVE] = LAYOUT_split_3x5_2(
         KC_Q, KC_W, KC_UP, KC_R, KC_T,                  KC_HOME, KC_U, KC_I, KC_END, LGUI_T(KC_UP),
-        LGUI_T(KC_A), LALT_T(C_LEFT), LSFT_T(KC_DOWN), LCTL_T(C_RIGHT), KC_G,          C_LEFT, LCTL_T(KC_DOWN), LSFT_T(KC_UP), LALT_T(C_RIGHT), KC_TRNS,
+        LGUI_T(KC_A), LALT_T(C_LEFT), LSFT_T(KC_DOWN), LCTL_T(C_RIGHT), KC_G,          TD(DANCE_MOVE_1), LCTL_T(KC_DOWN), LSFT_T(KC_UP), LALT_T(C_RIGHT), KC_TRNS,
         KC_Z, KC_WBAK, KC_PGUP, KC_PGDN, KC_WFWD,       KC_DOWN, KC_M, KC_COMM, KC_DOT, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                                     KC_TRNS, KC_TRNS
     ),
@@ -107,6 +108,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         TD(DANCE_1), KC_TRNS,                                                                       KC_TRNS, KC_TRNS
     ),
 };
+
+
+// OS detection
+static os_variant_t current_os = OS_UNSURE;
+static bool macos_overrides_enabled = false;
+bool process_detected_host_os_kb(os_variant_t detected_os) {
+    if (!process_detected_host_os_user(detected_os)) {
+        return false;
+    }
+
+    if (detected_os == OS_MACOS || detected_os == OS_IOS) {
+        set_unicode_input_mode(UNICODE_MODE_MACOS);
+        macos_overrides_enabled = true;
+    } else {
+        set_unicode_input_mode(UNICODE_MODE_LINUX);
+        macos_overrides_enabled = false;
+    }
+
+    current_os = detected_os;
+    return true;
+}
+
 
 // tap dance 1 functions
 void dance_1_finished(tap_dance_state_t *state, void *user_data) {
@@ -222,6 +245,87 @@ void dance_9_reset(tap_dance_state_t *state, void *user_data) {
     hold_tap_mod_dance_reset(state, KC_COLN, KC_LALT, 8);
 }
 
+// move layer dances
+void move_on_dance_1(tap_dance_state_t *state, void *user_data) {
+    uint16_t mod1 = KC_LCTL;
+    uint16_t mod2 = KC_LALT;
+    uint16_t key = KC_LEFT;
+
+    if (get_mods() & MOD_BIT(mod1) && (current_os == OS_MACOS || current_os == OS_IOS)) {
+        del_mods(MOD_BIT(mod1));
+
+        register_code16(mod2);
+        tap_code16(key);
+        unregister_code16(mod2);
+
+        set_mods(get_mods() | MOD_BIT(mod1));
+    }
+    else if (get_mods() & MOD_BIT(mod2) && (current_os == OS_MACOS || current_os == OS_IOS)) {
+        del_mods(MOD_BIT(mod2));
+
+        register_code16(mod1);
+        tap_code16(key);
+        unregister_code16(mod1);
+
+        set_mods(get_mods() | MOD_BIT(mod2));
+    } else {
+        if (state->count == 3) {
+            tap_code16(key);
+            tap_code16(key);
+            tap_code16(key);
+        } else if (state->count > 3) {
+            tap_code16(key);
+        }
+    }
+}
+void move_dance_1_finished(tap_dance_state_t *state, void *user_data) {
+    int state_index = 9;
+    uint16_t key = KC_LEFT;
+    uint16_t mod = KC_LCTL;
+    uint16_t mod1 = KC_LCTL;
+    uint16_t mod2 = KC_LALT;
+
+    if (get_mods() & MOD_BIT(mod1) && (current_os == OS_MACOS || current_os == OS_IOS)) {
+        del_mods(MOD_BIT(mod1));
+
+        register_code16(mod2);
+        tap_code16(key);
+        unregister_code16(mod2);
+
+        set_mods(get_mods() | MOD_BIT(mod1));
+    }
+    else if (get_mods() & MOD_BIT(mod2) && (current_os == OS_MACOS || current_os == OS_IOS)) {
+        del_mods(MOD_BIT(mod2));
+
+        register_code16(mod1);
+        tap_code16(key);
+        unregister_code16(mod1);
+
+        set_mods(get_mods() | MOD_BIT(mod2));
+    } else {
+        dance_state[state_index].step = dance_step(state);
+        switch (dance_state[state_index].step) {
+            case SINGLE_TAP:
+                register_code16(key);
+                break;
+            case SINGLE_HOLD:
+                register_code16(mod);
+                break;
+            case DOUBLE_TAP:
+                register_code16(key);
+                register_code16(key);
+                break;
+            case DOUBLE_SINGLE_TAP:
+                register_code16(key);
+                register_code16(key);
+                break;
+        }
+    }
+}
+void move_dance_1_reset(tap_dance_state_t *state, void *user_data) {
+    hold_tap_mod_dance_reset(state, KC_LEFT, KC_LCTL, 9);
+}
+
 // register tap dance keys
 tap_dance_action_t tap_dance_actions[] = {
     [DANCE_1] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_1_finished, dance_1_reset),
@@ -233,28 +337,9 @@ tap_dance_action_t tap_dance_actions[] = {
     [DANCE_7] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_7, dance_7_finished, dance_7_reset),
     [DANCE_8] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_8, dance_8_finished, dance_8_reset),
     [DANCE_9] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_9, dance_9_finished, dance_9_reset),
+    [DANCE_MOVE_1] = ACTION_TAP_DANCE_FN_ADVANCED(move_on_dance_1, move_dance_1_finished, move_dance_1_reset),
 };
 
-
-// OS detection
-static os_variant_t current_os = OS_UNSURE;
-static bool macos_overrides_enabled = false;
-bool process_detected_host_os_kb(os_variant_t detected_os) {
-    if (!process_detected_host_os_user(detected_os)) {
-        return false;
-    }
-
-    if (detected_os == OS_MACOS || detected_os == OS_IOS) {
-        set_unicode_input_mode(UNICODE_MODE_MACOS);
-        macos_overrides_enabled = true;
-    } else {
-        set_unicode_input_mode(UNICODE_MODE_LINUX);
-        macos_overrides_enabled = false;
-    }
-
-    current_os = detected_os;
-    return true;
-}
 
 // overrides
 
