@@ -323,7 +323,41 @@ void move_dance_1_finished(tap_dance_state_t *state, void *user_data) {
     }
 }
 void move_dance_1_reset(tap_dance_state_t *state, void *user_data) {
-    hold_tap_mod_dance_reset(state, KC_LEFT, KC_LCTL, 9);
+    wait_ms(10);
+    int state_index = 9;
+    uint16_t key = KC_LEFT;
+    uint16_t mod = KC_LCTL;
+    uint16_t mod1 = KC_LCTL;
+    uint16_t mod2 = KC_LALT;
+
+    if (get_mods() & MOD_BIT(mod1) && (current_os == OS_MACOS || current_os == OS_IOS)) {
+        // del_mods(MOD_BIT(mod1));
+        //
+        // register_code16(mod2);
+        // tap_code16(key);
+        // unregister_code16(mod2);
+        //
+        // set_mods(get_mods() | MOD_BIT(mod1));
+    }
+    else if (get_mods() & MOD_BIT(mod2) && (current_os == OS_MACOS || current_os == OS_IOS)) {
+        // del_mods(MOD_BIT(mod2));
+        //
+        // register_code16(mod1);
+        // tap_code16(key);
+        // unregister_code16(mod1);
+        //
+        // set_mods(get_mods() | MOD_BIT(mod2));
+    } else {
+        switch (dance_state[state_index].step) {
+            case SINGLE_TAP: unregister_code16(key); break;
+            case SINGLE_HOLD:
+                unregister_code16(mod);
+                break;
+            case DOUBLE_TAP: unregister_code16(key); break;
+            case DOUBLE_SINGLE_TAP: unregister_code16(key); break;
+        }
+        dance_state[state_index].step = 0;
+    }
 }
 
 // register tap dance keys
