@@ -238,6 +238,7 @@ tap_dance_action_t tap_dance_actions[] = {
 
 // OS detection
 static os_variant_t current_os = OS_UNSURE;
+static bool macos_overrides_enabled = false;
 bool process_detected_host_os_kb(os_variant_t detected_os) {
     if (!process_detected_host_os_user(detected_os)) {
         return false;
@@ -245,8 +246,10 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 
     if (detected_os == OS_MACOS || detected_os == OS_IOS) {
         set_unicode_input_mode(UNICODE_MODE_MACOS);
+        macos_overrides_enabled = true;
     } else {
         set_unicode_input_mode(UNICODE_MODE_LINUX);
+        macos_overrides_enabled = false;
     }
 
     current_os = detected_os;
@@ -314,9 +317,9 @@ const key_override_t delete_key_override_test = {
     .layers            = ~0,                  // Active on all layers.
     .negative_mod_mask = 0,
     .suppressed_mods   = MOD_MASK_CTRL,       // Suppress the triggering modifier.
-    .enabled           = NULL,                // Always enabled.
-    .context           = (void *)L_MOVE,
-    .custom_action     = test_action,
+    .enabled           = &macos_overrides_enabled,                // Always enabled.
+    // .context           = (void *)L_MOVE,
+    // .custom_action     = test_action,
     .options           = ko_options_default,
 };
 
