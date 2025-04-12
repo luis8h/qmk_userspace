@@ -26,6 +26,11 @@ enum custom_keycodes {
 #define L_MOVE 9
 #define L_SYS 10
 
+#define K_PC_COPY LCTL(KC_C)
+#define K_PC_PASTE LCTL(KC_V)
+#define K_PC_UNDO LCTL(KC_Z)
+#define K_PC_REDO LCTL(KC_Y)
+
 // define tap dance keys
 enum {
     DANCE_1,
@@ -92,9 +97,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
     ),
     [L_ESC] = LAYOUT_split_3x5_2(
-        KC_COPY, KC_PASTE, LCTL(KC_SPC), KC_F8, KC_TRNS,                        KC_TRNS, CW_TOGG, KC_TRNS, KC_TRNS, KC_TRNS,
+        K_PC_COPY, K_PC_PASTE, LCTL(KC_SPC), KC_F8, KC_TRNS,                    KC_TRNS, CW_TOGG, KC_TRNS, KC_TRNS, KC_TRNS,
         C_TAB, KC_DEL, KC_LSFT, KC_BSPC, KC_TRNS,                               KC_TRNS, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
-        KC_ENT, KC_WBAK, KC_UNDO, KC_AGIN, KC_WFWD,                             KC_RCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_ENT, KC_WBAK, K_PC_UNDO, K_PC_REDO, KC_WFWD,                         KC_RCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                       KC_ENT, KC_TRNS
     ),
     [L_MOVE] = LAYOUT_split_3x5_2(
