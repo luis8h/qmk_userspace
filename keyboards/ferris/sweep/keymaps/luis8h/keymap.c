@@ -11,6 +11,8 @@ enum custom_keycodes {
     C_LEFT,
     C_TAB,
     C_BSPC,
+    K_PC_BACK,
+    K_PC_FWD,
 };
 
 // Layers
@@ -360,7 +362,7 @@ void mod_swap(uint16_t key, uint16_t mod1, uint16_t mod2) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // TODO: the mod swap behavior could also be implemented with tap dance in the future
+    // TODO: the mod swap behavior could also be implemented with tap dance in the future (this would probably allow to repeat the key on double press hold)
 
     switch (keycode) {
         // otherwiese the tap hold behavior would not work in move layer
@@ -394,6 +396,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case C_TAB:
             if (record->event.pressed) {
                 mod_swap(KC_TAB, KC_LCTL, KC_LGUI);
+            }
+            break;
+        case K_PC_FWD:
+            if (record->event.pressed) {
+                if (macos_overrides_enabled) {
+                    SEND_STRING(SS_LCTL(SS_TAP(X_RGHT)))
+                } else {
+                    SEND_STRING(SS_LALT(SS_TAP(X_RGHT)))
+                }
+            }
+            break;
+        case K_PC_BACK:
+            if (record->event.pressed) {
+                if (macos_overrides_enabled) {
+                    SEND_STRING(SS_LCTL(SS_TAP(X_LEFT)))
+                } else {
+                    SEND_STRING(SS_LALT(SS_TAP(X_LEFT)))
+                }
             }
             break;
     }
