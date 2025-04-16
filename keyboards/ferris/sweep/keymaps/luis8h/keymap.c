@@ -401,18 +401,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case K_PC_FWD:
             if (record->event.pressed) {
                 if (macos_overrides_enabled) {
-                    SEND_STRING(SS_LCTL(SS_TAP(X_RGHT)))
+                    SEND_STRING(SS_LCTL(SS_TAP(X_RGHT)));
                 } else {
-                    SEND_STRING(SS_LALT(SS_TAP(X_RGHT)))
+                    SEND_STRING(SS_LALT(SS_TAP(X_RGHT)));
                 }
             }
             break;
         case K_PC_BACK:
             if (record->event.pressed) {
                 if (macos_overrides_enabled) {
-                    SEND_STRING(SS_LCTL(SS_TAP(X_LEFT)))
+                    SEND_STRING(SS_LCTL(SS_TAP(X_LEFT)));
                 } else {
-                    SEND_STRING(SS_LALT(SS_TAP(X_LEFT)))
+                    SEND_STRING(SS_LALT(SS_TAP(X_LEFT)));
                 }
             }
             break;
