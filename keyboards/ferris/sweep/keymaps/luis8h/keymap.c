@@ -13,6 +13,8 @@ enum custom_keycodes {
     C_BSPC,
     K_PC_BACK,
     K_PC_FWD,
+    COLEMAK_ON,
+    QWERTY_ON,
 };
 
 // Layers
@@ -52,6 +54,8 @@ enum {
     DANCE_12,
 };
 
+int curbase = L_BASE;
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE] = LAYOUT_split_3x5_2(
         KC_Q, KC_W, HYPR_T(KC_E), KC_R, KC_T,                                   KC_Y, LT(L_WORKAC, KC_U), HYPR_T(KC_I), LT(L_WORKA, KC_O), LGUI_T(KC_P),
@@ -60,10 +64,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                  OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_COLE] = LAYOUT_split_3x5_2(
-        KC_Q, KC_W, HYPR_T(KC_E), KC_R, KC_T,                                   KC_Y, LT(L_WORKAC, KC_U), HYPR_T(KC_I), LT(L_WORKA, KC_O), LGUI_T(KC_P),
-        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,           KC_H, LCTL_T(KC_J), LSFT_T(KC_K), LALT_T(KC_L), KC_BSPC,
-        LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RALT_T(KC_V), KC_B,        KC_N, RALT_T(KC_M), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
-        LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                  OSM(MOD_LSFT), OSL(L_SYM)
+        KC_Q, KC_W, HYPR_T(KC_F), KC_P, KC_G,                                       KC_J, LT(L_WORKAC, KC_L), HYPR_T(KC_U), LT(L_WORKA, KC_Y), KC_BSPC,
+        LGUI_T(KC_A), LALT_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_D,               KC_H, LCTL_T(KC_N), LSFT_T(KC_E), LALT_T(KC_I), LGUI_T(KC_O),
+        LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RALT_T(KC_V), KC_B,            KC_K, RALT_T(KC_M), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
+        LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                      OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_SYM] = LAYOUT_split_3x5_2(
         KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,                               KC_CIRC, TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
@@ -115,7 +119,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [L_SYS] = LAYOUT_split_3x5_2(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        QK_BOOTLOADER, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,
+        QK_BOOTLOADER, KC_TRNS, QWERTY_ON, COLEMAK_ON, KC_TRNS,                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
@@ -126,16 +130,16 @@ void dance_1_finished(tap_dance_state_t *state, void *user_data) {
     dance_state[0].step = dance_step(state);
     switch (dance_state[0].step) {
         case SINGLE_TAP:
-            layer_move(L_BASE);
+            layer_move(curbase);
             break;
         case SINGLE_HOLD:
             layer_on(L_ESC);
             break;
         case DOUBLE_TAP:
-            layer_move(L_BASE);
+            layer_move(curbase);
             break;
         case DOUBLE_SINGLE_TAP:
-            layer_move(L_BASE);
+            layer_move(curbase);
             break;
     }
 }
@@ -306,7 +310,7 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 }
 
 // overrides
-const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+// const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
 
 const key_override_t macos_backspace_ctl_override = {
     .trigger_mods      = MOD_MASK_CTRL,
@@ -331,7 +335,7 @@ const key_override_t macos_backspace_alt_override = {
 };
 
 const key_override_t *key_overrides[] = {
-	&delete_key_override,
+	// &delete_key_override,
     &macos_backspace_ctl_override,
     &macos_backspace_alt_override,
     NULL,
@@ -416,6 +420,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             break;
+        case COLEMAK_ON:
+            if (record->event.pressed) {
+                curbase = L_COLE;
+            }
+            return false;
+        case QWERTY_ON:
+            if (record->event.pressed) {
+                curbase = L_BASE;
+            }
+            return false;
     }
     return true;
 }
