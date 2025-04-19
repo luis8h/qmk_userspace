@@ -54,7 +54,7 @@ enum {
     DANCE_12,
 };
 
-int curbase = L_BASE;
+uint8_t curbase = L_BASE;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE] = LAYOUT_split_3x5_2(
@@ -423,11 +423,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case COLEMAK_ON:
             if (record->event.pressed) {
                 curbase = L_COLE;
+                set_single_default_layer(L_COLE);
             }
             return false;
         case QWERTY_ON:
             if (record->event.pressed) {
                 curbase = L_BASE;
+                set_single_default_layer(L_BASE);
             }
             return false;
     }
