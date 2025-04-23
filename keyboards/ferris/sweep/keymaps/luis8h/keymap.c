@@ -29,6 +29,8 @@ enum custom_keycodes {
 #define L_ESC 8
 #define L_MOVE 9
 #define L_SYS 10
+#define L_TMUX_MOVE 11
+#define L_VIM_MOVE 12
 
 #define K_PC_COPY LCTL(KC_C)
 #define K_PC_PASTE LCTL(KC_V)
@@ -58,14 +60,14 @@ uint8_t curbase = L_BASE;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE] = LAYOUT_split_3x5_2(
-        KC_Q, KC_W, HYPR_T(KC_E), KC_R, KC_T,                                   KC_Y, LT(L_WORKAC, KC_U), HYPR_T(KC_I), LT(L_WORKA, KC_O), LGUI_T(KC_P),
-        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,           KC_H, LCTL_T(KC_J), LSFT_T(KC_K), LALT_T(KC_L), KC_BSPC,
+        LGUI_T(KC_Q), KC_W, HYPR_T(KC_E), KC_R, LT(L_TMUX_MOVE, KC_T),                  KC_Y, LT(L_WORKAC, KC_U), HYPR_T(KC_I), LT(L_WORKA, KC_O), LGUI_T(KC_P),
+        LT(L_VIM_MOVE, KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), LT(L_VIM_MOVE, KC_G),           KC_H, LCTL_T(KC_J), LSFT_T(KC_K), LALT_T(KC_L), KC_BSPC,
         LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RALT_T(KC_V), KC_B,        KC_N, RALT_T(KC_M), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
         LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                  OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_COLE] = LAYOUT_split_3x5_2(
-        KC_Q, KC_W, HYPR_T(KC_F), KC_P, KC_G,                                       KC_J, LT(L_WORKAC, KC_L), HYPR_T(KC_U), LT(L_WORKA, KC_Y), KC_BSPC,
-        LGUI_T(KC_A), LALT_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_D,               KC_H, LCTL_T(KC_N), LSFT_T(KC_E), LALT_T(KC_I), LGUI_T(KC_O),
+        LGUI_T(KC_Q), KC_W, HYPR_T(KC_F), KC_P, LT(L_TMUX_MOVE, KC_G),                                       KC_J, LT(L_WORKAC, KC_L), HYPR_T(KC_U), LT(L_WORKA, KC_Y), KC_BSPC,
+        LT(L_VIM_MOVE, KC_A), LALT_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), LT(L_VIM_MOVE, KC_D),               KC_H, LCTL_T(KC_N), LSFT_T(KC_E), LALT_T(KC_I), LGUI_T(KC_O),
         LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RALT_T(KC_V), KC_B,            KC_K, RALT_T(KC_M), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
         LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                      OSM(MOD_LSFT), OSL(L_SYM)
     ),
@@ -122,6 +124,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         QK_BOOTLOADER, KC_TRNS, QWERTY_ON, COLEMAK_ON, KC_TRNS,                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
+    ),
+    [L_TMUX_MOVE] = LAYOUT_split_3x5_2(
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            LCTL(KC_H), LCTL(KC_J), LCTL(KC_K), LCTL(KC_L), KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
+    ),
+    [L_VIM_MOVE] = LAYOUT_split_3x5_2(
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_LEFT, KC_UP, KC_DOWN, KC_RIGHT, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
     ),
 };
 
