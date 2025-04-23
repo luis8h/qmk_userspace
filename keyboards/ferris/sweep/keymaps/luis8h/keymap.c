@@ -332,16 +332,14 @@ void dance_13_finished(tap_dance_state_t *state, void *user_data) {
     switch (dance_state[12].step) {
         case SINGLE_TAP:
             if (get_mods() & MOD_BIT(KC_LCTL) && (current_os == OS_MACOS || current_os == OS_IOS)) {
-                // 1) release physical Ctrl
+                // del_mods(MOD_BIT(KC_LCTL));
                 unregister_code16(KC_LCTL);
-                // 2) press Alt
                 register_code16(KC_LALT);
-                // 3) tap Right-arrow
-                tap_code16(KC_RIGHT);
-                // 4) release Alt
-                unregister_code16(KC_LALT);
-                // 5) restore Ctrl
-                register_code16(KC_LCTL);
+                register_code16(KC_RIGHT);
+                swapped = true;
+                // tap_code16(key);
+                // unregister_code16(mod2);
+                // set_mods(get_mods() | MOD_BIT(mod1));
             } else {
                 register_code16(KC_RIGHT);
             }
@@ -362,6 +360,15 @@ void dance_13_finished(tap_dance_state_t *state, void *user_data) {
 void dance_13_reset(tap_dance_state_t *state, void *user_data) {
     switch (dance_state[12].step) {
         case SINGLE_TAP:
+            if (swapped) {
+                unregister_code16(KC_RIGHT);
+                unregister_code16(KC_LALT);
+                // set_mods(get_mods() | MOD_BIT(KC_LCTL));
+                register_code16(KC_LCTL);
+                swapped = false;
+            } else {
+                unregister_code16(KC_RIGHT);
+            }
             break;
         case SINGLE_HOLD:
             unregister_code16(KC_LALT);
