@@ -326,7 +326,7 @@ void on_dance_13(tap_dance_state_t *state, void *user_data) {
         tap_code16(KC_RIGHT);
     }
 }
-// static bool swapped = false;
+static bool swapped = false;
 void dance_13_finished(tap_dance_state_t *state, void *user_data) {
     dance_state[12].step = dance_step(state);
     switch (dance_state[12].step) {
