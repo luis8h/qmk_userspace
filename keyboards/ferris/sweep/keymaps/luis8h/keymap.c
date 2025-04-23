@@ -273,49 +273,6 @@ void dance_12_reset(tap_dance_state_t *state, void *user_data) {
     hold_tap_mod_dance_reset(state, KC_ASTR, KC_LGUI, 11);
 }
 
-// OS detection
-static os_variant_t current_os = OS_UNSURE;
-static bool macos_overrides_enabled = false;
-bool process_detected_host_os_kb(os_variant_t detected_os) {
-    if (!process_detected_host_os_user(detected_os)) {
-        return false;
-    }
-
-    if (detected_os == OS_MACOS || detected_os == OS_IOS) {
-        set_unicode_input_mode(UNICODE_MODE_MACOS);
-        macos_overrides_enabled = true;
-    } else {
-        set_unicode_input_mode(UNICODE_MODE_LINUX);
-        macos_overrides_enabled = false;
-    }
-
-    current_os = detected_os;
-    return true;
-}
-
-void mod_swap(uint16_t key, uint16_t mod1, uint16_t mod2) {
-    if (get_mods() & MOD_BIT(mod1) && (current_os == OS_MACOS || current_os == OS_IOS)) {
-        del_mods(MOD_BIT(mod1));
-
-        register_code16(mod2);
-        tap_code16(key);
-        unregister_code16(mod2);
-
-        set_mods(get_mods() | MOD_BIT(mod1));
-    }
-    else if (get_mods() & MOD_BIT(mod2) && (current_os == OS_MACOS || current_os == OS_IOS)) {
-        del_mods(MOD_BIT(mod2));
-
-        register_code16(mod1);
-        tap_code16(key);
-        unregister_code16(mod1);
-
-        set_mods(get_mods() | MOD_BIT(mod2));
-    } else {
-        tap_code(key);
-    }
-}
-
 // tap dance 13 functions
 void on_dance_13(tap_dance_state_t *state, void *user_data) {
     if (state->count == 3) {
@@ -326,23 +283,11 @@ void on_dance_13(tap_dance_state_t *state, void *user_data) {
         tap_code16(KC_RIGHT);
     }
 }
-static bool swapped = false;
 void dance_13_finished(tap_dance_state_t *state, void *user_data) {
     dance_state[12].step = dance_step(state);
     switch (dance_state[12].step) {
         case SINGLE_TAP:
-            if (get_mods() & MOD_BIT(KC_LCTL) && (current_os == OS_MACOS || current_os == OS_IOS)) {
-                del_mods(MOD_BIT(KC_LCTL));
-
-                register_code16(KC_LALT);
-                register_code16(KC_RIGHT);
-                swapped = true;
-                // tap_code16(key);
-                // unregister_code16(mod2);
-                // set_mods(get_mods() | MOD_BIT(mod1));
-            } else {
-                register_code16(KC_RIGHT);
-            }
+            register_code16(KC_RIGHT); break;
             break;
         case SINGLE_HOLD:
             register_code16(KC_LALT);
@@ -358,17 +303,9 @@ void dance_13_finished(tap_dance_state_t *state, void *user_data) {
     }
 }
 void dance_13_reset(tap_dance_state_t *state, void *user_data) {
+    wait_ms(10);
     switch (dance_state[12].step) {
-        case SINGLE_TAP:
-            if (swapped) {
-                unregister_code16(KC_LALT);
-                unregister_code16(KC_RIGHT);
-                set_mods(get_mods() | MOD_BIT(KC_LCTL));
-                swapped = false;
-            } else {
-                unregister_code16(KC_RIGHT);
-            }
-            break;
+        case SINGLE_TAP: unregister_code16(KC_RIGHT); break;
         case SINGLE_HOLD:
             unregister_code16(KC_LALT);
             break;
@@ -392,9 +329,29 @@ tap_dance_action_t tap_dance_actions[] = {
     [DANCE_10] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_10, dance_10_finished, dance_10_reset),
     [DANCE_11] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_11, dance_11_finished, dance_11_reset),
     [DANCE_12] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_12, dance_12_finished, dance_12_reset),
-    [DANCE_13] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_13_finished, dance_13_reset),
+    [DANCE_13] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_13, dance_13_finished, dance_13_reset),
 };
 
+
+// OS detection
+static os_variant_t current_os = OS_UNSURE;
+static bool macos_overrides_enabled = false;
+bool process_detected_host_os_kb(os_variant_t detected_os) {
+    if (!process_detected_host_os_user(detected_os)) {
+        return false;
+    }
+
+    if (detected_os == OS_MACOS || detected_os == OS_IOS) {
+        set_unicode_input_mode(UNICODE_MODE_MACOS);
+        macos_overrides_enabled = true;
+    } else {
+        set_unicode_input_mode(UNICODE_MODE_LINUX);
+        macos_overrides_enabled = false;
+    }
+
+    current_os = detected_os;
+    return true;
+}
 
 // overrides
 // const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
@@ -429,6 +386,28 @@ const key_override_t *key_overrides[] = {
 };
 
 // macros
+void mod_swap(uint16_t key, uint16_t mod1, uint16_t mod2) {
+    if (get_mods() & MOD_BIT(mod1) && (current_os == OS_MACOS || current_os == OS_IOS)) {
+        del_mods(MOD_BIT(mod1));
+
+        register_code16(mod2);
+        tap_code16(key);
+        unregister_code16(mod2);
+
+        set_mods(get_mods() | MOD_BIT(mod1));
+    }
+    else if (get_mods() & MOD_BIT(mod2) && (current_os == OS_MACOS || current_os == OS_IOS)) {
+        del_mods(MOD_BIT(mod2));
+
+        register_code16(mod1);
+        tap_code16(key);
+        unregister_code16(mod1);
+
+        set_mods(get_mods() | MOD_BIT(mod2));
+    } else {
+        tap_code(key);
+    }
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // TODO: the mod swap behavior could also be implemented with tap dance in the future (this would probably allow to repeat the key on double press hold)
