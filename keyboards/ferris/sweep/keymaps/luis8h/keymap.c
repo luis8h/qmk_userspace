@@ -331,24 +331,19 @@ void dance_13_finished(tap_dance_state_t *state, void *user_data) {
     dance_state[12].step = dance_step(state);
     switch (dance_state[12].step) {
         case SINGLE_TAP:
-            // Only on macOS/iOS when Ctrl is held:
-            if ((get_mods() & MOD_BIT(KC_LCTL))
-                && (current_os == OS_MACOS || current_os == OS_IOS)) {
-
-                // 1) Physically release Ctrl
-                unregister_mods(MOD_BIT(KC_LCTL));
-                // 2) Physically press Alt
-                register_mods(MOD_BIT(KC_LALT));
-                // 3) Tap the Right-Arrow
+            if (get_mods() & MOD_BIT(KC_LCTL) && (current_os == OS_MACOS || current_os == OS_IOS)) {
+                // 1) release physical Ctrl
+                unregister_code16(KC_LCTL);
+                // 2) press Alt
+                register_code16(KC_LALT);
+                // 3) tap Right-arrow
                 tap_code16(KC_RIGHT);
-                // 4) Release Alt
-                unregister_mods(MOD_BIT(KC_LALT));
-                // 5) Restore Ctrl
-                register_mods(MOD_BIT(KC_LCTL));
-
+                // 4) release Alt
+                unregister_code16(KC_LALT);
+                // 5) restore Ctrl
+                register_code16(KC_LCTL);
             } else {
-                // Fallback: normal arrow tap
-                tap_code16(KC_RIGHT);
+                register_code16(KC_RIGHT);
             }
             break;
         case SINGLE_HOLD:
