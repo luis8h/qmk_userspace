@@ -361,8 +361,8 @@ void dance_13_reset(tap_dance_state_t *state, void *user_data) {
     switch (dance_state[12].step) {
         case SINGLE_TAP:
             if (swapped) {
-                unregister_code16(KC_RIGHT);
                 unregister_code16(KC_LALT);
+                unregister_code16(KC_RIGHT);
                 set_mods(get_mods() | MOD_BIT(KC_LCTL));
                 swapped = false;
             } else {
