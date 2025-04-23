@@ -332,8 +332,8 @@ void dance_13_finished(tap_dance_state_t *state, void *user_data) {
     switch (dance_state[12].step) {
         case SINGLE_TAP:
             if (get_mods() & MOD_BIT(KC_LCTL) && (current_os == OS_MACOS || current_os == OS_IOS)) {
-                // del_mods(MOD_BIT(KC_LCTL));
-                unregister_code16(KC_LCTL);
+                del_mods(MOD_BIT(KC_LCTL));
+
                 register_code16(KC_LALT);
                 register_code16(KC_RIGHT);
                 swapped = true;
@@ -363,8 +363,7 @@ void dance_13_reset(tap_dance_state_t *state, void *user_data) {
             if (swapped) {
                 unregister_code16(KC_RIGHT);
                 unregister_code16(KC_LALT);
-                // set_mods(get_mods() | MOD_BIT(KC_LCTL));
-                register_code16(KC_LCTL);
+                set_mods(get_mods() | MOD_BIT(KC_LCTL));
                 swapped = false;
             } else {
                 unregister_code16(KC_RIGHT);
