@@ -66,14 +66,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                  OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_COLE] = LAYOUT_split_3x5_2(
-        LGUI_T(KC_Q), KC_W, HYPR_T(KC_F), LT(L_TMUX_MOVE, KC_P), KC_G,                                       KC_J, LT(L_WORKAC, KC_L), HYPR_T(KC_U), LT(L_WORKA, KC_Y), KC_BSPC,
-        LT(L_VIM_MOVE, KC_A), LALT_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), LT(L_VIM_MOVE, KC_D),               KC_H, LCTL_T(KC_N), LSFT_T(KC_E), LALT_T(KC_I), LGUI_T(KC_O),
-        LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RALT_T(KC_V), KC_B,            KC_K, RALT_T(KC_M), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
+        LGUI_T(KC_Q), KC_W, HYPR_T(KC_F), LT(L_TMUX_MOVE, KC_P), KC_B,                                       KC_J, LT(L_WORKAC, KC_L), HYPR_T(KC_U), LT(L_WORKA, KC_Y), KC_BSPC,
+        LT(L_VIM_MOVE, KC_A), LALT_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), LT(L_VIM_MOVE, KC_G),               KC_M, LCTL_T(KC_N), LSFT_T(KC_E), LALT_T(KC_I), LGUI_T(KC_O),
+        LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RALT_T(KC_D), KC_V,            KC_K, RALT_T(KC_H), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
         LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                      OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_SYM] = LAYOUT_split_3x5_2(
         KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,                               KC_CIRC, TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
-        LGUI_T(KC_MINS), LALT_T(KC_QUOT), TD(DANCE_6), TD(DANCE_7), KC_GRAVE,   KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_8), TD(DANCE_9), KC_TRNS,
+        LGUI_T(KC_MINS), LALT_T(KC_QUOT), TD(DANCE_6), TD(DANCE_7), KC_GRAVE,   KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_8), TD(DANCE_9), KC_SCLN,
         TD(DANCE_2), KC_SCLN, KC_LBRC, RALT_T(KC_RBRC), KC_EQL,                 KC_TILD, RALT_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
         TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
