@@ -11,8 +11,8 @@ enum custom_keycodes {
     C_LEFT,
     C_TAB,
     C_BSPC,
-    K_PC_BACK,
-    K_PC_FWD,
+    WWW_BACK,
+    WWW_FWD,
     COLEMAK_ON,
     QWERTY_ON,
 };
@@ -39,6 +39,9 @@ enum custom_keycodes {
 #define K_PC_BACK LALT(KC_LEFT)
 #define K_PC_FWD LALT(KC_RIGHT)
 
+#define K_MAC_BACK LCTL(KC_LBRC)
+#define K_MAC_FWD LCTL(KC_RBRC)
+
 // define tap dance keys
 enum {
     DANCE_1,
@@ -56,6 +59,7 @@ enum {
 };
 
 uint8_t curbase = L_COLE;
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE] = LAYOUT_split_3x5_2(
@@ -109,13 +113,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_ESC] = LAYOUT_split_3x5_2(
         K_PC_COPY, K_PC_PASTE, LCTL(KC_SPC), KC_F8, KC_TRNS,                    KC_TRNS, CW_TOGG, KC_TRNS, KC_TRNS, KC_TRNS,
         C_TAB, KC_DEL, KC_LSFT, KC_BSPC, KC_TRNS,                               KC_TRNS, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
-        KC_ENT, K_PC_BACK, K_PC_UNDO, K_PC_REDO, K_PC_FWD,                      KC_RCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_ENT, WWW_BACK, K_PC_UNDO, K_PC_REDO, WWW_FWD,                        KC_RCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                       KC_ENT, KC_TRNS
     ),
     [L_MOVE] = LAYOUT_split_3x5_2(
         KC_Q, KC_W, KC_UP, KC_R, KC_T,                                          KC_Y, KC_HOME, KC_I, KC_END, LGUI_T(KC_UP),
         LGUI_T(KC_A), LALT_T(C_LEFT), LSFT_T(KC_DOWN), LCTL_T(C_RIGHT), KC_G,   C_LEFT, LCTL_T(KC_DOWN), LSFT_T(KC_UP), LALT_T(C_RIGHT), KC_TRNS,
-        KC_Z, K_PC_BACK, KC_PGDN, KC_PGUP, K_PC_FWD,                            KC_DOWN, KC_M, KC_COMM, KC_DOT, KC_TRNS,
+        KC_Z, WWW_BACK, KC_PGDN, KC_PGUP, WWW_FWD,                              KC_DOWN, KC_M, KC_COMM, KC_DOT, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
     ),
     [L_SYS] = LAYOUT_split_3x5_2(
@@ -295,7 +299,6 @@ tap_dance_action_t tap_dance_actions[] = {
     [DANCE_12] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_12, dance_12_finished, dance_12_reset),
 };
 
-
 // OS detection
 static os_variant_t current_os = OS_UNSURE;
 static bool macos_overrides_enabled = false;
@@ -314,6 +317,14 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 
     current_os = detected_os;
     return true;
+}
+
+uint16_t get_os_specific_www_back(void) {
+    return macos_overrides_enabled ? K_MAC_BACK : K_PC_BACK;
+}
+
+uint16_t get_os_specific_www_fwd(void) {
+    return macos_overrides_enabled ? K_MAC_FWD : K_PC_FWD;
 }
 
 // overrides
@@ -409,24 +420,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 mod_swap(KC_TAB, KC_LCTL, KC_LGUI);
             }
             break;
-        case K_PC_FWD:
+        case WWW_FWD:
             if (record->event.pressed) {
-                if (macos_overrides_enabled) {
-                    SEND_STRING(SS_LCTL(SS_TAP(X_RGHT)));
-                } else {
-                    SEND_STRING(SS_LALT(SS_TAP(X_RGHT)));
-                }
+                tap_code16( get_os_specific_www_back() );
+                return false;
             }
-            break;
-        case K_PC_BACK:
+        case WWW_BACK:
             if (record->event.pressed) {
-                if (macos_overrides_enabled) {
-                    SEND_STRING(SS_LCTL(SS_TAP(X_LEFT)));
-                } else {
-                    SEND_STRING(SS_LALT(SS_TAP(X_LEFT)));
-                }
+                tap_code16( get_os_specific_www_back() );
+                return false;
             }
-            break;
         case COLEMAK_ON:
             if (record->event.pressed) {
                 curbase = L_COLE;
