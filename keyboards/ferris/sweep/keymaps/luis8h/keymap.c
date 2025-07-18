@@ -327,6 +327,31 @@ uint16_t get_os_specific_www_fwd(void) {
     return macos_overrides_enabled ? K_MAC_FWD : K_PC_FWD;
 }
 
+// caps word customisation
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        // --------------------------------
+        // Default QMK "with shift" keys (A-Z, minus…)
+        case KC_A ... KC_Z:
+        case KC_MINS:
+        case KC_UNDS:        // ← newly added
+            add_weak_mods(MOD_BIT(KC_LSFT));
+            return true;
+
+        // --------------------------------
+        // Default QMK "no shift" keys (1-0, backspace, delete)
+        case KC_1 ... KC_0:
+        case KC_BSPC:
+        case KC_DEL:
+            return true;
+
+        // --------------------------------
+        default:
+            return false;  // anything else ends Caps Word
+    }
+}
+
+
 // overrides
 // const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
 
