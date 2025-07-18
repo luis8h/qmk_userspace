@@ -422,7 +422,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case WWW_FWD:
             if (record->event.pressed) {
-                tap_code16( get_os_specific_www_back() );
+                tap_code16( get_os_specific_www_fwd() );
                 return false;
             }
         case WWW_BACK:
