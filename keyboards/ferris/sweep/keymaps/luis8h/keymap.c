@@ -75,8 +75,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                      OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_SYM] = LAYOUT_split_3x5_2(
-        LALT_T(KC_EXLM), KC_AT, KC_HASH, KC_DLR, KC_PERC,                               KC_CIRC, TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
-        KC_MINS, LGUI_T(KC_QUOT), TD(DANCE_6), TD(DANCE_7), KC_GRAVE,   KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_8), TD(DANCE_9), KC_SCLN,
+        KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,                               KC_CIRC, TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
+        LALT_T(KC_MINS), LGUI_T(KC_QUOT), TD(DANCE_6), TD(DANCE_7), KC_GRAVE,   KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_8), TD(DANCE_9), KC_SCLN,
         TD(DANCE_2), KC_SCLN, KC_LBRC, RALT_T(KC_RBRC), KC_EQL,                 KC_TILD, RALT_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
         TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
