@@ -61,6 +61,9 @@ enum {
 uint8_t curbase = L_COLE;
 
 
+#define DUAL_FUNC_0 LT(5, KC_F9)
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE] = LAYOUT_split_3x5_2(
         LALT_T(KC_Q), KC_W, KC_E, KC_R, HYPR_T(KC_T),                  KC_Y, LT(L_WORKAC, KC_U), LT(L_TMUX_MOVE, KC_I), LT(L_WORKA, KC_O), LALT_T(KC_P),
@@ -75,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                      OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_SYM] = LAYOUT_split_3x5_2(
-        KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,                               KC_CIRC, TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
+        DUAL_FUNC_0, KC_AT, KC_HASH, KC_DLR, KC_PERC,                               KC_CIRC, TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
         LALT_T(KC_MINS), LGUI_T(KC_QUOT), TD(DANCE_6), TD(DANCE_7), KC_GRAVE,   KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_8), TD(DANCE_9), KC_SCLN,
         TD(DANCE_2), KC_SCLN, KC_LBRC, RALT_T(KC_RBRC), KC_EQL,                 KC_TILD, RALT_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
         TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
@@ -408,6 +411,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // TODO: the mod swap behavior could also be implemented with tap dance in the future (this would probably allow to repeat the key on double press hold)
 
     switch (keycode) {
+        case DUAL_FUNC_0:
+            if (record->tap.count > 0) {
+                if (record->event.pressed) {
+                  register_code16(KC_EXLM);
+                } else {
+                  unregister_code16(KC_EXLM);
+                }
+            } else {
+            if (record->event.pressed) {
+                  register_code16(KC_LEFT_ALT);
+                } else {
+                  unregister_code16(KC_LEFT_ALT);
+                }
+            }
+            return false;
+
         // otherwiese the tap hold behavior would not work in move layer
         case LGUI_T(C_RIGHT):
             if (record->event.pressed) {
