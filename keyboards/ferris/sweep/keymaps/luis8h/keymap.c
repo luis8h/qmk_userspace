@@ -409,7 +409,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     switch (keycode) {
         // otherwiese the tap hold behavior would not work in move layer
-        case LALT_T(C_RIGHT):
+        case LGUI_T(C_RIGHT):
             if (record->event.pressed) {
                 mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
             }
