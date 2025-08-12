@@ -10,12 +10,12 @@ enum custom_keycodes {
     WWW_BACK = SAFE_RANGE,
     WWW_FWD,
     COLEMAK_ON,
-    QWERTY_ON,
-
-    // dual func
-    DUAL_FUNC_ALTEXCL,
-    DUAL_FUNC_TOBASE
+    QWERTY_ON
 };
+
+// values here do not matter because they are overridden later (they have to be uniqu though)
+#define DUAL_FUNC_ALTEXCL LT(104, KC_F14)
+#define DUAL_FUNC_TOBASE LT(105, KC_F14)
 
 // Layers
 #define L_BASE 0
@@ -317,8 +317,8 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
     current_os = detected_os;
 
     // Shift + Backspace → Delete (applies to all OS)
-    static const key_override_t shift_backspace_override =
-        ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+    // static const key_override_t shift_backspace_override =
+    //     ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
 
     // Ctrl + Backspace → Option + Backspace (only for macOS)
     static const key_override_t macos_backspace_ctl_override =
