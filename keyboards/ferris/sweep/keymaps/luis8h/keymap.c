@@ -342,13 +342,13 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 
     // Default key overrides (applies to all OS)
     static const key_override_t *default_key_overrides[] = {
-        &shift_backspace_override,
+        // &shift_backspace_override,
         NULL
     };
 
     // macOS-specific key overrides (Shift + Backspace + Ctrl behavior)
     static const key_override_t *mac_key_overrides[] = {
-        &shift_backspace_override,
+        // &shift_backspace_override,
         &macos_backspace_ctl_override,
         &macos_left_ctl_override,
         &macos_right_ctl_override,
