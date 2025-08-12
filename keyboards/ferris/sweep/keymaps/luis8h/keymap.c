@@ -277,34 +277,6 @@ tap_dance_action_t tap_dance_actions[] = {
     [DANCE_12] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_12, dance_12_finished, dance_12_reset),
 };
 
-// OS detection
-static os_variant_t current_os = OS_UNSURE;
-static bool macos_overrides_enabled = false;
-// bool process_detected_host_os_kb(os_variant_t detected_os) {
-//     if (!process_detected_host_os_user(detected_os)) {
-//         return false;
-//     }
-//
-//     if (detected_os == OS_MACOS || detected_os == OS_IOS) {
-//         set_unicode_input_mode(UNICODE_MODE_MACOS);
-//         macos_overrides_enabled = true;
-//     } else {
-//         set_unicode_input_mode(UNICODE_MODE_LINUX);
-//         macos_overrides_enabled = false;
-//     }
-//
-//     current_os = detected_os;
-//     return true;
-// }
-
-uint16_t get_os_specific_www_back(void) {
-    return macos_overrides_enabled ? K_MAC_BACK : K_PC_BACK;
-}
-
-uint16_t get_os_specific_www_fwd(void) {
-    return macos_overrides_enabled ? K_MAC_FWD : K_PC_FWD;
-}
-
 // caps word customisation
 bool caps_word_press_user(uint16_t keycode) {
     switch (keycode) {
@@ -326,8 +298,10 @@ bool caps_word_press_user(uint16_t keycode) {
     }
 }
 
-// overrides
-// custom
+// overrides and os detection
+static os_variant_t current_os = OS_UNSURE;
+static bool is_macos = false;
+
 #include <string.h>
 
 #define MAX_KEY_OVERRIDES 10
@@ -340,10 +314,10 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 
     if (detected_os == OS_MACOS || detected_os == OS_IOS) {
         set_unicode_input_mode(UNICODE_MODE_MACOS);
-        macos_overrides_enabled = true;
+        is_macos = true;
     } else {
         set_unicode_input_mode(UNICODE_MODE_LINUX);
-        macos_overrides_enabled = false;
+        is_macos = false;
     }
     current_os = detected_os;
 
@@ -410,61 +384,37 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 
 
 // macros
-void mod_swap(uint16_t key, uint16_t mod1, uint16_t mod2) {
-    if (get_mods() & MOD_BIT(mod1) && (current_os == OS_MACOS || current_os == OS_IOS)) {
-        del_mods(MOD_BIT(mod1));
-
-        register_code16(mod2);
-        tap_code16(key);
-        unregister_code16(mod2);
-
-        set_mods(get_mods() | MOD_BIT(mod1));
-    }
-    else if (get_mods() & MOD_BIT(mod2) && (current_os == OS_MACOS || current_os == OS_IOS)) {
-        del_mods(MOD_BIT(mod2));
-
-        register_code16(mod1);
-        tap_code16(key);
-        unregister_code16(mod1);
-
-        set_mods(get_mods() | MOD_BIT(mod2));
-    } else {
-        tap_code(key);
-    }
-}
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // TODO: the mod swap behavior could also be implemented with tap dance in the future (this would probably allow to repeat the key on double press hold)
 
     switch (keycode) {
-        // case DUAL_FUNC_ALTEXCL:
-        //     if (record->tap.count > 0) {
-        //         if (record->event.pressed) register_code16(KC_EXLM);
-        //         else unregister_code16(KC_EXLM);
-        //     } else {
-        //         if (record->event.pressed) register_code16(KC_LEFT_ALT);
-        //         else unregister_code16(KC_LEFT_ALT);
-        //     }
-        //     return false;
-        //
-        // case DUAL_FUNC_TOBASE:
-        //     if (record->tap.count > 0) {
-        //         if (record->event.pressed) layer_move(curbase);
-        //         else layer_move(curbase);
-        //     } else {
-        //         if (record->event.pressed) layer_on(L_ESC);
-        //         else layer_off(L_ESC);
-        //     }
-        //     return false;
+        case DUAL_FUNC_ALTEXCL:
+            if (record->tap.count > 0) {
+                if (record->event.pressed) register_code16(KC_EXLM);
+                else unregister_code16(KC_EXLM);
+            } else {
+                if (record->event.pressed) register_code16(KC_LEFT_ALT);
+                else unregister_code16(KC_LEFT_ALT);
+            }
+            return false;
+
+        case DUAL_FUNC_TOBASE:
+            if (record->tap.count > 0) {
+                if (record->event.pressed) layer_move(curbase);
+                else layer_move(curbase);
+            } else {
+                if (record->event.pressed) layer_on(L_ESC);
+                else layer_off(L_ESC);
+            }
+            return false;
 
         case WWW_FWD:
             if (record->event.pressed) {
-                tap_code16( get_os_specific_www_fwd() );
+                tap_code16(is_macos ? K_MAC_BACK : K_PC_BACK);
                 return false;
             }
         case WWW_BACK:
             if (record->event.pressed) {
-                tap_code16( get_os_specific_www_back() );
+                tap_code16(is_macos ? K_MAC_FWD : K_PC_FWD);
                 return false;
             }
         case COLEMAK_ON:
