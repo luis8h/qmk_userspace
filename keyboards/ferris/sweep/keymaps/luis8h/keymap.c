@@ -44,7 +44,6 @@ enum custom_keycodes {
 
 // define tap dance keys
 enum {
-    DANCE_1,
     DANCE_2,
     DANCE_3,
     DANCE_4,
@@ -62,6 +61,7 @@ uint8_t curbase = L_COLE;
 
 
 #define DUAL_FUNC_0 LT(5, KC_F9)
+#define DUAL_FUNC_1 LT(105, KC_F9)
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -81,25 +81,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         DUAL_FUNC_0, KC_AT, KC_HASH, KC_DLR, KC_PERC,                               KC_CIRC, TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
         LALT_T(KC_MINS), LGUI_T(KC_QUOT), TD(DANCE_6), TD(DANCE_7), KC_GRAVE,   KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_8), TD(DANCE_9), KC_SCLN,
         TD(DANCE_2), KC_SCLN, KC_LBRC, RALT_T(KC_RBRC), KC_EQL,                 KC_TILD, RALT_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
-        TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
+        DUAL_FUNC_1, KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_NUMT] = LAYOUT_split_3x5_2(
         KC_DOT, KC_1, KC_2, KC_3, KC_COMM,                                      KC_QUES, KC_PIPE, KC_LPRN, KC_RPRN, TD(DANCE_12),
         LGUI_T(KC_MINS), LALT_T(KC_4), LSFT_T(KC_5), LCTL_T(KC_6), KC_0,        KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_10), TD(DANCE_11), KC_TRNS,
         LCA_T(QK_LLCK), KC_7, KC_8, RALT_T(KC_9), KC_EQL,                       KC_TILD, RALT_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
-        TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
+        DUAL_FUNC_1, KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_SYMSPEC] = LAYOUT_split_3x5_2(
         KC_F1, KC_F2, KC_F3, KC_F4, KC_F5,                                      KC_F8, KC_F9, KC_F10, KC_F11, KC_F12,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_F6,                              LT(L_SYS, KC_F7), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, UC(0x00E4), KC_TRNS,                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
+        DUAL_FUNC_1, KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_NUMH] = LAYOUT_split_3x5_2(
         KC_DOT, KC_1, KC_2, KC_3, KC_COMM,                                      KC_QUES, KC_PIPE, KC_LPRN, KC_RPRN, TD(DANCE_12),
         LGUI_T(KC_MINS), LALT_T(KC_4), LSFT_T(KC_5), LCTL_T(KC_6), KC_0,        KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_10), TD(DANCE_11), KC_TRNS,
         LCA_T(QK_LLCK), KC_7, KC_8, RALT_T(KC_9), KC_EQL,                       KC_TILD, RALT_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
-        TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
+        DUAL_FUNC_1, KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_WORKA] = LAYOUT_split_3x5_2(
         KC_TRNS, LGUI(KC_1), LGUI(KC_2), LGUI(KC_3), KC_TRNS,                   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -129,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         QK_BOOTLOADER, KC_TRNS, QWERTY_ON, COLEMAK_ON, KC_TRNS,                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        TD(DANCE_1), KC_TRNS,                                                   KC_TRNS, KC_TRNS
+        DUAL_FUNC_1, KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_TMUX_MOVE] = LAYOUT_split_3x5_2(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -138,32 +138,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
     )
 };
-
-// tap dance 1 functions
-void dance_1_finished(tap_dance_state_t *state, void *user_data) {
-    dance_state[0].step = dance_step(state);
-    switch (dance_state[0].step) {
-        case SINGLE_TAP:
-            layer_move(curbase);
-            break;
-        case SINGLE_HOLD:
-            layer_on(L_ESC);
-            break;
-        case DOUBLE_TAP:
-            layer_move(curbase);
-            break;
-        case DOUBLE_SINGLE_TAP:
-            layer_move(curbase);
-            break;
-    }
-}
-void dance_1_reset(tap_dance_state_t *state, void *user_data) {
-    wait_ms(10);
-    if (dance_state[0].step == SINGLE_HOLD) {
-        layer_off(L_ESC);
-    }
-    dance_state[0].step = 0;
-}
 
 // tap dance 2 functions
 void on_dance_2(tap_dance_state_t *state, void *user_data) {
@@ -288,7 +262,6 @@ void dance_12_reset(tap_dance_state_t *state, void *user_data) {
 
 // register tap dance keys
 tap_dance_action_t tap_dance_actions[] = {
-    [DANCE_1] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_1_finished, dance_1_reset),
     [DANCE_2] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_2, dance_2_finished, dance_2_reset),
     [DANCE_3] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_3, dance_3_finished, dance_3_reset),
     [DANCE_4] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_4, dance_4_finished, dance_4_reset),
@@ -423,6 +396,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                   register_code16(KC_LEFT_ALT);
                 } else {
                   unregister_code16(KC_LEFT_ALT);
+                }
+            }
+            return false;
+
+        case DUAL_FUNC_1:
+            if (record->tap.count > 0) {
+                if (record->event.pressed) {
+                    layer_move(curbase);
+                } else {
+                    layer_move(curbase);
+                }
+            } else {
+                if (record->event.pressed) {
+                    layer_on(L_ESC);
+                } else {
+                    layer_off(L_ESC);
                 }
             }
             return false;
