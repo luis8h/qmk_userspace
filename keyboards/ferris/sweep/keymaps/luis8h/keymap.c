@@ -10,7 +10,19 @@ enum custom_keycodes {
     WWW_BACK = SAFE_RANGE,
     WWW_FWD,
     COLEMAK_ON,
-    QWERTY_ON
+    QWERTY_ON,
+
+    // tmux move
+    TMUX_MOVE_1,
+    TMUX_MOVE_2,
+    TMUX_MOVE_3,
+    TMUX_MOVE_4,
+    TMUX_MOVE_5,
+    TMUX_MOVE_6,
+    TMUX_MOVE_7,
+    TMUX_MOVE_8,
+    TMUX_MOVE_9,
+    TMUX_MOVE_0
 };
 
 // values here do not matter because they are overridden later (they have to be uniqu though)
@@ -129,9 +141,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         DUAL_FUNC_TOBASE, KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_TMUX_MOVE] = LAYOUT_split_3x5_2(
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            LCTL(KC_H), LCTL(KC_J), LCTL(KC_K), LCTL(KC_L), KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, TMUX_MOVE_1, TMUX_MOVE_2, TMUX_MOVE_3, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, TMUX_MOVE_4, TMUX_MOVE_5, TMUX_MOVE_6, TMUX_MOVE_0,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, TMUX_MOVE_7, TMUX_MOVE_8, TMUX_MOVE_9, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
     )
 };
@@ -422,6 +434,58 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 curbase = L_QUERTY;
                 set_single_default_layer(L_QUERTY);
+            }
+            return false;
+
+        // tmux move
+        case TMUX_MOVE_1:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL(SS_TAP(X_SPACE))SS_DELAY(100)  SS_TAP(X_1));
+            }
+            return false;
+        case TMUX_MOVE_2:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL(SS_TAP(X_SPACE))SS_DELAY(100)  SS_TAP(X_2));
+            }
+            return false;
+        case TMUX_MOVE_3:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL(SS_TAP(X_SPACE))SS_DELAY(100)  SS_TAP(X_3));
+            }
+            return false;
+        case TMUX_MOVE_4:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL(SS_TAP(X_SPACE))SS_DELAY(100)  SS_TAP(X_4));
+            }
+            return false;
+        case TMUX_MOVE_5:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL(SS_TAP(X_SPACE))SS_DELAY(100)  SS_TAP(X_5));
+            }
+            return false;
+        case TMUX_MOVE_6:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL(SS_TAP(X_SPACE))SS_DELAY(100)  SS_TAP(X_6));
+            }
+            return false;
+        case TMUX_MOVE_7:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL(SS_TAP(X_SPACE))SS_DELAY(100)  SS_TAP(X_7));
+            }
+            return false;
+        case TMUX_MOVE_8:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL(SS_TAP(X_SPACE))SS_DELAY(100)  SS_TAP(X_8));
+            }
+            return false;
+        case TMUX_MOVE_9:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL(SS_TAP(X_SPACE))SS_DELAY(100)  SS_TAP(X_9));
+            }
+            return false;
+        case TMUX_MOVE_0:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL(SS_TAP(X_SPACE))SS_DELAY(100)  SS_TAP(X_0));
             }
             return false;
     }
