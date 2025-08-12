@@ -404,12 +404,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         case WWW_FWD:
             if (record->event.pressed) {
-                tap_code16(is_macos ? K_MAC_BACK : K_PC_BACK);
+                tap_code16(is_macos ? K_MAC_FWD : K_PC_FWD);
                 return false;
             }
         case WWW_BACK:
             if (record->event.pressed) {
-                tap_code16(is_macos ? K_MAC_FWD : K_PC_FWD);
+                tap_code16(is_macos ? K_MAC_BACK : K_PC_BACK);
                 return false;
             }
         case COLEMAK_ON:
