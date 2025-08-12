@@ -7,19 +7,19 @@
 #endif
 
 enum custom_keycodes {
-    C_RIGHT = SAFE_RANGE,
-    C_LEFT,
-    C_TAB,
-    C_BSPC,
-    WWW_BACK,
+    WWW_BACK = SAFE_RANGE,
     WWW_FWD,
     COLEMAK_ON,
     QWERTY_ON,
+
+    // dual func
+    DUAL_FUNC_ALTEXCL,
+    DUAL_FUNC_TOBASE
 };
 
 // Layers
 #define L_BASE 0
-#define L_COLE 1
+#define L_QUERTY 1
 #define L_SYM 2
 #define L_NUMT 3
 #define L_SYMSPEC 4
@@ -33,12 +33,12 @@ enum custom_keycodes {
 
 #define K_PC_COPY LCTL(KC_C)
 #define K_PC_PASTE LCTL(KC_V)
+
 #define K_PC_UNDO LCTL(KC_Z)
 #define K_PC_REDO LCTL(KC_Y)
 
 #define K_PC_BACK LALT(KC_LEFT)
 #define K_PC_FWD LALT(KC_RIGHT)
-
 #define K_MAC_BACK LCTL(KC_LBRC)
 #define K_MAC_FWD LCTL(KC_RBRC)
 
@@ -57,27 +57,22 @@ enum {
     DANCE_12,
 };
 
-uint8_t curbase = L_COLE;
 
-
-// values here do not matter because they are overridden later (they have to be uniqu though)
-#define DUAL_FUNC_ALTEXCL LT(104, KC_F14)
-#define DUAL_FUNC_TOBASE LT(105, KC_F14)
-#define DUAL_FUNC_ LT(106, KC_F14)
+uint8_t curbase = L_BASE;
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE] = LAYOUT_split_3x5_2(
-        LALT_T(KC_Q), KC_W, KC_E, KC_R, HYPR_T(KC_T),                  KC_Y, LT(L_WORKAC, KC_U), LT(L_TMUX_MOVE, KC_I), LT(L_WORKA, KC_O), LALT_T(KC_P),
-        LT(L_MOVE, KC_A), GUI_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,           KC_H, LCTL_T(KC_J), LSFT_T(KC_K), LGUI_T(KC_L), KC_BSPC,
-        LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RALT_T(KC_V), KC_B,        KC_N, RALT_T(KC_M), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
-        LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                  OSM(MOD_LSFT), OSL(L_SYM)
-    ),
-    [L_COLE] = LAYOUT_split_3x5_2(
         LALT_T(KC_Q), KC_W, KC_F, KC_P, HYPR_T(KC_B),                               HYPR_T(KC_J), LT(L_WORKAC, KC_L), LT(L_TMUX_MOVE, KC_U), LT(L_WORKA, KC_Y), KC_BSPC,
         LT(L_MOVE, KC_A), LGUI_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_G,               KC_M, LCTL_T(KC_N), LSFT_T(KC_E), LGUI_T(KC_I), LALT_T(KC_O),
         LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RALT_T(KC_D), KC_V,            KC_K, RALT_T(KC_H), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
         LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                      OSM(MOD_LSFT), OSL(L_SYM)
+    ),
+    [L_QUERTY] = LAYOUT_split_3x5_2(
+        LALT_T(KC_Q), KC_W, KC_E, KC_R, HYPR_T(KC_T),                   KC_Y, LT(L_WORKAC, KC_U), LT(L_TMUX_MOVE, KC_I), LT(L_WORKA, KC_O), LALT_T(KC_P),
+        LT(L_MOVE, KC_A), GUI_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,           KC_H, LCTL_T(KC_J), LSFT_T(KC_K), LGUI_T(KC_L), KC_BSPC,
+        LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RALT_T(KC_V), KC_B,        KC_N, RALT_T(KC_M), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
+        LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                  OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_SYM] = LAYOUT_split_3x5_2(
         DUAL_FUNC_ALTEXCL, KC_AT, KC_HASH, KC_DLR, KC_PERC,                               KC_CIRC, TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
@@ -117,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [L_ESC] = LAYOUT_split_3x5_2(
         K_PC_COPY, K_PC_PASTE, LCTL(KC_SPC), KC_F8, KC_TRNS,                    KC_TRNS, CW_TOGG, KC_TRNS, KC_TRNS, KC_TRNS,
-        C_TAB, KC_DEL, KC_LSFT, KC_BSPC, KC_TRNS,                               KC_TRNS, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
+        KC_TAB, KC_DEL, KC_LSFT, KC_BSPC, KC_TRNS,                               KC_TRNS, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
         KC_ENT, WWW_BACK, K_PC_UNDO, K_PC_REDO, WWW_FWD,                        KC_RCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                       KC_ENT, KC_TRNS
     ),
@@ -419,14 +414,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         case COLEMAK_ON:
             if (record->event.pressed) {
-                curbase = L_COLE;
-                set_single_default_layer(L_COLE);
+                curbase = L_BASE;
+                set_single_default_layer(L_BASE);
             }
             return false;
         case QWERTY_ON:
             if (record->event.pressed) {
-                curbase = L_BASE;
-                set_single_default_layer(L_BASE);
+                curbase = L_QUERTY;
+                set_single_default_layer(L_QUERTY);
             }
             return false;
     }
