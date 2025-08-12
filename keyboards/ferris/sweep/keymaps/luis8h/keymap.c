@@ -74,7 +74,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                  OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_COLE] = LAYOUT_split_3x5_2(
-        LALT_T(KC_Q), KC_W, KC_F, KC_P, HYPR_T(KC_B),                                       HYPR_T(KC_J), LT(L_WORKAC, KC_L), LT(L_TMUX_MOVE, KC_U), LT(L_WORKA, KC_Y), KC_BSPC,
+        LALT_T(KC_Q), KC_W, KC_F, KC_P, HYPR_T(KC_B),                               HYPR_T(KC_J), LT(L_WORKAC, KC_L), LT(L_TMUX_MOVE, KC_U), LT(L_WORKA, KC_Y), KC_BSPC,
         LT(L_MOVE, KC_A), LGUI_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_G,               KC_M, LCTL_T(KC_N), LSFT_T(KC_E), LGUI_T(KC_I), LALT_T(KC_O),
         LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RALT_T(KC_D), KC_V,            KC_K, RALT_T(KC_H), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
         LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                      OSM(MOD_LSFT), OSL(L_SYM)
@@ -123,7 +123,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [L_MOVE] = LAYOUT_split_3x5_2(
         LALT_T(KC_Q), KC_W, KC_UP, KC_R, KC_T,                                          KC_Y, KC_HOME, KC_I, KC_END, LGUI_T(KC_UP),
-        KC_A, LGUI_T(C_LEFT), LSFT_T(KC_DOWN), LCTL_T(C_RIGHT), KC_G,   C_LEFT, LCTL_T(KC_DOWN), LSFT_T(KC_UP), LGUI_T(C_RIGHT), KC_TRNS,
+        KC_A, LGUI_T(KC_LEFT), LSFT_T(KC_DOWN), LCTL_T(KC_RIGHT), KC_G,   KC_LEFT, LCTL_T(KC_DOWN), LSFT_T(KC_UP), LGUI_T(KC_RIGHT), KC_TRNS,
         KC_Z, WWW_BACK, KC_PGDN, KC_PGUP, WWW_FWD,                              KC_DOWN, KC_M, KC_COMM, KC_DOT, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
     ),
@@ -280,22 +280,22 @@ tap_dance_action_t tap_dance_actions[] = {
 // OS detection
 static os_variant_t current_os = OS_UNSURE;
 static bool macos_overrides_enabled = false;
-bool process_detected_host_os_kb(os_variant_t detected_os) {
-    if (!process_detected_host_os_user(detected_os)) {
-        return false;
-    }
-
-    if (detected_os == OS_MACOS || detected_os == OS_IOS) {
-        set_unicode_input_mode(UNICODE_MODE_MACOS);
-        macos_overrides_enabled = true;
-    } else {
-        set_unicode_input_mode(UNICODE_MODE_LINUX);
-        macos_overrides_enabled = false;
-    }
-
-    current_os = detected_os;
-    return true;
-}
+// bool process_detected_host_os_kb(os_variant_t detected_os) {
+//     if (!process_detected_host_os_user(detected_os)) {
+//         return false;
+//     }
+//
+//     if (detected_os == OS_MACOS || detected_os == OS_IOS) {
+//         set_unicode_input_mode(UNICODE_MODE_MACOS);
+//         macos_overrides_enabled = true;
+//     } else {
+//         set_unicode_input_mode(UNICODE_MODE_LINUX);
+//         macos_overrides_enabled = false;
+//     }
+//
+//     current_os = detected_os;
+//     return true;
+// }
 
 uint16_t get_os_specific_www_back(void) {
     return macos_overrides_enabled ? K_MAC_BACK : K_PC_BACK;
@@ -337,6 +337,15 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
     if (!process_detected_host_os_user(detected_os)) {
         return false;
     }
+
+    if (detected_os == OS_MACOS || detected_os == OS_IOS) {
+        set_unicode_input_mode(UNICODE_MODE_MACOS);
+        macos_overrides_enabled = true;
+    } else {
+        set_unicode_input_mode(UNICODE_MODE_LINUX);
+        macos_overrides_enabled = false;
+    }
+    current_os = detected_os;
 
     // Shift + Backspace → Delete (applies to all OS)
     static const key_override_t shift_backspace_override =
@@ -428,59 +437,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // TODO: the mod swap behavior could also be implemented with tap dance in the future (this would probably allow to repeat the key on double press hold)
 
     switch (keycode) {
-        case DUAL_FUNC_ALTEXCL:
-            if (record->tap.count > 0) {
-                if (record->event.pressed) register_code16(KC_EXLM);
-                else unregister_code16(KC_EXLM);
-            } else {
-                if (record->event.pressed) register_code16(KC_LEFT_ALT);
-                else unregister_code16(KC_LEFT_ALT);
-            }
-            return false;
+        // case DUAL_FUNC_ALTEXCL:
+        //     if (record->tap.count > 0) {
+        //         if (record->event.pressed) register_code16(KC_EXLM);
+        //         else unregister_code16(KC_EXLM);
+        //     } else {
+        //         if (record->event.pressed) register_code16(KC_LEFT_ALT);
+        //         else unregister_code16(KC_LEFT_ALT);
+        //     }
+        //     return false;
+        //
+        // case DUAL_FUNC_TOBASE:
+        //     if (record->tap.count > 0) {
+        //         if (record->event.pressed) layer_move(curbase);
+        //         else layer_move(curbase);
+        //     } else {
+        //         if (record->event.pressed) layer_on(L_ESC);
+        //         else layer_off(L_ESC);
+        //     }
+        //     return false;
 
-        case DUAL_FUNC_TOBASE:
-            if (record->tap.count > 0) {
-                if (record->event.pressed) layer_move(curbase);
-                else layer_move(curbase);
-            } else {
-                if (record->event.pressed) layer_on(L_ESC);
-                else layer_off(L_ESC);
-            }
-            return false;
-
-        // otherwiese the tap hold behavior would not work in move layer
-        case LGUI_T(C_RIGHT):
-            if (record->event.pressed) {
-                mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
-            }
-            break;
-        case LCTL_T(C_RIGHT):
-            if (record->event.pressed) {
-                mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
-            }
-            break;
-        case LALT_T(C_LEFT):
-            if (record->event.pressed) {
-                mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
-            }
-            break;
-
-        // macros for macos on move layer
-        case C_RIGHT:
-            if (record->event.pressed) {
-                mod_swap(KC_RIGHT, KC_LCTL, KC_LALT);
-            }
-            break;
-        case C_LEFT:
-            if (record->event.pressed) {
-                mod_swap(KC_LEFT, KC_LCTL, KC_LALT);
-            }
-            break;
-        case C_TAB:
-            if (record->event.pressed) {
-                mod_swap(KC_TAB, KC_LCTL, KC_LGUI);
-            }
-            break;
         case WWW_FWD:
             if (record->event.pressed) {
                 tap_code16( get_os_specific_www_fwd() );
