@@ -60,8 +60,10 @@ enum {
 uint8_t curbase = L_COLE;
 
 
-#define DUAL_FUNC_0 LT(5, KC_F9)
-#define DUAL_FUNC_1 LT(105, KC_F9)
+// values here do not matter because they are overridden later (they have to be uniqu though)
+#define DUAL_FUNC_ALTEXCL LT(104, KC_F14)
+#define DUAL_FUNC_TOBASE LT(105, KC_F14)
+#define DUAL_FUNC_ LT(106, KC_F14)
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -78,28 +80,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                      OSM(MOD_LSFT), OSL(L_SYM)
     ),
     [L_SYM] = LAYOUT_split_3x5_2(
-        DUAL_FUNC_0, KC_AT, KC_HASH, KC_DLR, KC_PERC,                               KC_CIRC, TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
+        DUAL_FUNC_ALTEXCL, KC_AT, KC_HASH, KC_DLR, KC_PERC,                               KC_CIRC, TD(DANCE_4), KC_LPRN, TD(DANCE_3), TD(DANCE_5),
         LALT_T(KC_MINS), LGUI_T(KC_QUOT), TD(DANCE_6), TD(DANCE_7), KC_GRAVE,   KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_8), TD(DANCE_9), KC_SCLN,
         TD(DANCE_2), KC_SCLN, KC_LBRC, RALT_T(KC_RBRC), KC_EQL,                 KC_TILD, RALT_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
-        DUAL_FUNC_1, KC_TRNS,                                                   KC_TRNS, KC_TRNS
+        DUAL_FUNC_TOBASE, KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_NUMT] = LAYOUT_split_3x5_2(
         KC_DOT, KC_1, KC_2, KC_3, KC_COMM,                                      KC_QUES, KC_PIPE, KC_LPRN, KC_RPRN, TD(DANCE_12),
         LGUI_T(KC_MINS), LALT_T(KC_4), LSFT_T(KC_5), LCTL_T(KC_6), KC_0,        KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_10), TD(DANCE_11), KC_TRNS,
         LCA_T(QK_LLCK), KC_7, KC_8, RALT_T(KC_9), KC_EQL,                       KC_TILD, RALT_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
-        DUAL_FUNC_1, KC_TRNS,                                                   KC_TRNS, KC_TRNS
+        DUAL_FUNC_TOBASE, KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_SYMSPEC] = LAYOUT_split_3x5_2(
         KC_F1, KC_F2, KC_F3, KC_F4, KC_F5,                                      KC_F8, KC_F9, KC_F10, KC_F11, KC_F12,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_F6,                              LT(L_SYS, KC_F7), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, UC(0x00E4), KC_TRNS,                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        DUAL_FUNC_1, KC_TRNS,                                                   KC_TRNS, KC_TRNS
+        DUAL_FUNC_TOBASE, KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_NUMH] = LAYOUT_split_3x5_2(
         KC_DOT, KC_1, KC_2, KC_3, KC_COMM,                                      KC_QUES, KC_PIPE, KC_LPRN, KC_RPRN, TD(DANCE_12),
         LGUI_T(KC_MINS), LALT_T(KC_4), LSFT_T(KC_5), LCTL_T(KC_6), KC_0,        KC_PLUS, LCTL_T(KC_SLSH), TD(DANCE_10), TD(DANCE_11), KC_TRNS,
         LCA_T(QK_LLCK), KC_7, KC_8, RALT_T(KC_9), KC_EQL,                       KC_TILD, RALT_T(KC_BSLS), KC_COMM, KC_DOT, KC_TRNS,
-        DUAL_FUNC_1, KC_TRNS,                                                   KC_TRNS, KC_TRNS
+        DUAL_FUNC_TOBASE, KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_WORKA] = LAYOUT_split_3x5_2(
         KC_TRNS, LGUI(KC_1), LGUI(KC_2), LGUI(KC_3), KC_TRNS,                   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -129,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         QK_BOOTLOADER, KC_TRNS, QWERTY_ON, COLEMAK_ON, KC_TRNS,                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, QK_BOOTLOADER,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        DUAL_FUNC_1, KC_TRNS,                                                   KC_TRNS, KC_TRNS
+        DUAL_FUNC_TOBASE, KC_TRNS,                                                   KC_TRNS, KC_TRNS
     ),
     [L_TMUX_MOVE] = LAYOUT_split_3x5_2(
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -325,36 +327,78 @@ bool caps_word_press_user(uint16_t keycode) {
 }
 
 // overrides
-// const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+// custom
+#include <string.h>
 
-const key_override_t macos_backspace_ctl_override = {
-    .trigger_mods      = MOD_MASK_CTRL,
-    .trigger           = KC_BSPC,
-    .replacement       = A(KC_BSPC),
-    .layers            = ~0,
-    .negative_mod_mask = 0,
-    .suppressed_mods   = MOD_MASK_CTRL,
-    .enabled           = &macos_overrides_enabled,
-    .options           = ko_options_default,
-};
+#define MAX_KEY_OVERRIDES 10
+const key_override_t *key_overrides[MAX_KEY_OVERRIDES] = { NULL };
 
-const key_override_t macos_backspace_alt_override = {
-    .trigger_mods      = MOD_MASK_ALT,
-    .trigger           = KC_BSPC,
-    .replacement       = C(KC_BSPC),
-    .layers            = ~0,
-    .negative_mod_mask = 0,
-    .suppressed_mods   = MOD_MASK_ALT,
-    .enabled           = &macos_overrides_enabled,
-    .options           = ko_options_default,
-};
+bool process_detected_host_os_kb(os_variant_t detected_os) {
+    if (!process_detected_host_os_user(detected_os)) {
+        return false;
+    }
 
-const key_override_t *key_overrides[] = {
-	// &delete_key_override,
-    &macos_backspace_ctl_override,
-    &macos_backspace_alt_override,
-    NULL,
-};
+    // Shift + Backspace → Delete (applies to all OS)
+    static const key_override_t shift_backspace_override =
+        ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+
+    // Ctrl + Backspace → Option + Backspace (only for macOS)
+    static const key_override_t macos_backspace_ctl_override =
+        ko_make_basic(MOD_MASK_CTRL, KC_BSPC, LALT(KC_BSPC));
+    static const key_override_t macos_left_ctl_override =
+        ko_make_basic(MOD_MASK_CTRL, KC_LEFT, LALT(KC_LEFT));
+    static const key_override_t macos_right_ctl_override =
+        ko_make_basic(MOD_MASK_CTRL, KC_RIGHT, LALT(KC_RIGHT));
+
+    static const key_override_t macos_backspace_alt_override =
+        ko_make_basic(MOD_MASK_ALT, KC_BSPC, LCTL(KC_BSPC));
+    static const key_override_t macos_left_alt_override =
+        ko_make_basic(MOD_MASK_ALT, KC_LEFT, LCTL(KC_LEFT));
+    static const key_override_t macos_right_alt_override =
+        ko_make_basic(MOD_MASK_ALT, KC_RIGHT, LCTL(KC_RIGHT));
+
+    static const key_override_t macos_ctl_tab =
+        ko_make_basic(MOD_MASK_CTRL, KC_TAB, LGUI(KC_TAB));
+    static const key_override_t macos_gui_tab =
+        ko_make_basic(MOD_MASK_GUI, KC_TAB, LCTL(KC_TAB));
+
+    // Default key overrides (applies to all OS)
+    static const key_override_t *default_key_overrides[] = {
+        &shift_backspace_override,
+        NULL
+    };
+
+    // macOS-specific key overrides (Shift + Backspace + Ctrl behavior)
+    static const key_override_t *mac_key_overrides[] = {
+        &shift_backspace_override,
+        &macos_backspace_ctl_override,
+        &macos_left_ctl_override,
+        &macos_right_ctl_override,
+        &macos_backspace_alt_override,
+        &macos_left_alt_override,
+        &macos_right_alt_override,
+        &macos_ctl_tab,
+        &macos_gui_tab,
+        NULL
+    };
+
+    // Apply overrides based on OS
+    // pick which source list to copy
+    const key_override_t * const *src = (detected_os == OS_MACOS || detected_os == OS_IOS)
+        ? mac_key_overrides
+        : default_key_overrides
+        ;
+
+    // copy pointers into the global array
+    // sizeof(src) doesn't work (it's a pointer), so we compute element count manually:
+    size_t i = 0;
+    for (; src[i] && i < MAX_KEY_OVERRIDES-1; ++i) {
+        key_overrides[i] = src[i];
+    }
+    key_overrides[i] = NULL;
+    return true;
+}
+
 
 // macros
 void mod_swap(uint16_t key, uint16_t mod1, uint16_t mod2) {
@@ -384,35 +428,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // TODO: the mod swap behavior could also be implemented with tap dance in the future (this would probably allow to repeat the key on double press hold)
 
     switch (keycode) {
-        case DUAL_FUNC_0:
+        case DUAL_FUNC_ALTEXCL:
             if (record->tap.count > 0) {
-                if (record->event.pressed) {
-                  register_code16(KC_EXLM);
-                } else {
-                  unregister_code16(KC_EXLM);
-                }
+                if (record->event.pressed) register_code16(KC_EXLM);
+                else unregister_code16(KC_EXLM);
             } else {
-            if (record->event.pressed) {
-                  register_code16(KC_LEFT_ALT);
-                } else {
-                  unregister_code16(KC_LEFT_ALT);
-                }
+                if (record->event.pressed) register_code16(KC_LEFT_ALT);
+                else unregister_code16(KC_LEFT_ALT);
             }
             return false;
 
-        case DUAL_FUNC_1:
+        case DUAL_FUNC_TOBASE:
             if (record->tap.count > 0) {
-                if (record->event.pressed) {
-                    layer_move(curbase);
-                } else {
-                    layer_move(curbase);
-                }
+                if (record->event.pressed) layer_move(curbase);
+                else layer_move(curbase);
             } else {
-                if (record->event.pressed) {
-                    layer_on(L_ESC);
-                } else {
-                    layer_off(L_ESC);
-                }
+                if (record->event.pressed) layer_on(L_ESC);
+                else layer_off(L_ESC);
             }
             return false;
 
