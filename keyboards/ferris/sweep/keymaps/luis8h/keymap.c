@@ -409,10 +409,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (record->event.pressed) {
                     layer_move(curbase);
                     reset_oneshot_layer(); // reset one shots
+                    clear_oneshot_mods(); // reset one shots
                 }
                 else {
                     layer_move(curbase);
                     reset_oneshot_layer(); // reset one shots
+                    clear_oneshot_mods(); // reset one shots
                 }
             } else {
                 if (record->event.pressed) layer_on(L_ESC);
