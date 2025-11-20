@@ -28,6 +28,7 @@ enum custom_keycodes {
 // values here do not matter because they are overridden later (they have to be uniqu though)
 #define DUAL_FUNC_ALTEXCL LT(104, KC_F14)
 #define DUAL_FUNC_TOBASE LT(105, KC_F14)
+#define DUAL_FUNC_LGUIRIGHT LT(106, KC_F14)
 
 // Layers
 #define L_BASE 0
@@ -130,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [L_MOVE] = LAYOUT_split_3x5_2(
         LALT_T(KC_Q), KC_W, KC_UP, KC_R, KC_T,                                  KC_Y, KC_HOME, KC_I, KC_END, LGUI_T(KC_UP),
-        KC_A, LGUI_T(KC_LEFT), LSFT_T(KC_DOWN), LCTL_T(KC_RIGHT), KC_G,         KC_LEFT, LCTL_T(KC_DOWN), LSFT_T(KC_UP), MT(MOD_LGUI, KC_RIGHT), KC_TRNS,
+        KC_A, LGUI_T(KC_LEFT), LSFT_T(KC_DOWN), LCTL_T(KC_RIGHT), KC_G,         KC_LEFT, LCTL_T(KC_DOWN), LSFT_T(KC_UP), DUAL_FUNC_LGUIRIGHT, KC_TRNS,
         KC_Z, WWW_BACK, KC_PGDN, KC_PGUP, WWW_FWD,                              KC_DOWN, KC_M, KC_COMM, KC_DOT, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
     ),
@@ -419,6 +420,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
                 if (record->event.pressed) layer_on(L_ESC);
                 else layer_off(L_ESC);
+            }
+            return false;
+
+        case DUAL_FUNC_LGUIRIGHT:
+            if (record->tap.count > 0) {
+                if (record->event.pressed) register_code16(KC_RIGHT);
+                else unregister_code16(KC_RIGHT);
+            } else {
+                if (record->event.pressed) register_code16(KC_LEFT_GUI);
+                else unregister_code16(KC_LEFT_GUI);
             }
             return false;
 
