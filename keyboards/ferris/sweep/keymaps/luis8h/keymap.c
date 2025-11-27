@@ -132,7 +132,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_MOVE] = LAYOUT_split_3x5_2(
         LALT_T(KC_Q), KC_W, KC_UP, KC_R, KC_T,                                  KC_Y, KC_HOME, KC_I, KC_END, LGUI_T(KC_UP),
         KC_A, LGUI_T(KC_LEFT), LSFT_T(KC_DOWN), LCTL_T(KC_RIGHT), KC_G,         KC_LEFT, LCTL_T(KC_DOWN), LSFT_T(KC_UP), DUAL_FUNC_LGUIRIGHT, KC_TRNS,
-        KC_Z, WWW_BACK, KC_PGDN, KC_PGUP, WWW_FWD,                              KC_DOWN, KC_M, KC_COMM, KC_DOT, KC_TRNS,
+        KC_Z, WWW_BACK, KC_PGUP, KC_PGDN, WWW_FWD,                              KC_DOWN, KC_M, KC_COMM, KC_DOT, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
     ),
     [L_SYS] = LAYOUT_split_3x5_2(
@@ -392,7 +392,9 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 
 
 // macros
+uint8_t mod_state;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    mod_state = get_mods();
 
     switch (keycode) {
         case DUAL_FUNC_ALTEXCL:
@@ -425,8 +427,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         case DUAL_FUNC_LGUIRIGHT:
             if (record->tap.count > 0) {
-                if (record->event.pressed) register_code16(KC_RIGHT);
-                else unregister_code16(KC_RIGHT);
+                if (record->event.pressed) {
+                    if (mod_state & MOD_MASK_CTRL) {
+                        del_mods(MOD_MASK_CTRL);
+                        add_mods(MOD_MASK_ALT);
+                        register_code16(KC_RIGHT);
+                        set_mods(mod_state);
+                    } else {
+                        register_code16(KC_RIGHT);
+                    }
+                }
+                else {
+                    unregister_code16(KC_RIGHT);
+                }
             } else {
                 if (record->event.pressed) register_code16(KC_LEFT_GUI);
                 else unregister_code16(KC_LEFT_GUI);
