@@ -76,8 +76,8 @@ uint8_t curbase = L_BASE;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE] = LAYOUT_split_3x5_2(
-        LALT_T(KC_Q), KC_W, KC_F, KC_P, HYPR_T(KC_B),                               HYPR_T(KC_J), LT(L_WORKAC, KC_L), LT(L_TMUX_MOVE, KC_U), LT(L_WORKA, KC_Y), LALT_T(KC_O),
-        LT(L_MOVE, KC_A), LGUI_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_G,               KC_M, LCTL_T(KC_N), LSFT_T(KC_E), LGUI_T(KC_I), KC_TRNS,
+        LALT_T(KC_Q), KC_W, KC_F, KC_P, HYPR_T(KC_B),                               HYPR_T(KC_J), LT(L_WORKAC, KC_L), LT(L_TMUX_MOVE, KC_U), LT(L_WORKA, KC_Y), KC_TRNS,
+        LT(L_MOVE, KC_A), LGUI_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_G,               KC_M, LCTL_T(KC_N), LSFT_T(KC_E), LGUI_T(KC_I), LALT_T(KC_O),
         LT(L_MOVE, KC_Z), LT(L_SYMSPEC, KC_X), KC_C, RALT_T(KC_D), KC_V,            KC_K, RALT_T(KC_H), KC_COMM, LT(L_SYMSPEC, KC_DOT), OSL(L_NUMT),
         LT(L_ESC, KC_ESC), LT(L_NUMH, KC_SPC),                                      OSM(MOD_LSFT), OSL(L_SYM)
     ),
