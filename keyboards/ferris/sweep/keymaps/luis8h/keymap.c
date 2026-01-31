@@ -139,8 +139,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [L_ESC] = LAYOUT_split_3x5_2(
         K_PC_COPY, K_PC_PASTE, LCTL(KC_SPC), KC_F8, KC_TRNS,                    KC_TRNS, CW_TOGG, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TAB, KC_DEL, KC_LSFT, KC_BSPC, KC_TRNS,                               KC_TRNS, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
-        KC_ENT, WWW_BACK, K_PC_UNDO, K_PC_REDO, WWW_FWD,                        KC_RCTL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TAB, KC_DEL, KC_LSFT, KC_BSPC, KC_TRNS,                              KC_TRNS, KC_BSPC, KC_TRNS, LCTL(KC_BSPC), KC_TRNS,
+        KC_ENT, WWW_BACK, K_PC_UNDO, K_PC_REDO, WWW_FWD,                        KC_RCTL, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
         KC_TRNS, KC_TRNS,                                                       KC_ENT, KC_TRNS
     ),
     [L_MOVE] = LAYOUT_split_3x5_2(
