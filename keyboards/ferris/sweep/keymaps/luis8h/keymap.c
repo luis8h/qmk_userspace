@@ -29,6 +29,7 @@ enum custom_keycodes {
 #define DUAL_FUNC_ALTEXCL LT(104, KC_F14)
 #define DUAL_FUNC_TOBASE LT(105, KC_F14)
 #define DUAL_FUNC_LGUIRIGHT LT(106, KC_F14)
+#define DUAL_FUNC_BSPCWORD LT(107, KC_F14)
 
 // Layers
 #define L_BASE 0
@@ -139,7 +140,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [L_ESC] = LAYOUT_split_3x5_2(
         K_PC_COPY, K_PC_PASTE, LCTL(KC_SPC), KC_F8, KC_TRNS,                    KC_TRNS, CW_TOGG, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TAB, KC_DEL, KC_LSFT, KC_BSPC, KC_TRNS,                              KC_TRNS, KC_BSPC, KC_TRNS, LCTL(KC_BSPC), KC_TRNS,
+        KC_TAB, KC_DEL, KC_LSFT, KC_BSPC, KC_TRNS,                              KC_TRNS, KC_BSPC, KC_TRNS, DUAL_FUNC_BSPCWORD, KC_TRNS,
         KC_ENT, WWW_BACK, K_PC_UNDO, K_PC_REDO, WWW_FWD,                        KC_RCTL, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
         KC_TRNS, KC_TRNS,                                                       KC_ENT, KC_TRNS
     ),
@@ -460,6 +461,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 else unregister_code16(KC_LEFT_GUI);
             }
             return false;
+
+        // fixes the ctrl-backspace behavior on mac
+        case DUAL_FUNC_BSPCWORD:
+            if (record->tap.count > 0) {
+                if (record->event.pressed) {
+                    if (is_macos) {
+                        register_code16(LALT(KC_BSPC));
+                    } else {
+                        register_code16(LCTL(KC_BSPC));
+                    }
+                } else {
+                    if (is_macos) {
+                        unregister_code16(LALT(KC_BSPC));
+                    } else {
+                        unregister_code16(LCTL(KC_BSPC));
+                    }
+                }
+            } else {
+                // do nothing (would be the hold behavior -> see above example)
+            }
+            return false;
+
 
         case WWW_FWD:
             if (record->event.pressed) {
