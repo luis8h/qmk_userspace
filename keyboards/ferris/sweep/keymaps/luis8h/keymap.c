@@ -30,6 +30,7 @@ enum custom_keycodes {
 #define DUAL_FUNC_TOBASE LT(105, KC_F14)
 #define DUAL_FUNC_LGUIRIGHT LT(106, KC_F14)
 #define DUAL_FUNC_BSPCWORD LT(107, KC_F14)
+#define DUAL_FUNC_DELWORD LT(108, KC_F14)
 
 // Layers
 #define L_BASE 0
@@ -105,13 +106,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_NUMT] = LAYOUT_split_3x5_2(
         KC_DOT, KC_1, KC_2, KC_3, KC_COMM,                                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         LGUI_T(KC_MINS), LALT_T(KC_4), LSFT_T(KC_5), LCTL_T(KC_6), KC_0,        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        LCA_T(QK_LLCK), KC_7, KC_8, RALT_T(KC_9), KC_EQL,                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        LCA_T(KC_UNDS), KC_7, KC_8, RALT_T(KC_9), KC_EQL,                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         DUAL_FUNC_TOBASE, KC_TRNS,                                              KC_TRNS, KC_TRNS
     ),
     [L_NUMC] = LAYOUT_split_3x5_2(
         KC_DOT, KC_1, KC_2, KC_3, KC_COMM,                                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_MINS, KC_4, KC_5, KC_6, KC_0,                                        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        QK_LLCK, KC_7, KC_8, KC_9, KC_EQL,                                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_UNDS, KC_7, KC_8, KC_9, KC_EQL,                                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         DUAL_FUNC_TOBASE, KC_TRNS,                                              KC_TRNS, KC_TRNS
     ),
     [L_SYMSPEC] = LAYOUT_split_3x5_2(
@@ -123,7 +124,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_NUMH] = LAYOUT_split_3x5_2(
         KC_DOT, KC_1, KC_2, KC_3, KC_COMM,                                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         LGUI_T(KC_MINS), LALT_T(KC_4), LSFT_T(KC_5), LCTL_T(KC_6), KC_0,        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        LCA_T(QK_LLCK), KC_7, KC_8, RALT_T(KC_9), KC_EQL,                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        MT(MOD_LCTL | MOD_LGUI,KC_UNDS), KC_7, KC_8, RALT_T(KC_9), KC_EQL,                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         DUAL_FUNC_TOBASE, KC_TRNS,                                              KC_TRNS, KC_TRNS
     ),
     [L_WORKA] = LAYOUT_split_3x5_2(
@@ -140,12 +141,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [L_ESC] = LAYOUT_split_3x5_2(
         K_PC_COPY, K_PC_PASTE, LCTL(KC_SPC), KC_F8, KC_TRNS,                    KC_TRNS, CW_TOGG, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TAB, KC_DEL, KC_LSFT, KC_BSPC, KC_TRNS,                              KC_TRNS, KC_BSPC, KC_TRNS, DUAL_FUNC_BSPCWORD, KC_TRNS,
+        KC_TAB, KC_DEL, KC_LSFT, KC_BSPC, KC_TRNS,                              KC_DEL, LCTL_T(KC_BSPC), DUAL_FUNC_DELWORD, DUAL_FUNC_BSPCWORD, KC_TRNS,
         KC_ENT, WWW_BACK, K_PC_UNDO, K_PC_REDO, WWW_FWD,                        KC_RCTL, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,
         KC_TRNS, KC_TRNS,                                                       KC_ENT, KC_TRNS
     ),
     [L_MOVE] = LAYOUT_split_3x5_2(
-        LALT_T(KC_Q), KC_W, KC_UP, KC_R, KC_T,                                  KC_Y, KC_HOME, KC_I, KC_END, LGUI_T(KC_UP),
+        LALT_T(KC_Q), KC_W, KC_UP, KC_R, KC_T,                                  KC_Y, KC_HOME, KC_I, KC_END, LALT_T(KC_UP),
         KC_A, LGUI_T(KC_LEFT), LSFT_T(KC_DOWN), LCTL_T(KC_RIGHT), KC_G,         KC_LEFT, LCTL_T(KC_DOWN), LSFT_T(KC_UP), DUAL_FUNC_LGUIRIGHT, KC_TRNS,
         KC_Z, WWW_BACK, KC_PGUP, KC_PGDN, WWW_FWD,                              KC_DOWN, KC_M, KC_COMM, KC_DOT, KC_TRNS,
         KC_TRNS, KC_TRNS,                                                       KC_TRNS, KC_TRNS
@@ -457,8 +458,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     unregister_code16(KC_RIGHT);
                 }
             } else {
-                if (record->event.pressed) register_code16(KC_LEFT_GUI);
-                else unregister_code16(KC_LEFT_GUI);
+                if (record->event.pressed) register_code16(KC_LEFT_ALT);
+                else unregister_code16(KC_LEFT_ALT);
             }
             return false;
 
@@ -478,11 +479,35 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                         unregister_code16(LCTL(KC_BSPC));
                     }
                 }
+            // hold behavior
             } else {
-                // do nothing (would be the hold behavior -> see above example)
+                if (record->event.pressed) register_code16(KC_LEFT_GUI);
+                else unregister_code16(KC_LEFT_GUI);
             }
             return false;
 
+        // fixes the ctrl-delete behavior on mac
+        case DUAL_FUNC_DELWORD:
+            if (record->tap.count > 0) {
+                if (record->event.pressed) {
+                    if (is_macos) {
+                        register_code16(LALT(KC_DEL));
+                    } else {
+                        register_code16(LCTL(KC_DEL));
+                    }
+                } else {
+                    if (is_macos) {
+                        unregister_code16(LALT(KC_DEL));
+                    } else {
+                        unregister_code16(LCTL(KC_DEL));
+                    }
+                }
+            // hold behavior
+            } else {
+                if (record->event.pressed) register_code16(KC_LEFT_SHIFT);
+                else unregister_code16(KC_LEFT_SHIFT);
+            }
+            return false;
 
         case WWW_FWD:
             if (record->event.pressed) {
